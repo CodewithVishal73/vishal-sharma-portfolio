@@ -1,15 +1,32 @@
+import { HeroRunway } from '../components/HeroRunway/HeroRunway';
 import styles from './Placeholder.module.css';
 
 export default function Home() {
   return (
-    <section data-tone="surface" style={{ width: '100%' }}>
-      <div className={styles.pageSection}>
-        <span className={styles.toneBadge}>Data Tone: Surface</span>
-        <h1 className={styles.heading}>Vishal Sharma</h1>
-        <p className={styles.description}>
-          Computer Science Undergraduate · Backend &amp; API Design · Full-Stack Development
-        </p>
-      </div>
-    </section>
+    <>
+      {/* 170svh Hero Runway with 100svh sticky stage and fall-through aperture */}
+      <HeroRunway />
+
+      {/* Immediate post-runway section with data-tone="deep" for seamless landing */}
+      <section data-tone="deep" style={{ width: '100%', minHeight: '80svh' }}>
+        <div className={styles.pageSection}>
+          <span className={styles.toneBadge}>Data Tone: Deep (Fall-Through Landing)</span>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'var(--font-size-statement)',
+              lineHeight: 'var(--line-height-statement)',
+              color: 'var(--fg)',
+              marginBottom: 'var(--space-4)',
+            }}
+          >
+            The Descent Begins
+          </h2>
+          <p className={styles.description}>
+            The aperture doorway has opened to full width. The journey into the software architecture continues below.
+          </p>
+        </div>
+      </section>
+    </>
   );
 }
