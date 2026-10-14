@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Vishal Sharma Portfolio (MERN Project Root)",
+  "scripts": {
+    "dev": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "preview": "npm --prefix client run preview",
+    "check:content": "npm --prefix client run check:content",
+    "generate:cv": "npm --prefix client run generate:cv"
+  }
+}
