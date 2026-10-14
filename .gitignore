@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build output
+dist
+dist-ssr
+*.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Context and private instructions
+.context/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
