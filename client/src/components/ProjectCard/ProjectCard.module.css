@@ -1,0 +1,333 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  transform: translateY(0);
+  transition:
+    transform var(--dur-ui) var(--ease-out),
+    box-shadow var(--dur-ui) var(--ease-out);
+}
+
+/* Signature Aperture Arch Top */
+.archFrame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--bg);
+  border: 1px solid var(--line);
+  border-top-left-radius: 140px;
+  border-top-right-radius: 140px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition:
+    border-color var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out);
+}
+
+:global([data-theme="light"]) .archFrame {
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 8px rgba(20, 17, 14, 0.04);
+}
+
+:global([data-theme="dark"]) .archFrame {
+  background-color: rgba(237, 231, 219, 0.025);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Warm pointer-following light inside the arch */
+.pointerLight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    400px circle at var(--pointer-x, 50%) var(--pointer-y, 30%),
+    rgba(255, 106, 58, 0.18),
+    transparent 70%
+  );
+  opacity: var(--light-opacity, 0);
+  transition: opacity var(--dur-ui) var(--ease-out);
+}
+
+/* Static fallback glow when not hovered or on touch devices */
+@media (hover: none) or (pointer: coarse) {
+  .pointerLight {
+    opacity: 0.5;
+    background: radial-gradient(
+      320px circle at 50% 20%,
+      rgba(255, 106, 58, 0.12),
+      transparent 70%
+    );
+  }
+}
+
+/* Hover: Lift 6px and brighten light */
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.card:hover .archFrame {
+  border-color: rgba(255, 106, 58, 0.45);
+}
+
+:global([data-theme="dark"]) .card:hover .archFrame {
+  box-shadow:
+    0 16px 36px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 106, 58, 0.2);
+}
+
+:global([data-theme="light"]) .card:hover .archFrame {
+  box-shadow:
+    0 14px 30px -10px rgba(20, 17, 14, 0.1),
+    0 0 0 1px rgba(179, 48, 12, 0.2);
+}
+
+.card:hover .pointerLight {
+  opacity: 1;
+}
+
+/* Tile Preview Area */
+.tileArea {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-reveal) var(--ease-out);
+}
+
+.card:hover .tileImage {
+  transform: scale(1.04);
+}
+
+/* Gradient Tile with Initial Letter */
+.gradientTile {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 106, 58, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 106, 58, 0.04) 100%
+  );
+}
+
+.tileInitial {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--fg);
+  opacity: 0.18;
+  user-select: none;
+  transition:
+    opacity var(--dur-ui) var(--ease-out),
+    transform var(--dur-ui) var(--ease-out);
+}
+
+.card:hover .tileInitial {
+  opacity: 0.35;
+  color: var(--accent);
+  transform: scale(1.06);
+}
+
+/* Development Placeholder badge */
+.placeholderTag {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 3;
+  padding: 2px 8px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F59E0B;
+  background-color: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 4px;
+}
+
+/* Card Body */
+.cardBody {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 3vw, 28px);
+  gap: var(--space-4);
+  flex: 1;
+}
+
+.projectTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+.projectDescription {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Tech Stack Outlined Pills */
+.stackBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+
+.techPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.02);
+  white-space: nowrap;
+}
+
+/* Actions Row */
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 38px;
+  padding: 0 var(--space-4);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  background-color: transparent;
+  transition:
+    background-color var(--dur-micro) var(--ease-out),
+    border-color var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.actionButton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.actionButtonPrimary {
+  background-color: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}
+
+.actionButtonPrimary:hover {
+  filter: brightness(1.08);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}
+
+.actionButton:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Tablet & Mobile Arch Top Radius Adjustments */
+@media (max-width: 768px) {
+  .archFrame {
+    border-top-left-radius: 90px;
+    border-top-right-radius: 90px;
+  }
+
+  .tileArea {
+    height: 180px;
+  }
+
+  .tileInitial {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .archFrame {
+    border-top-left-radius: 72px;
+    border-top-right-radius: 72px;
+  }
+
+  .actionsRow {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .archFrame,
+  .pointerLight,
+  .tileImage,
+  .tileInitial,
+  .actionButton {
+    transition: none !important;
+  }
+
+  .card:hover {
+    transform: none !important;
+  }
+
+  .card:hover .tileImage {
+    transform: none !important;
+  }
+}

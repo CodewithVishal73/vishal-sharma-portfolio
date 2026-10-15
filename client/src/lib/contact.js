@@ -41,7 +41,7 @@ export async function sendMessage(payload) {
 
     const data = await response.json();
     return { ok: true, data };
-  } catch (_err) {
+  } catch {
     return {
       ok: false,
       status: 'network_error',
