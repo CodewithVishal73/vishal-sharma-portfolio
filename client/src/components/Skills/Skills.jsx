@@ -1,32 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
-import { useScroll } from 'framer-motion';
-import { skills } from '../../data/skills';
+import { skillsHeader, skillGroups } from '../../data/skills';
 import { SkillGroup } from './SkillGroup';
-import { SkillsStack3D } from './SkillsStack3D';
 import { SkillsErrorBoundary } from './SkillsErrorBoundary';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import styles from './Skills.module.css';
 
+/**
+ * Skills Section: The Stack
+ * Visual technology cards organized into 4 core software engineering groups.
+ * No arbitrary percentages, proficiency levels, progress bars, or tooltips.
+ */
 export function Skills() {
   const sectionRef = useRef(null);
-  const [activeLayerId, setActiveLayerId] = useState(
-    skills.layers[0]?.id || 'languages-foundations'
-  );
-  const [isSectionRevealed, setIsSectionRevealed] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const [isHeaderRevealed, setIsHeaderRevealed] = useState(prefersReducedMotion);
 
-  // Scroll tracking across the whole skills section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
-
-  // Entrance reveal with 2-second failsafe
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setIsSectionRevealed(true);
-      return;
-    }
+    if (prefersReducedMotion) return;
 
     const element = sectionRef.current;
     if (!element) return;
@@ -35,7 +25,7 @@ export function Skills() {
     const failsafe = setTimeout(() => {
       if (!revealed) {
         revealed = true;
-        setIsSectionRevealed(true);
+        setIsHeaderRevealed(true);
       }
     }, 2000);
 
@@ -45,7 +35,7 @@ export function Skills() {
           const entry = entries[0];
           if (entry?.isIntersecting && !revealed) {
             revealed = true;
-            setIsSectionRevealed(true);
+            setIsHeaderRevealed(true);
             observer.disconnect();
             clearTimeout(failsafe);
           }
@@ -59,39 +49,10 @@ export function Skills() {
         clearTimeout(failsafe);
       };
     } else {
-      setIsSectionRevealed(true);
+      setIsHeaderRevealed(true);
       clearTimeout(failsafe);
     }
   }, [prefersReducedMotion]);
-
-  // Observer to track which skill group is currently in view
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
-
-    const groupObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const layerId = entry.target.getAttribute('id');
-            if (layerId) {
-              setActiveLayerId(layerId);
-            }
-          }
-        });
-      },
-      {
-        rootMargin: '-20% 0px -40% 0px',
-        threshold: 0.1,
-      }
-    );
-
-    skills.layers.forEach((layer) => {
-      const el = document.getElementById(layer.id);
-      if (el) groupObserver.observe(el);
-    });
-
-    return () => groupObserver.disconnect();
-  }, []);
 
   return (
     <section
@@ -99,53 +60,46 @@ export function Skills() {
       id="skills"
       data-tone="mid"
       className={styles.skillsSection}
-      aria-label="Technical Skills and Architectural Layers"
+      aria-label="Technical Skills and Technology Stack"
     >
       <div className={styles.innerContainer}>
-        {/* Section Header */}
+        {/* Editorial Section Header */}
         <header
-          className={`${styles.sectionHeader} ${styles.revealElement} ${
-            isSectionRevealed ? styles.revealed : ''
+          className={`${styles.sectionHeader} ${
+            isHeaderRevealed ? styles.headerRevealed : styles.headerHidden
           }`}
         >
           <div className={styles.sectionEyebrow}>
             <span className={styles.eyebrowLine} aria-hidden="true" />
-            <span>02 / Architecture & Skills</span>
+            <span>{skillsHeader.eyebrow}</span>
           </div>
 
           <h2 className={styles.sectionTitle}>
-            The Spatial Layer Stack
+            {skillsHeader.title}
           </h2>
 
           <p className={styles.sectionSubtitle}>
-            A full-stack software system is not a flat list of keywords. It is a spatial hierarchy
-            of foundational runtimes, resilient server services, and responsive client interfaces.
+            {skillsHeader.subtitle}
           </p>
         </header>
 
-        {/* 2-Column Responsive Layout */}
-        <div className={styles.layoutGrid}>
-          {/* Left Column: 3D Stack Visualization (Sticky Desktop / Inline Mobile) */}
-          <div className={styles.stackColumn}>
-            <SkillsErrorBoundary>
-              <SkillsStack3D
-                scrollProgress={scrollYProgress}
-                activeLayer={activeLayerId}
-              />
-            </SkillsErrorBoundary>
-          </div>
-
-          {/* Right Column: Accessible HTML Skill Groups */}
-          <div className={styles.contentColumn}>
-            {skills.layers.map((layer) => (
-              <SkillGroup
-                key={layer.id}
-                layer={layer}
-                isActive={activeLayerId === layer.id}
-              />
+        {/* 4 Skill Groups with Fine-Line Technical Connectors */}
+        <SkillsErrorBoundary>
+          <div className={styles.groupsContainer}>
+            {skillGroups.map((group, index) => (
+              <div key={group.id} className={styles.groupWrapper}>
+                {index > 0 && (
+                  <div className={styles.groupSeparator} aria-hidden="true">
+                    <span className={styles.separatorLine} />
+                    <span className={styles.separatorDot} />
+                    <span className={styles.separatorLine} />
+                  </div>
+                )}
+                <SkillGroup group={group} />
+              </div>
             ))}
           </div>
-        </div>
+        </SkillsErrorBoundary>
       </div>
     </section>
   );

@@ -1,267 +1,217 @@
 /**
- * Skills Data
- * Grouped into three layers corresponding to the 3D stack planes:
- * 1. Languages & Foundations (Foundation Plane)
- * 2. Backend & Databases (Service Plane)
- * 3. Frontend, Tools & Engineering (Interface Plane)
+ * Skills Data Architecture
+ * Visual Technology Cards — No arbitrary percentages or proficiency levels.
  *
- * Labels: Beginner (<40), Intermediate (40-69), Advanced (70+).
- * All starter skills are self-assessed with confirmed: false until verified by owner.
+ * Organized into four primary groups:
+ * - Group A: Languages
+ * - Group B: Frontend
+ * - Group C: Backend & Databases
+ * - Group D: Tools & Engineering
+ *
  * Pure JS — no JSX or Vite imports.
  */
 
+export const skillsHeader = {
+  eyebrow: '02 / Technical Stack',
+  title: 'The Stack',
+  subtitle: 'Technologies and tools I use to build software, engineer backend systems, and create modern web experiences.',
+};
+
+export const skillGroups = [
+  {
+    id: 'languages',
+    number: '01',
+    title: 'Languages',
+    category: 'Core Engineering',
+    description: 'Foundational programming languages and syntax for robust logic, data structures, and algorithmic execution.',
+    skills: [
+      {
+        id: 'java',
+        name: 'Java',
+        iconId: 'java',
+        context: 'Enterprise & Systems',
+      },
+      {
+        id: 'cpp',
+        name: 'C++',
+        iconId: 'cpp',
+        context: 'Algorithms & STL',
+      },
+      {
+        id: 'javascript',
+        name: 'JavaScript',
+        iconId: 'javascript',
+        context: 'Modern ES6+ & Async',
+      },
+      {
+        id: 'python',
+        name: 'Python',
+        iconId: 'python',
+        context: 'Scripting & Automation',
+      },
+      {
+        id: 'sql',
+        name: 'SQL',
+        iconId: 'sql',
+        context: 'Relational Queries & DDL',
+      },
+    ],
+  },
+  {
+    id: 'frontend',
+    number: '02',
+    title: 'Frontend',
+    category: 'User Interface',
+    description: 'Modern client architectures, component state systems, fluid typography, and responsive web layouts.',
+    skills: [
+      {
+        id: 'react',
+        name: 'React',
+        iconId: 'react',
+        context: 'SPA & Component State',
+      },
+      {
+        id: 'html5',
+        name: 'HTML5',
+        iconId: 'html5',
+        context: 'Semantic & Accessible UI',
+      },
+      {
+        id: 'css3',
+        name: 'CSS3',
+        iconId: 'css3',
+        context: 'Responsive & Modern CSS',
+      },
+      {
+        id: 'tailwind',
+        name: 'Tailwind CSS',
+        iconId: 'tailwind',
+        context: 'Utility-First Systems',
+      },
+    ],
+  },
+  {
+    id: 'backend-databases',
+    number: '03',
+    title: 'Backend & Databases',
+    category: 'Services & Storage',
+    description: 'Server frameworks, RESTful API contract design, persistent data storage, and authentication pipelines.',
+    skills: [
+      {
+        id: 'spring-boot',
+        name: 'Spring Boot',
+        iconId: 'spring-boot',
+        context: 'REST & Application Services',
+      },
+      {
+        id: 'nodejs',
+        name: 'Node.js',
+        iconId: 'nodejs',
+        context: 'Asynchronous Event Runtime',
+      },
+      {
+        id: 'express',
+        name: 'Express.js',
+        iconId: 'express',
+        context: 'Routing & Middleware Chains',
+      },
+      {
+        id: 'rest-apis',
+        name: 'REST APIs',
+        iconId: 'rest-apis',
+        context: 'Contract Design & Semantics',
+      },
+      {
+        id: 'postgresql',
+        name: 'PostgreSQL',
+        iconId: 'postgresql',
+        context: 'Relational Modeling & Indexes',
+      },
+      {
+        id: 'mysql',
+        name: 'MySQL',
+        iconId: 'mysql',
+        context: 'Schema Design & Queries',
+      },
+      {
+        id: 'mongodb',
+        name: 'MongoDB',
+        iconId: 'mongodb',
+        context: 'Document Stores & BSON',
+      },
+      {
+        id: 'mongoose',
+        name: 'Mongoose',
+        iconId: 'mongoose',
+        context: 'ODM & Schema Validation',
+      },
+      {
+        id: 'spring-security',
+        name: 'Spring Security',
+        iconId: 'spring-security',
+        context: 'RBAC & Security Filters',
+      },
+      {
+        id: 'jwt',
+        name: 'JWT Authentication',
+        iconId: 'jwt',
+        context: 'Stateless Token Security',
+      },
+    ],
+  },
+  {
+    id: 'tools-engineering',
+    number: '04',
+    title: 'Tools & Engineering',
+    category: 'Tooling & Workflow',
+    description: 'Version control workflows, dependency managers, API verification tools, and practical AI integration.',
+    skills: [
+      {
+        id: 'git',
+        name: 'Git',
+        iconId: 'git',
+        context: 'Version Control & Branching',
+      },
+      {
+        id: 'github',
+        name: 'GitHub',
+        iconId: 'github',
+        context: 'Collaboration & Repositories',
+      },
+      {
+        id: 'maven',
+        name: 'Maven',
+        iconId: 'maven',
+        context: 'Builds & Lifecycle Mgmt',
+      },
+      {
+        id: 'postman',
+        name: 'Postman',
+        iconId: 'postman',
+        context: 'API Testing & Inspection',
+      },
+      {
+        id: 'ai-integration',
+        name: 'Practical AI Integration',
+        iconId: 'ai-integration',
+        context: 'LLM APIs & Tool Workflows',
+      },
+    ],
+  },
+];
+
+// Backwards-compatible structure for CV generation & tooling
 export const skills = {
-  layers: [
-    {
-      id: 'languages-foundations',
-      layerIndex: '01',
-      layerName: 'Languages & Foundations',
-      category: 'Core Engineering',
-      planeId: 'foundation',
-      planeTitle: 'Foundation Layer',
-      description: 'Core programming languages, memory models, runtime foundations, and structured query semantics.',
-      items: [
-        {
-          id: 'java',
-          name: 'Java',
-          percent: 70,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'java',
-          description: 'OOP architecture, collections framework, concurrency, multithreading, and JVM internals.',
-        },
-        {
-          id: 'cpp',
-          name: 'C++',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'cpp',
-          description: 'Algorithms, data structures, pointer mechanics, STL containers, and systems basics.',
-        },
-        {
-          id: 'javascript',
-          name: 'JavaScript',
-          percent: 70,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'javascript',
-          description: 'Modern ES6+, async/await, closures, prototypes, event loop, and DOM manipulation.',
-        },
-        {
-          id: 'python',
-          name: 'Python',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'python',
-          description: 'Scripting, algorithmic problem solving, automated processing, and AI library integration.',
-        },
-        {
-          id: 'sql',
-          name: 'SQL',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'sql',
-          description: 'Relational queries, joins, aggregates, schema design, constraints, and index optimization.',
-        },
-        {
-          id: 'html5',
-          name: 'HTML5',
-          percent: 75,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'html5',
-          description: 'Semantic markup, accessibility (ARIA), document structure, forms, and SEO fundamentals.',
-        },
-        {
-          id: 'css3',
-          name: 'CSS3',
-          percent: 75,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'css3',
-          description: 'Modern flexbox, CSS grid, custom properties, fluid typography, and CSS 3D transforms.',
-        },
-      ],
-    },
-    {
-      id: 'backend-databases',
-      layerIndex: '02',
-      layerName: 'Backend & Databases',
-      category: 'Services & Storage',
-      planeId: 'service',
-      planeTitle: 'Service Layer',
-      description: 'Server frameworks, RESTful API design, database modeling, authentication systems, and business services.',
-      items: [
-        {
-          id: 'spring-boot',
-          name: 'Spring Boot',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'spring-boot',
-          description: 'Dependency injection, Spring MVC, REST controllers, Spring Data JPA, and application config.',
-        },
-        {
-          id: 'nodejs',
-          name: 'Node.js',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'nodejs',
-          description: 'Asynchronous event-driven runtime, modular services, file I/O, and npm package ecosystem.',
-        },
-        {
-          id: 'express',
-          name: 'Express.js',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'express',
-          description: 'RESTful routing, middleware chains, error handling pipelines, and request validation.',
-        },
-        {
-          id: 'rest-apis',
-          name: 'REST APIs',
-          percent: 70,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'rest-apis',
-          description: 'HTTP verb semantics, status codes, payload contract design, versioning, and client error handling.',
-        },
-        {
-          id: 'postgresql',
-          name: 'PostgreSQL',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'postgresql',
-          description: 'Relational data modeling, foreign key constraints, transactions, indexing, and pg integration.',
-        },
-        {
-          id: 'mysql',
-          name: 'MySQL',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'mysql',
-          description: 'Relational databases, table schemas, stored procedures, and query performance tuning.',
-        },
-        {
-          id: 'mongodb',
-          name: 'MongoDB',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'mongodb',
-          description: 'Document-oriented database, collections, BSON documents, aggregation, and atlas hosting.',
-        },
-        {
-          id: 'mongoose',
-          name: 'Mongoose',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'mongoose',
-          description: 'Schema definition, data modeling, middleware hooks, validation, and population in Node.',
-        },
-        {
-          id: 'jwt',
-          name: 'JWT Authentication',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'jwt',
-          description: 'Stateless token issuance, signature verification, bearer authorization, and claim security.',
-        },
-        {
-          id: 'spring-security',
-          name: 'Spring Security',
-          percent: 55,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'spring-security',
-          description: 'Security filter chains, role-based access control (RBAC), and authentication providers.',
-        },
-      ],
-    },
-    {
-      id: 'frontend-tools',
-      layerIndex: '03',
-      layerName: 'Frontend, Tools & Engineering',
-      category: 'Interface & Delivery',
-      planeId: 'interface',
-      planeTitle: 'Interface Layer',
-      description: 'Modern client architectures, styling tools, version control, build workflows, and AI integration.',
-      items: [
-        {
-          id: 'react',
-          name: 'React',
-          percent: 68,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'react',
-          description: 'Component lifecycles, custom hooks, virtual DOM reconciliation, state management, and SPA routing.',
-        },
-        {
-          id: 'tailwind',
-          name: 'Tailwind CSS',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'tailwind',
-          description: 'Utility-first styling, design system tokens, responsive variants, and modern layout composition.',
-        },
-        {
-          id: 'git',
-          name: 'Git',
-          percent: 70,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'git',
-          description: 'Distributed version control, branching strategies, conflict resolution, rebasing, and history inspection.',
-        },
-        {
-          id: 'github',
-          name: 'GitHub',
-          percent: 70,
-          level: 'Advanced',
-          confirmed: false,
-          iconId: 'github',
-          description: 'Remote repository management, pull requests, issue tracking, code reviews, and CI/CD pipelines.',
-        },
-        {
-          id: 'maven',
-          name: 'Maven',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'maven',
-          description: 'Java dependency management, pom.xml configuration, build lifecycles, and packaging.',
-        },
-        {
-          id: 'postman',
-          name: 'Postman',
-          percent: 65,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'postman',
-          description: 'API endpoint testing, collection authoring, environment variables, and request payload debugging.',
-        },
-        {
-          id: 'ai-integration',
-          name: 'Practical AI Integration',
-          percent: 60,
-          level: 'Intermediate',
-          confirmed: false,
-          iconId: 'ai-integration',
-          description: 'LLM API integration, prompt engineering, agentic development workflows, and intelligent assistance.',
-        },
-      ],
-    },
-  ],
+  header: skillsHeader,
+  groups: skillGroups,
+  layers: skillGroups.map((g) => ({
+    id: g.id,
+    layerIndex: g.number,
+    layerName: g.title,
+    category: g.category,
+    description: g.description,
+    items: g.skills,
+  })),
 };
 
 export default skills;

@@ -38,7 +38,7 @@ async function generateCV() {
 
   doc.fontSize(14).font('Helvetica-Bold').text('Technical Focus & Skills');
   for (const layer of skills.layers || []) {
-    const skillList = (layer.items || []).map((i) => `${i.name} (${i.level})`).join(', ');
+    const skillList = (layer.items || []).map((i) => (i.level ? `${i.name} (${i.level})` : i.name)).join(', ');
     doc.fontSize(11).font('Helvetica-Bold').text(`${layer.layerName} (${layer.category})`);
     doc.fontSize(10).font('Helvetica').text(skillList);
     doc.moveDown(0.5);
@@ -80,7 +80,7 @@ async function generateCV() {
                 children: [
                   new TextRun({ text: `${layer.layerName} (${layer.category}): `, bold: true }),
                   new TextRun({
-                    text: (layer.items || []).map((i) => `${i.name} (${i.level})`).join(', '),
+                    text: (layer.items || []).map((i) => (i.level ? `${i.name} (${i.level})` : i.name)).join(', '),
                   }),
                 ],
               })

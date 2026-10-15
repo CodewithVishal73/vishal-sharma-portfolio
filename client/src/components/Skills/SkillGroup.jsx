@@ -1,47 +1,100 @@
-import { SkillBar } from './SkillBar';
+import { useState, useEffect, useRef } from 'react';
+import { SkillCard } from './SkillCard';
+import useReducedMotion from '../../hooks/useReducedMotion';
 import styles from './SkillGroup.module.css';
 
-export function SkillGroup({ layer, isActive = false, sectionRef }) {
-  const headingId = `layer-heading-${layer.id}`;
+/**
+ * SkillGroup: Renders a semantic category of technology cards with staggered reveal.
+ */
+export function SkillGroup({ group }) {
+  const groupRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [isRevealed, setIsRevealed] = useState(prefersReducedMotion);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const element = groupRef.current;
+    if (!element) return;
+
+    let revealed = false;
+    // Failsafe: guarantee visibility even if IntersectionObserver fails or stalls
+    const failsafe = setTimeout(() => {
+      if (!revealed) {
+        revealed = true;
+        setIsRevealed(true);
+      }
+    }, 2000);
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry?.isIntersecting && !revealed) {
+            revealed = true;
+            setIsRevealed(true);
+            observer.disconnect();
+            clearTimeout(failsafe);
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(element);
+      return () => {
+        observer.disconnect();
+        clearTimeout(failsafe);
+      };
+    } else {
+      setIsRevealed(true);
+      clearTimeout(failsafe);
+    }
+  }, [prefersReducedMotion]);
+
+  const headingId = `group-heading-${group.id}`;
 
   return (
     <section
-      ref={sectionRef}
-      id={layer.id}
+      ref={groupRef}
+      id={group.id}
       aria-labelledby={headingId}
-      className={styles.groupContainer}
-      data-active-group={isActive ? 'true' : 'false'}
+      className={`${styles.groupContainer} ${
+        isRevealed ? styles.groupRevealed : styles.groupHidden
+      }`}
     >
-      <div className={styles.groupHeader}>
-        <div className={styles.layerTagRow}>
-          <span className={styles.layerNumber}>Layer {layer.layerIndex}</span>
-          <div className={styles.layerDivider} aria-hidden="true" />
-          <span className={styles.layerCategory}>{layer.category}</span>
+      <header className={styles.groupHeader}>
+        <div className={styles.tagRow}>
+          <span className={styles.groupNumber}>{group.number}</span>
+          <div className={styles.tagDivider} aria-hidden="true" />
+          <span className={styles.categoryName}>{group.category}</span>
         </div>
 
         <h3 id={headingId} className={styles.groupTitle}>
-          {layer.layerName}
+          {group.title}
         </h3>
 
-        {layer.description && (
-          <p className={styles.groupDescription}>{layer.description}</p>
+        {group.description && (
+          <p className={styles.groupDescription}>{group.description}</p>
         )}
-      </div>
+      </header>
 
-      <div className={styles.skillsGrid}>
-        {(layer.items || []).map((item) => (
-          <SkillBar
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            percent={item.percent}
-            level={item.level}
-            iconId={item.iconId}
-            description={item.description}
-            confirmed={item.confirmed}
-          />
+      <ul className={styles.cardsGrid} role="list" aria-label={`${group.title} technologies`}>
+        {(group.skills || []).map((skill, index) => (
+          <li
+            key={skill.id}
+            className={styles.cardItem}
+            style={{ '--item-stagger': `${index * 40}ms` }}
+          >
+            <SkillCard
+              id={skill.id}
+              name={skill.name}
+              iconId={skill.iconId}
+              context={skill.context}
+              index={index}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
