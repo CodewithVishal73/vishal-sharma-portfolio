@@ -9,9 +9,9 @@ export const profile = {
   shortName: 'Vishal',
   designation: 'BTech Computer Science · JK Lakshmipat University',
   role: 'Computer Science Undergraduate',
-  location: 'Jaipur, India',
-  status: 'Student',
-  graduation: 'Expected 2028',
+  location: 'Jaipur, Rajasthan, India',
+  status: 'Computer Science and Engineering student / software developer',
+  graduation: '2028',
   university: 'JK Lakshmipat University, Jaipur, India',
   degree: 'BTech in Computer Science',
 
