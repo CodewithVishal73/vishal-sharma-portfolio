@@ -147,7 +147,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-bottom: clamp(140px, 22svh, 240px);
+  padding-bottom: clamp(210px, 31svh, 340px);
 }
 
 .heroHeading {
@@ -202,7 +202,7 @@
   will-change: transform;
 }
 
-/* Layer E: Information, Typewriter, CTAs & Scroll Cue in normal flow above blend */
+/* Layer E: Information, Headline, CTAs & Scroll Cue in normal flow above blend */
 .metaLayerWrapper {
   position: absolute;
   inset: 0;
@@ -224,15 +224,27 @@
   flex-direction: column;
   gap: var(--space-4);
   pointer-events: auto;
-  max-width: 580px;
+  max-width: 600px;
 }
 
+/* Identity line: editable role */
+.identity,
 .designation {
   font-size: 0.9375rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 600;
+}
+
+/* Supporting copy */
+.supportingCopy {
+  font-family: var(--font-body);
+  font-size: clamp(0.9375rem, 1.35vw, 1.0625rem);
+  line-height: var(--line-height-body);
+  color: var(--muted);
+  max-width: 52ch;
+  margin: 0;
 }
 
 .ctaRow {
@@ -240,10 +252,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-4);
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
 }
 
-/* Primary CTA: Download CV */
+/* Primary CTA: View Projects */
 .primaryCta {
   display: inline-flex;
   align-items: center;
@@ -273,7 +285,7 @@
   transform: translateY(0);
 }
 
-/* Secondary CTA: View Projects */
+/* Secondary CTA: Download CV */
 .secondaryCta {
   display: inline-flex;
   align-items: center;
@@ -312,6 +324,38 @@
 }
 
 .wordLink:hover {
+  color: var(--accent);
+}
+
+/* Keyboard visible focus styles */
+.primaryCta:focus-visible,
+.secondaryCta:focus-visible,
+.wordLink:focus-visible,
+.socialLink:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Social profile links */
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-1);
+}
+
+.socialLink {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+.socialLink:hover {
   color: var(--accent);
 }
 
@@ -357,6 +401,30 @@
   50% {
     transform: scaleY(1);
     opacity: 1;
+  }
+}
+
+/* Responsive mobile adjustments */
+@media (max-width: 767px) {
+  .heroHeading {
+    font-size: clamp(3.25rem, 15vw, 4.75rem);
+  }
+
+  .nameLast {
+    margin-left: clamp(1rem, 6vw, 3rem);
+  }
+
+  .nameLayerWrapper {
+    padding-bottom: clamp(230px, 35svh, 280px);
+  }
+
+  .metaContent {
+    gap: var(--space-3);
+    max-width: 100%;
+  }
+
+  .scrollCue {
+    display: none;
   }
 }
 

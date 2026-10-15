@@ -7,31 +7,61 @@
 export const profile = {
   name: 'Vishal Sharma',
   shortName: 'Vishal',
+  identity: 'Software Engineer', // editable identity line
+  role: 'Software Engineer', // backwards compatibility
   designation: 'BTech Computer Science · JK Lakshmipat University',
-  role: 'Computer Science Undergraduate',
   location: 'Jaipur, Rajasthan, India',
   status: 'Computer Science and Engineering student / software developer',
   graduation: '2028',
   university: 'JK Lakshmipat University, Jaipur, India',
   degree: 'BTech in Computer Science',
 
-  // Typewriter roles for Hero section
-  typewriterRoles: [
-    'Computer Science Undergraduate',
-    'Backend & API Design',
-    'Full-Stack Development',
-    'React Interfaces',
+  // Headline prefix & rotating words for Hero section
+  headlinePrefix: 'Engineering the Future of',
+  typewriterWords: [
+    'AI Systems',
+    'Backend Infrastructure',
+    'Intelligent Platforms',
   ],
+  // Typewriter roles alias for backwards compatibility
+  typewriterRoles: [
+    'AI Systems',
+    'Backend Infrastructure',
+    'Intelligent Platforms',
+  ],
+
+  // Supporting copy
+  supportingCopy:
+    'Building scalable software, reliable backend systems, and intelligent digital experiences.',
+
+  // Hero CTAs
+  ctas: {
+    primary: {
+      label: 'View Projects',
+      to: '/projects',
+    },
+    secondary: {
+      label: 'Download CV',
+      href: '/cv/Vishal_Sharma_CV.pdf',
+      download: 'Vishal_Sharma_CV.pdf',
+    },
+    word: {
+      label: 'Word (.docx)',
+      href: '/cv/Vishal_Sharma_CV.docx',
+      download: 'Vishal_Sharma_CV.docx',
+    },
+  },
 
   // About copy
   statement: 'I like the part of software that has to be right.', // DRAFT: edit to your voice
   bio: "I'm a BTech Computer Science student at JK Lakshmipat University in Jaipur, graduating in 2028. I'm most interested in backend engineering, API design and relational databases, and in building React interfaces on top of them.",
 
-  // Contact & Social links (empty strings or placeholders until owner configures)
-  email: '', // replace with real email (e.g. vishal@example.com)
+  // Contact & Social links (empty strings by default until owner configures)
+  email: '',
   links: {
-    github: '', // replace in src/data/profile.js with owner's GitHub profile
-    linkedin: '', // replace in src/data/profile.js with owner's LinkedIn profile
+    github: '', // owner GitHub profile URL
+    linkedin: '', // owner LinkedIn profile URL
+    leetcode: '', // owner LeetCode profile URL
   },
 
   // Academic & technical focus

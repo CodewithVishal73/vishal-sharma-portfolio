@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { profile } from '../../data/profile';
 import { Portrait } from '../Portrait/Portrait';
 import { Typewriter } from '../Typewriter/Typewriter';
+import { HeroBackdrop } from '../HeroBackdrop/HeroBackdrop';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import styles from './HeroRunway.module.css';
 
@@ -41,6 +42,11 @@ export function HeroRunway() {
   );
 
   const restingGeom = useMemo(() => getRestingGeometry(windowWidth), [windowWidth]);
+
+  // Social links visibility flag (shown ONLY when non-empty)
+  const hasSocialLinks = Boolean(
+    profile.links?.github || profile.links?.linkedin || profile.links?.leetcode
+  );
 
   // Opening sequence states
   const [openingState, setOpeningState] = useState({
@@ -215,7 +221,6 @@ export function HeroRunway() {
     let targetY = 0.35;
     let curX = 0.35;
     let curY = 0.35;
-    let isInside = false;
     let rafId = null;
     let isVisible = true;
 
@@ -231,13 +236,11 @@ export function HeroRunway() {
       const rect = stage.getBoundingClientRect();
       if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
-      isInside = true;
       targetX = (e.clientX - rect.left) / rect.width;
       targetY = (e.clientY - rect.top) / rect.height;
     };
 
     const onPointerLeave = () => {
-      isInside = false;
       // Ease back to upper-left default position
       targetX = 0.35;
       targetY = 0.3;
@@ -333,6 +336,9 @@ export function HeroRunway() {
               opacity: prefersReducedMotion ? 1 : apertureOpacity,
             }}
           >
+            {/* Hero Video Backdrop: inside aperture content layer, behind Portrait */}
+            <HeroBackdrop lightOn={openingState.lightOn} />
+
             {/* Ambient light wedge & light switch */}
             <div
               className={styles.ambientLightWedge}
@@ -400,7 +406,7 @@ export function HeroRunway() {
           </motion.h1>
         </div>
 
-        {/* Layer E: Information, Typewriter, CTAs & Scroll Cue */}
+        {/* Layer E: Information, Headline, Supporting Copy, CTAs & Scroll Cue */}
         <div className={styles.metaLayerWrapper}>
           <motion.div
             className={styles.metaContent}
@@ -412,38 +418,106 @@ export function HeroRunway() {
                 : 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease-out',
             }}
           >
-            <div className={styles.designation}>
-              {profile.designation || 'BTech Computer Science · JK Lakshmipat University'}
+            {/* Identity line: editable "Software Engineer" */}
+            <div className={styles.identity}>
+              {profile.identity || profile.role || 'Software Engineer'}
             </div>
 
-            <Typewriter roles={profile.typewriterRoles} />
+            {/* Headline + Typewriter rotating word */}
+            <Typewriter
+              prefix={profile.headlinePrefix || 'Engineering the Future of'}
+              words={profile.typewriterWords || profile.typewriterRoles}
+            />
 
+            {/* Supporting copy */}
+            {profile.supportingCopy && (
+              <p className={styles.supportingCopy}>{profile.supportingCopy}</p>
+            )}
+
+            {/* CTAs */}
             <div className={styles.ctaRow}>
-              {/* Primary "Download CV" */}
-              <a
-                href={profile.cv?.pdf || '/cv/Vishal_Sharma_CV.pdf'}
-                download="Vishal_Sharma_CV.pdf"
+              {/* Primary "View Projects" */}
+              <Link
+                to={profile.ctas?.primary?.to || '/projects'}
                 className={styles.primaryCta}
+                id="hero-primary-cta"
+              >
+                {profile.ctas?.primary?.label || 'View Projects'}
+              </Link>
+
+              {/* Secondary "Download CV" */}
+              <a
+                href={
+                  profile.ctas?.secondary?.href ||
+                  profile.cv?.pdf ||
+                  '/cv/Vishal_Sharma_CV.pdf'
+                }
+                download={
+                  profile.ctas?.secondary?.download || 'Vishal_Sharma_CV.pdf'
+                }
+                className={styles.secondaryCta}
+                id="hero-secondary-cta"
                 aria-label="Download Vishal Sharma CV in PDF format"
               >
-                Download CV
+                {profile.ctas?.secondary?.label || 'Download CV'}
               </a>
 
               {/* Text link "Word (.docx)" */}
               <a
-                href={profile.cv?.docx || '/cv/Vishal_Sharma_CV.docx'}
-                download="Vishal_Sharma_CV.docx"
+                href={
+                  profile.ctas?.word?.href ||
+                  profile.cv?.docx ||
+                  '/cv/Vishal_Sharma_CV.docx'
+                }
+                download={profile.ctas?.word?.download || 'Vishal_Sharma_CV.docx'}
                 className={styles.wordLink}
                 aria-label="Download CV in Word DOCX format"
               >
-                Word (.docx)
+                {profile.ctas?.word?.label || 'Word (.docx)'}
               </a>
-
-              {/* Secondary "View projects" */}
-              <Link to="/projects" className={styles.secondaryCta}>
-                View projects
-              </Link>
             </div>
+
+            {/* Social links (GitHub, LinkedIn, LeetCode) - shown ONLY when non-empty */}
+            {hasSocialLinks && (
+              <div
+                className={styles.socialRow}
+                aria-label="Social and coding profiles"
+              >
+                {profile.links?.github && (
+                  <a
+                    href={profile.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialLink}
+                    aria-label="GitHub profile (opens in new tab)"
+                  >
+                    GitHub
+                  </a>
+                )}
+                {profile.links?.linkedin && (
+                  <a
+                    href={profile.links.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialLink}
+                    aria-label="LinkedIn profile (opens in new tab)"
+                  >
+                    LinkedIn
+                  </a>
+                )}
+                {profile.links?.leetcode && (
+                  <a
+                    href={profile.links.leetcode}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialLink}
+                    aria-label="LeetCode profile (opens in new tab)"
+                  >
+                    LeetCode
+                  </a>
+                )}
+              </div>
+            )}
           </motion.div>
 
           {/* Scroll cue: vertical hairline + "Descend" */}

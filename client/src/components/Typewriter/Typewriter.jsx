@@ -1,17 +1,28 @@
 import useTypewriter from '../../hooks/useTypewriter';
 import styles from './Typewriter.module.css';
 
-export function Typewriter({ roles = [], className = '' }) {
-  const { displayText, currentRole, isReducedMotion } = useTypewriter(roles);
+export function Typewriter({
+  prefix = '',
+  words = [],
+  roles = [],
+  className = '',
+}) {
+  const wordList = words && words.length > 0 ? words : roles;
+  const { displayText, currentRole, isReducedMotion } = useTypewriter(wordList);
+
+  const fullText = prefix ? `${prefix} ${currentRole}` : currentRole;
 
   return (
     <div
       className={`${styles.typewriterContainer} ${className}`}
-      aria-label={`Current focus: ${currentRole}`}
+      aria-label={fullText}
     >
-      <span aria-hidden="true">{displayText}</span>
+      {prefix && <span className={styles.prefix}>{prefix}&nbsp;</span>}
+      <span className={styles.rotatingWord} aria-hidden="true">
+        {displayText}
+      </span>
       {!isReducedMotion && <span className={styles.caret} aria-hidden="true" />}
-      <span className="visually-hidden">{currentRole}</span>
+      <span className="visually-hidden">{fullText}</span>
     </div>
   );
 }
