@@ -1,4 +1,3 @@
-// 404 middleware skeleton
 export const notFoundHandler = (req, res) => {
   res.status(404).json({
     ok: false,

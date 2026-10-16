@@ -1,7 +1,36 @@
-// Environment configuration skeleton
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const isTest = process.env.NODE_ENV === 'test';
+const skipValidation = process.env.SKIP_ENV_VALIDATION === 'true';
+
+if (!process.env.MONGODB_URI && !isTest && !skipValidation) {
+  console.error('\x1b[31mFatal configuration error: MONGODB_URI environment variable is required.\x1b[0m');
+  console.error('Please configure MONGODB_URI in your server/.env file or environment.');
+  process.exit(1);
+}
+
+const clientOriginsRaw = process.env.CLIENT_ORIGINS || 'http://localhost:5173';
+const clientOrigins = clientOriginsRaw
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+if (!clientOrigins.includes('http://localhost:5173')) {
+  clientOrigins.push('http://localhost:5173');
+}
+
 export const config = {
-  port: process.env.PORT || 5000,
+  port: parseInt(process.env.PORT, 10) || 5000,
   nodeEnv: process.env.NODE_ENV || 'development',
   mongodbUri: process.env.MONGODB_URI || '',
-  clientOrigins: (process.env.CLIENT_ORIGINS || 'http://localhost:5173').split(','),
+  clientOrigins,
+  smtp: {
+    host: process.env.SMTP_HOST || null,
+    port: parseInt(process.env.SMTP_PORT, 10) || 587,
+    user: process.env.SMTP_USER || null,
+    pass: process.env.SMTP_PASS || null,
+    notifyTo: process.env.NOTIFY_TO || null,
+  },
 };
