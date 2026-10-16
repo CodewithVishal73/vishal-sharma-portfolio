@@ -1,3 +1,5 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import Hero from '../sections/Hero/Hero.jsx';
 import About from '../sections/About/About.jsx';
 import Skills from '../sections/Skills/Skills.jsx';
