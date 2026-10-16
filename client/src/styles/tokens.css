@@ -1,3 +1,4 @@
+/* Theme tokens from DESIGN_AND_MOTION.md section 2 */
 :root[data-theme="light"],
 :root {
   --bg: #F3F0E8;
@@ -11,14 +12,23 @@
   --ok: #166A45;
   --err: #B3261E;
 
-  /* Motion Tokens */
+  /* Accent mixes for tints and glows */
+  --signal-subtle: color-mix(in oklab, var(--signal) 12%, transparent);
+  --signal-glow: color-mix(in oklab, var(--signal) 24%, transparent);
+
+  /* Typography */
+  --font-display: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Motion Tokens from section 5 */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 160ms;
   --dur-base: 420ms;
   --dur-slow: 800ms;
 
-  /* Spacing Scale */
+  /* Spacing Scale (px) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -30,10 +40,9 @@
   --space-9: 96px;
   --space-10: 128px;
 
-  /* Typography */
-  --font-display: 'Bricolage Grotesque', sans-serif;
-  --font-body: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Layout */
+  --max-width: 1200px;
+  --header-height: 64px;
 }
 
 :root[data-theme="dark"] {
@@ -47,4 +56,22 @@
   --on-signal: #04140E;
   --ok: #4ADE9A;
   --err: #FF7B72;
+
+  --signal-subtle: color-mix(in oklab, var(--signal) 12%, transparent);
+  --signal-glow: color-mix(in oklab, var(--signal) 24%, transparent);
+}
+
+/* View Transitions styling for smooth theme wipe */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
 }
