@@ -1,0 +1,142 @@
+.container {
+  position: relative;
+  width: 100%;
+  background-color: var(--surface-0);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0.75rem 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.4rem;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+
+.typeBadge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.typeImplemented {
+  color: var(--signal);
+  background-color: var(--surface-3);
+  border: 1px solid var(--signal);
+}
+
+.typePlanned {
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.svgWrapper {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 400 / 125;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* SVG node styling */
+.nodeRect {
+  fill: var(--surface-2);
+  stroke: var(--line-strong);
+  stroke-width: 1.25;
+  transition: stroke var(--dur-fast) ease, fill var(--dur-fast) ease;
+}
+
+.container:hover .nodeRect {
+  stroke: var(--signal);
+}
+
+.nodeLayer {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  fill: var(--signal);
+  font-weight: 600;
+}
+
+.nodeTitle {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.nodeDetail {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  fill: var(--ink-muted);
+}
+
+/* SVG edge paths */
+.edgePath {
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  fill: none;
+}
+
+.edgePathActive {
+  stroke: var(--signal);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  animation: edgeFlow 1.8s linear infinite;
+}
+
+@keyframes edgeFlow {
+  from {
+    stroke-dashoffset: 14;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.edgeLabel {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  fill: var(--ink-faint);
+  letter-spacing: 0.03em;
+  text-anchor: middle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edgePathActive {
+    animation: none;
+  }
+}

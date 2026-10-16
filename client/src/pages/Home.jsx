@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Hero from '../sections/Hero/Hero.jsx';
 import About from '../sections/About/About.jsx';
 import Skills from '../sections/Skills/Skills.jsx';
+import Projects from '../sections/Projects/Projects.jsx';
 import SectionShell from '../components/SectionShell/SectionShell.jsx';
 import Button from '../components/primitives/Button.jsx';
 import Badge from '../components/primitives/Badge.jsx';
@@ -23,75 +24,7 @@ export default function Home() {
       <Skills />
 
       {/* 04 / SERVICES — PROJECTS */}
-      <SectionShell
-        id="services"
-        nodeNumber="04"
-        nodeLabel="SERVICES"
-        title="Projects"
-        subtitle="Deployed services, intelligent applications, and architectural systems"
-      >
-        <div className={`${styles.grid} ${styles.grid3}`}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>SellerLensIQ</h3>
-              <Port active />
-            </div>
-            <p className={styles.cardDesc}>
-              Intelligent e-commerce analytics and monitoring platform.
-            </p>
-            <div className={styles.badgeRow}>
-              <Badge variant="signal">React</Badge>
-              <Badge variant="signal">Node.js</Badge>
-              <Badge variant="signal">MongoDB</Badge>
-            </div>
-            <Link to="/projects/sellerlensiq">
-              <Button variant="secondary" size="sm">
-                View Architecture
-              </Button>
-            </Link>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>Clinic Management</h3>
-              <Port active />
-            </div>
-            <p className={styles.cardDesc}>
-              Healthcare scheduling and patient appointment management system.
-            </p>
-            <div className={styles.badgeRow}>
-              <Badge variant="signal">Java</Badge>
-              <Badge variant="signal">Spring Boot</Badge>
-              <Badge variant="signal">MySQL</Badge>
-            </div>
-            <Link to="/projects/clinic-management-system">
-              <Button variant="secondary" size="sm">
-                View Architecture
-              </Button>
-            </Link>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>MERN Portfolio</h3>
-              <Port active />
-            </div>
-            <p className={styles.cardDesc}>
-              Interactive developer portfolio demonstrating full-stack request lifecycle.
-            </p>
-            <div className={styles.badgeRow}>
-              <Badge variant="signal">React</Badge>
-              <Badge variant="signal">Express</Badge>
-              <Badge variant="signal">MongoDB</Badge>
-            </div>
-            <Link to="/projects/portfolio">
-              <Button variant="secondary" size="sm">
-                View Architecture
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </SectionShell>
+      <Projects />
 
       {/* 05 / HISTORY — EDUCATION */}
       <SectionShell
