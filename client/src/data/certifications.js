@@ -56,11 +56,11 @@ export const certifications = [
     title: 'Generative AI: Prompt Engineering Basics',
     issuer: 'IBM',
     issuerId: 'ibm',
-    credentialType: 'Course',
+    credentialType: 'Course Certificate',
     verifyUrl:
       'https://www.coursera.org/learn/generative-ai-prompt-engineering-for-everyone',
-    actionLabel: 'View course',
-    destinationType: 'course',
+    actionLabel: 'Verify credential',
+    destinationType: 'credential',
     year: null, // CONFIRM: completion year
     description:
       'Technical coursework detailing zero-shot and few-shot prompt formulation, system prompt parameters, and generative AI workflow orchestration.',
