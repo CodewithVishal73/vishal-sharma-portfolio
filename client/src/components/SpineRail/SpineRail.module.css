@@ -1,0 +1,104 @@
+/* Mobile 2px top scroll indicator (<1024px) */
+.mobileProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--signal);
+  z-index: 10001;
+}
+
+@media (min-width: 1024px) {
+  .mobileProgress {
+    display: none;
+  }
+}
+
+/* Desktop Fixed Left Rail (>=1024px) */
+.desktopRail {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .desktopRail {
+    display: block;
+    position: fixed;
+    left: clamp(12px, 2.5vw, 40px);
+    top: 50%;
+    transform: translateY(-50%);
+    height: min(65vh, 560px);
+    width: 32px;
+    z-index: 900;
+  }
+}
+
+.railTrack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.guideLine {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--line);
+}
+
+.activeLine {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
+}
+
+.nodeItem {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transform: translateY(-50%);
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nodeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  transition: all var(--dur-fast) var(--ease-out);
+  margin-left: 5px;
+}
+
+.nodeLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-2);
+  opacity: 0.6;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.nodeItem:hover .nodeDot,
+.nodePassed .nodeDot {
+  background-color: var(--signal);
+  border-color: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
+  transform: scale(1.3);
+}
+
+.nodeItem:hover .nodeLabel,
+.nodePassed .nodeLabel {
+  color: var(--signal);
+  opacity: 1;
+}
