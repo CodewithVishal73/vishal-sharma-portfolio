@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import Hero from '../sections/Hero/Hero.jsx';
+import About from '../sections/About/About.jsx';
 import SectionShell from '../components/SectionShell/SectionShell.jsx';
 import Button from '../components/primitives/Button.jsx';
 import Badge from '../components/primitives/Badge.jsx';
@@ -15,30 +14,7 @@ export default function Home() {
       <Hero />
 
       {/* 02 / IDENTITY — ABOUT */}
-      <SectionShell
-        id="identity"
-        nodeNumber="02"
-        nodeLabel="IDENTITY"
-        title="About"
-        subtitle="Core profile, background and current status"
-      >
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <Port active />
-              <span className="mono-label">VERIFIED PROFILE</span>
-            </div>
-            <p className={styles.cardDesc}>
-              Computer Science undergraduate student at JK Lakshmipat University, Jaipur. Focused on backend engineering, RESTful API architecture, and scalable software systems.
-            </p>
-            <div className={styles.badgeRow}>
-              <Chip active>Location: Jaipur, India</Chip>
-              <Chip active>Status: B.Tech CSE (2024–2028)</Chip>
-              <Chip active>Focus: Backend & AI Systems</Chip>
-            </div>
-          </div>
-        </div>
-      </SectionShell>
+      <About />
 
       {/* 03 / STACK — SKILLS */}
       <SectionShell

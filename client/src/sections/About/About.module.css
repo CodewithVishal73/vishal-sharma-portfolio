@@ -1,0 +1,98 @@
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .aboutGrid {
+    grid-template-columns: 320px 1fr;
+    gap: var(--space-9);
+  }
+}
+
+.photoCol {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .photoCol {
+    justify-content: flex-start;
+  }
+}
+
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.metaHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px dashed var(--line);
+}
+
+.headingBio {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.bioText {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  max-width: 62ch;
+}
+
+.chipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* Structured response payload card */
+.payloadCard {
+  margin-top: var(--space-4);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: var(--space-4) var(--space-5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.payloadHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-3);
+}
+
+.statusOk {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ok);
+}
+
+.jsonPayload {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink);
+  overflow-x: auto;
+}
