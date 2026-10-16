@@ -1,70 +1,60 @@
 import React from 'react';
-import { SiGoogle } from 'react-icons/si';
 
-export default function IssuerLogo({ issuerId, issuerName, className = '', size = 24 }) {
+export default function IssuerLogo({ issuerId, issuerName, height = 22, className = '' }) {
   const normalized = (issuerId || '').toLowerCase();
-
-  if (normalized === 'google') {
-    return (
-      <span className={className} style={{ display: 'inline-flex', alignItems: 'center' }}>
-        <SiGoogle size={size} color="#4285F4" aria-hidden="true" />
-      </span>
-    );
-  }
 
   if (normalized === 'ibm') {
     return (
-      <span
-        className={className}
+      <img
+        src="/ibm.svg"
+        alt={issuerName || 'IBM'}
+        height={height}
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'var(--font-display)',
-          fontWeight: 900,
-          fontSize: '0.95rem',
-          letterSpacing: '0.12em',
-          color: '#0F62FE',
-          lineHeight: 1,
-          padding: '2px 4px',
-          borderRadius: 3,
-          backgroundColor: 'rgba(15, 98, 254, 0.08)',
-          border: '1px solid rgba(15, 98, 254, 0.25)',
+          height: `${height}px`,
+          width: 'auto',
+          display: 'block',
+          objectFit: 'contain',
         }}
-        aria-hidden="true"
-      >
-        IBM
-      </span>
+        className={className}
+      />
     );
   }
 
   if (normalized === 'mckinsey') {
     return (
-      <span
-        className={className}
+      <img
+        src="/mckinsey.svg"
+        alt={issuerName || 'McKinsey & Company'}
+        height={height - 2}
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'var(--font-display)',
-          fontWeight: 800,
-          fontSize: '0.82rem',
-          letterSpacing: '0.04em',
-          color: '#1F40E6',
-          lineHeight: 1,
-          padding: '3px 6px',
-          borderRadius: 3,
-          backgroundColor: 'rgba(31, 64, 230, 0.08)',
-          border: '1px solid rgba(31, 64, 230, 0.25)',
+          height: `${height - 2}px`,
+          width: 'auto',
+          display: 'block',
+          objectFit: 'contain',
+          color: 'var(--ink)',
         }}
-        aria-hidden="true"
-      >
-        McKinsey
-      </span>
+        className={className}
+      />
     );
   }
 
-  // Graceful fallback to monogram
+  if (normalized === 'google') {
+    return (
+      <img
+        src="/google.svg"
+        alt={issuerName || 'Google'}
+        height={height}
+        style={{
+          height: `${height}px`,
+          width: 'auto',
+          display: 'block',
+          objectFit: 'contain',
+        }}
+        className={className}
+      />
+    );
+  }
+
   return (
     <span
       className={className}
@@ -78,11 +68,10 @@ export default function IssuerLogo({ issuerId, issuerName, className = '', size 
         color: 'var(--ink)',
         backgroundColor: 'var(--surface-3)',
         borderRadius: 4,
-        padding: '2px 6px',
+        padding: '3px 8px',
       }}
-      aria-hidden="true"
     >
-      {(issuerName || '??').slice(0, 3).toUpperCase()}
+      {issuerName}
     </span>
   );
 }

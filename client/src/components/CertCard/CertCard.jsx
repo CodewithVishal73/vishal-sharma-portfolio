@@ -20,8 +20,7 @@ export default function CertCard({ cert }) {
       {/* Header: Issuer identity & Credential Type */}
       <header className={styles.header}>
         <div className={styles.issuerArea}>
-          <IssuerLogo issuerId={cert.issuerId} issuerName={cert.issuer} size={22} />
-          <span className={styles.issuerName}>{cert.issuer}</span>
+          <IssuerLogo issuerId={cert.issuerId} issuerName={cert.issuer} height={22} />
         </div>
         <span className={styles.typeBadge}>{cert.credentialType}</span>
       </header>
