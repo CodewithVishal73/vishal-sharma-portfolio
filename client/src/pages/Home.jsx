@@ -5,6 +5,7 @@ import About from '../sections/About/About.jsx';
 import Skills from '../sections/Skills/Skills.jsx';
 import Projects from '../sections/Projects/Projects.jsx';
 import Timeline from '../sections/Timeline/Timeline.jsx';
+import Certifications from '../sections/Certifications/Certifications.jsx';
 import SectionShell from '../components/SectionShell/SectionShell.jsx';
 import Button from '../components/primitives/Button.jsx';
 import Badge from '../components/primitives/Badge.jsx';
@@ -31,26 +32,8 @@ export default function Home() {
       {/* 05 / HISTORY — EDUCATION & EXPERIENCE */}
       <Timeline />
 
-      {/* 06 / PROOF — CERTIFICATIONS */}
-      <SectionShell
-        id="proof"
-        nodeNumber="06"
-        nodeLabel="PROOF"
-        title="Certifications & Achievements"
-        subtitle="Verified credentials and technical achievements"
-      >
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <span className="mono-label">VERIFIED CREDENTIALS</span>
-              <Port active />
-            </div>
-            <p className={styles.cardDesc}>
-              Verified certificates and hackathon awards will be populated as confirmed. Only genuine achievements are showcased.
-            </p>
-          </div>
-        </div>
-      </SectionShell>
+      {/* 06 / PROOF — CERTIFICATIONS & ACHIEVEMENTS */}
+      <Certifications />
 
       {/* 07 / RESPONSE — CONTACT */}
       <SectionShell

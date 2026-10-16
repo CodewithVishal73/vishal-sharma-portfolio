@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+.certsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* Competitive Milestones Subsection */
+.achievementsSection {
+  background-color: var(--surface-0);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.achievementInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.achievementTitle {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.achievementDesc {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  max-width: 58ch;
+  margin: 0;
+}
+
+.statusPill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--signal);
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .certsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .achievementsSection {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+}
