@@ -1,0 +1,29 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--line);
+  background-color: var(--surface);
+  color: var(--ink-2);
+}
+
+.signal {
+  border-color: var(--signal);
+  color: var(--signal);
+  background-color: var(--signal-subtle);
+}
+
+.ok {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.neutral {
+  border-color: var(--line);
+  color: var(--ink-2);
+}

@@ -1,0 +1,81 @@
+.footer {
+  position: relative;
+  border-top: 1px solid var(--line);
+  background-color: var(--surface);
+  padding: var(--space-8) var(--space-4);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-6);
+  }
+}
+
+.nodeStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.statusPort {
+  background-color: var(--ok);
+  box-shadow: 0 0 8px var(--ok);
+}
+
+.nodeLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ok);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .info {
+    align-items: flex-end;
+  }
+}
+
+.copyright {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--signal);
+}
+
+.divider {
+  color: var(--line);
+}

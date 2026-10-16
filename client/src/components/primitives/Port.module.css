@@ -1,0 +1,19 @@
+.port {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--line);
+  transition: background-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.active,
+:hover > .port,
+:focus-visible > .port {
+  background-color: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
+  transform: scale(1.2);
+}

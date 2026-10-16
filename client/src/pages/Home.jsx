@@ -1,10 +1,280 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import SectionShell from '../components/SectionShell/SectionShell.jsx';
+import Button from '../components/primitives/Button.jsx';
+import Badge from '../components/primitives/Badge.jsx';
+import Chip from '../components/primitives/Chip.jsx';
+import Port from '../components/primitives/Port.jsx';
+import styles from './Home.module.css';
 
 export default function Home() {
   return (
-    <main>
-      <h1>Vishal Sharma</h1>
-      <p>Software Engineer</p>
-    </main>
+    <div className={styles.homeContainer}>
+      {/* 01 / CLIENT — HERO */}
+      <SectionShell
+        id="client"
+        nodeNumber="01"
+        nodeLabel="CLIENT"
+        title="Vishal Sharma"
+        subtitle="Software Engineer"
+      >
+        <div className={styles.heroContent}>
+          <div className={styles.heroTagline}>
+            Engineering the Future of{' '}
+            <span className={styles.rotatingPhrase}>Backend Infrastructure</span>
+          </div>
+          <p className={styles.heroSupport}>
+            Building scalable software, reliable backend systems, and intelligent digital experiences.
+          </p>
+
+          <div className={styles.heroActions}>
+            <Button variant="primary" href="#services">
+              View Projects
+            </Button>
+            <Button
+              variant="secondary"
+              href="http://localhost:5000/api/cv/pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download CV (PDF)
+            </Button>
+          </div>
+
+          <div className={styles.systemMapPlaceholder}>
+            <div className={styles.cardHeader}>
+              <span className="mono-label">LIVE REQUEST PIPELINE METAPHOR</span>
+              <Badge variant="signal">STATUS: CONNECTED</Badge>
+            </div>
+            <div className={styles.mapNodes}>
+              <span>01. Browser (User)</span>
+              <span className={styles.arrow}>→</span>
+              <span>02. React (Client)</span>
+              <span className={styles.arrow}>→</span>
+              <span>03. Express (REST API)</span>
+              <span className={styles.arrow}>→</span>
+              <span>04. MongoDB (Atlas)</span>
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+
+      {/* 02 / IDENTITY — ABOUT */}
+      <SectionShell
+        id="identity"
+        nodeNumber="02"
+        nodeLabel="IDENTITY"
+        title="About"
+        subtitle="Core profile, background and current status"
+      >
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <Port active />
+              <span className="mono-label">VERIFIED PROFILE</span>
+            </div>
+            <p className={styles.cardDesc}>
+              Computer Science undergraduate student at JK Lakshmipat University, Jaipur. Focused on backend engineering, RESTful API architecture, and scalable software systems.
+            </p>
+            <div className={styles.badgeRow}>
+              <Chip active>Location: Jaipur, India</Chip>
+              <Chip active>Status: B.Tech CSE (2024–2028)</Chip>
+              <Chip active>Focus: Backend & AI Systems</Chip>
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+
+      {/* 03 / STACK — SKILLS */}
+      <SectionShell
+        id="stack"
+        nodeNumber="03"
+        nodeLabel="STACK"
+        title="Skills & Technologies"
+        subtitle="Grouped across Frontend, Backend, and Tools & Technologies"
+      >
+        <div className={`${styles.grid} ${styles.grid3}`}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Frontend</h3>
+              <Port active />
+            </div>
+            <div className={styles.badgeRow}>
+              <Badge variant="signal">JavaScript</Badge>
+              <Badge variant="signal">React</Badge>
+            </div>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Backend</h3>
+              <Port active />
+            </div>
+            <div className={styles.badgeRow}>
+              <Badge variant="signal">Java</Badge>
+              <Badge variant="signal">Spring Boot</Badge>
+              <Badge variant="signal">Node.js</Badge>
+              <Badge variant="signal">Express</Badge>
+              <Badge variant="signal">REST APIs</Badge>
+              <Badge variant="signal">MongoDB</Badge>
+              <Badge variant="signal">PostgreSQL</Badge>
+              <Badge variant="signal">MySQL</Badge>
+            </div>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Tools & Tech</h3>
+              <Port active />
+            </div>
+            <div className={styles.badgeRow}>
+              <Badge variant="neutral">Git</Badge>
+              <Badge variant="neutral">GitHub</Badge>
+              <Badge variant="neutral">Maven</Badge>
+              <Badge variant="neutral">Postman</Badge>
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+
+      {/* 04 / SERVICES — PROJECTS */}
+      <SectionShell
+        id="services"
+        nodeNumber="04"
+        nodeLabel="SERVICES"
+        title="Projects"
+        subtitle="Deployed services, intelligent applications, and architectural systems"
+      >
+        <div className={`${styles.grid} ${styles.grid3}`}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>SellerLensIQ</h3>
+              <Port active />
+            </div>
+            <p className={styles.cardDesc}>
+              Intelligent e-commerce analytics and monitoring platform.
+            </p>
+            <div className={styles.badgeRow}>
+              <Badge variant="signal">React</Badge>
+              <Badge variant="signal">Node.js</Badge>
+              <Badge variant="signal">MongoDB</Badge>
+            </div>
+            <Link to="/projects/sellerlensiq">
+              <Button variant="secondary" size="sm">
+                View Architecture
+              </Button>
+            </Link>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Clinic Management</h3>
+              <Port active />
+            </div>
+            <p className={styles.cardDesc}>
+              Healthcare scheduling and patient appointment management system.
+            </p>
+            <div className={styles.badgeRow}>
+              <Badge variant="signal">Java</Badge>
+              <Badge variant="signal">Spring Boot</Badge>
+              <Badge variant="signal">MySQL</Badge>
+            </div>
+            <Link to="/projects/clinic-management-system">
+              <Button variant="secondary" size="sm">
+                View Architecture
+              </Button>
+            </Link>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>MERN Portfolio</h3>
+              <Port active />
+            </div>
+            <p className={styles.cardDesc}>
+              Interactive developer portfolio demonstrating full-stack request lifecycle.
+            </p>
+            <div className={styles.badgeRow}>
+              <Badge variant="signal">React</Badge>
+              <Badge variant="signal">Express</Badge>
+              <Badge variant="signal">MongoDB</Badge>
+            </div>
+            <Link to="/projects/portfolio">
+              <Button variant="secondary" size="sm">
+                View Architecture
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </SectionShell>
+
+      {/* 05 / HISTORY — EDUCATION */}
+      <SectionShell
+        id="history"
+        nodeNumber="05"
+        nodeLabel="HISTORY"
+        title="Education & Experience"
+        subtitle="Vertical timeline of academic credentials"
+      >
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>B.Tech in Computer Science and Engineering</h3>
+              <Badge variant="ok">2024 — 2028</Badge>
+            </div>
+            <p className={styles.cardDesc}>
+              JK Lakshmipat University, Jaipur · Current Student
+            </p>
+          </div>
+        </div>
+      </SectionShell>
+
+      {/* 06 / PROOF — CERTIFICATIONS */}
+      <SectionShell
+        id="proof"
+        nodeNumber="06"
+        nodeLabel="PROOF"
+        title="Certifications & Achievements"
+        subtitle="Verified credentials and technical achievements"
+      >
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <span className="mono-label">VERIFIED CREDENTIALS</span>
+              <Port active />
+            </div>
+            <p className={styles.cardDesc}>
+              Verified certificates and hackathon awards will be populated as confirmed. Only genuine achievements are showcased.
+            </p>
+          </div>
+        </div>
+      </SectionShell>
+
+      {/* 07 / RESPONSE — CONTACT */}
+      <SectionShell
+        id="response"
+        nodeNumber="07"
+        nodeLabel="RESPONSE"
+        title="Contact"
+        subtitle="Send a real-time message through the Express & MongoDB backend"
+      >
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <span className="mono-label">SEND A REQUEST (201 CREATED)</span>
+              <Port active />
+            </div>
+            <p className={styles.cardDesc}>
+              Direct pipeline to MongoDB Atlas with server rate-limiting, Zod input validation, and optional SMTP notification.
+            </p>
+            <div className={styles.heroActions}>
+              <Button variant="primary">
+                Open Contact Form
+              </Button>
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+    </div>
   );
 }

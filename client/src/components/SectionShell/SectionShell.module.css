@@ -1,0 +1,49 @@
+.section {
+  position: relative;
+  padding: clamp(64px, 12vw, 128px) 0;
+  border-bottom: 1px dashed var(--line);
+}
+
+.header {
+  margin-bottom: var(--space-6);
+}
+
+.nodeMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.metaPort {
+  margin-right: 2px;
+}
+
+.nodeTag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--signal);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin-top: var(--space-2);
+  font-size: 17px;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+
+.content {
+  position: relative;
+}
