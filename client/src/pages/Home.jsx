@@ -4,6 +4,7 @@ import Hero from '../sections/Hero/Hero.jsx';
 import About from '../sections/About/About.jsx';
 import Skills from '../sections/Skills/Skills.jsx';
 import Projects from '../sections/Projects/Projects.jsx';
+import Timeline from '../sections/Timeline/Timeline.jsx';
 import SectionShell from '../components/SectionShell/SectionShell.jsx';
 import Button from '../components/primitives/Button.jsx';
 import Badge from '../components/primitives/Badge.jsx';
@@ -27,25 +28,8 @@ export default function Home() {
       <Projects />
 
       {/* 05 / HISTORY — EDUCATION */}
-      <SectionShell
-        id="history"
-        nodeNumber="05"
-        nodeLabel="HISTORY"
-        title="Education & Experience"
-        subtitle="Vertical timeline of academic credentials"
-      >
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>B.Tech in Computer Science and Engineering</h3>
-              <Badge variant="ok">2024 — 2028</Badge>
-            </div>
-            <p className={styles.cardDesc}>
-              JK Lakshmipat University, Jaipur · Current Student
-            </p>
-          </div>
-        </div>
-      </SectionShell>
+      {/* 05 / HISTORY — EDUCATION & EXPERIENCE */}
+      <Timeline />
 
       {/* 06 / PROOF — CERTIFICATIONS */}
       <SectionShell
