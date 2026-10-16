@@ -1,6 +1,7 @@
-import React, { forwardRef, useId } from 'react';
+import React, { forwardRef, useRef, useState, useId } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { TechIcon } from './iconMap.jsx';
+import TechTooltip from './TechTooltip.jsx';
 import { LEVEL_MAP } from '../../data/skills.js';
 import styles from './TechCard.module.css';
 
@@ -13,16 +14,26 @@ const TechCard = forwardRef(function TechCard(
     isDimmed = false,
     onHover,
     onLeave,
-    onClick,
-    children, // for tooltip rendering
   },
-  ref
+  forwardedRef
 ) {
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const cardRef = useRef(null);
+  const tooltipId = useId();
   const shouldReduceMotion = useReducedMotion();
-  const meterId = useId();
 
   const levelInfo = LEVEL_MAP[skill.level] || LEVEL_MAP.working;
   const levelValue = levelInfo.value;
+
+  // Combine forwarded ref and internal ref
+  const handleRef = (el) => {
+    cardRef.current = el;
+    if (typeof forwardedRef === 'function') {
+      forwardedRef(el);
+    } else if (forwardedRef) {
+      forwardedRef.current = el;
+    }
+  };
 
   const cardClasses = [
     styles.card,
@@ -33,36 +44,56 @@ const TechCard = forwardRef(function TechCard(
     .join(' ');
 
   const handleMouseEnter = () => {
+    setIsTooltipOpen(true);
     if (onHover) onHover(skill.id);
   };
 
   const handleMouseLeave = () => {
+    setIsTooltipOpen(false);
     if (onLeave) onLeave(skill.id);
   };
 
   const handleFocus = () => {
+    setIsTooltipOpen(true);
     if (onHover) onHover(skill.id);
   };
 
   const handleBlur = () => {
+    setIsTooltipOpen(false);
+    if (onLeave) onLeave(skill.id);
+  };
+
+  const handleClick = () => {
+    // Tap to toggle on mobile / touch
+    setIsTooltipOpen((prev) => !prev);
+    if (!isTooltipOpen && onHover) {
+      onHover(skill.id);
+    } else if (isTooltipOpen && onLeave) {
+      onLeave(skill.id);
+    }
+  };
+
+  const handleDismissTooltip = () => {
+    setIsTooltipOpen(false);
     if (onLeave) onLeave(skill.id);
   };
 
   return (
     <div
-      ref={ref}
+      ref={handleRef}
       tabIndex={0}
       role="group"
       aria-label={`${skill.name} - ${levelInfo.label}`}
+      aria-describedby={isTooltipOpen ? tooltipId : undefined}
       className={cardClasses}
       style={{ '--brand-color': skill.brandColor }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      onClick={onClick}
+      onClick={handleClick}
     >
-      {/* Port indicator on left edge */}
+      {/* Port indicator on left edge (lights up on view/hover/relation) */}
       <span
         className={`${styles.port} ${isHovered || isRelated ? styles.portActive : ''}`}
         aria-hidden="true"
@@ -83,7 +114,6 @@ const TechCard = forwardRef(function TechCard(
 
       {/* Slim animated meter bar (scaleX, staggered, once, no percentage rendered) */}
       <div
-        id={meterId}
         role="meter"
         aria-label={`${skill.name} proficiency level`}
         aria-valuenow={levelValue}
@@ -105,8 +135,15 @@ const TechCard = forwardRef(function TechCard(
         />
       </div>
 
-      {/* Tooltip or relations slot */}
-      {children}
+      {/* Accessible anti-clipping tooltip */}
+      {isTooltipOpen && (
+        <TechTooltip
+          id={tooltipId}
+          skill={skill}
+          cardElement={cardRef.current}
+          onDismiss={handleDismissTooltip}
+        />
+      )}
     </div>
   );
 });

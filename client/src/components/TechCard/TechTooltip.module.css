@@ -1,0 +1,136 @@
+.tooltip {
+  position: absolute;
+  z-index: 1000;
+  width: max-content;
+  max-width: 280px;
+  padding: 0.75rem 0.95rem;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  opacity: 0;
+  animation: tooltipFadeIn var(--dur-fast) var(--ease-out) forwards;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tooltip placement styles */
+.posTop {
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.posBottom {
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.alignLeft {
+  left: 0 !important;
+  transform: none !important;
+}
+
+.alignRight {
+  left: auto !important;
+  right: 0 !important;
+  transform: none !important;
+}
+
+/* Tooltip Header */
+.tooltipHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.35rem;
+}
+
+.levelBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--signal);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.levelDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--signal);
+  box-shadow: 0 0 6px var(--signal-glow);
+}
+
+.escHint {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* Evidence text */
+.evidence {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+/* Related skills chips on tooltip (especially for touch/mobile) */
+.relatedRow {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--line);
+}
+
+.relatedLabel {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.relatedTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink);
+  background-color: var(--surface-3);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+  .tooltip {
+    max-width: 240px;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .evidence {
+    font-size: 0.75rem;
+  }
+}

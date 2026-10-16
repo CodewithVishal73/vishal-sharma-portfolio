@@ -191,3 +191,32 @@ export const skills = {
     },
   ],
 };
+
+export function getAllSkills() {
+  return [
+    ...skills.frontend,
+    ...skills.backend.languages,
+    ...skills.backend.frameworks,
+    ...skills.backend.databases,
+    ...skills.tools,
+  ];
+}
+
+export function getRelatedSkillIds(activeId) {
+  if (!activeId) return [];
+  const all = getAllSkills();
+  const current = all.find((s) => s.id === activeId);
+  if (!current) return [];
+
+  const related = new Set(current.relations || []);
+
+  // Add reciprocal relations (if skill X lists activeId in relations, include X)
+  all.forEach((s) => {
+    if (s.relations && s.relations.includes(activeId)) {
+      related.add(s.id);
+    }
+  });
+
+  return Array.from(related);
+}
+
