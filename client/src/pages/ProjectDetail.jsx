@@ -140,60 +140,38 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      {/* Actions and External Links */}
-      <section className={styles.actionsCard} aria-label="Project actions and source code links">
-        <div className={styles.actionsGroup}>
-          {project.github ? (
-            <Button
-              variant="secondary"
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${project.name} GitHub repository`}
-            >
-              <FiGithub aria-hidden="true" />
-              <span>GitHub Repository</span>
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              disabled
-              title="Repository URL not yet configured"
-              aria-label="Repository coming"
-            >
-              <FiGithub aria-hidden="true" />
-              <span>Repository coming</span>
-            </Button>
-          )}
+      {/* Actions and External Links (only rendered when real links are present) */}
+      {(project.github || project.live) && (
+        <section className={styles.actionsCard} aria-label="Project actions and source code links">
+          <div className={styles.actionsGroup}>
+            {project.github && (
+              <Button
+                variant="secondary"
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${project.name} GitHub repository`}
+              >
+                <FiGithub aria-hidden="true" />
+                <span>GitHub Repository</span>
+              </Button>
+            )}
 
-          {project.live ? (
-            <Button
-              variant="primary"
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${project.name} live deployment`}
-            >
-              <FiExternalLink aria-hidden="true" />
-              <span>Live Demonstration</span>
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              disabled
-              title="Deployment URL not yet configured"
-              aria-label="Live demo coming"
-            >
-              <FiExternalLink aria-hidden="true" />
-              <span>Live demo coming</span>
-            </Button>
-          )}
-        </div>
-
-        <span className={styles.unconfiguredNotice}>
-          URLs flagged with // CONFIRM until verified
-        </span>
-      </section>
+            {project.live && (
+              <Button
+                variant="primary"
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${project.name} live deployment`}
+              >
+                <FiExternalLink aria-hidden="true" />
+                <span>Live Demonstration</span>
+              </Button>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Previous / Next Project Navigation */}
       <nav className={styles.navRow} aria-label="Adjacent project navigation">

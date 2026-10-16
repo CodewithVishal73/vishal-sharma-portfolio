@@ -177,6 +177,16 @@
   margin-left: auto;
 }
 
+.fullWidthBtn {
+  width: 100%;
+  margin-left: 0;
+}
+
+.fullWidthBtn button {
+  width: 100%;
+  justify-content: center;
+}
+
 /* Tags row */
 .tagsRow {
   display: flex;

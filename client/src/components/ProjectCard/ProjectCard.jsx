@@ -70,64 +70,42 @@ export default function ProjectCard({ project, className = '' }) {
 
       {/* Actions footer */}
       <footer className={styles.actions}>
-        <div className={styles.linkGroup}>
-          {/* GitHub action: real link if available, disabled 'Repository coming' if unconfigured */}
-          {project.github ? (
-            <Button
-              variant="secondary"
-              size="sm"
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${project.name} GitHub repository`}
-            >
-              <FiGithub aria-hidden="true" />
-              <span>Repository</span>
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled
-              title="Repository URL not yet configured"
-              aria-label="Repository coming"
-            >
-              <FiGithub aria-hidden="true" />
-              <span>Repository coming</span>
-            </Button>
-          )}
+        {(project.github || project.live) && (
+          <div className={styles.linkGroup}>
+            {project.github && (
+              <Button
+                variant="secondary"
+                size="sm"
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${project.name} GitHub repository`}
+              >
+                <FiGithub aria-hidden="true" />
+                <span>Repository</span>
+              </Button>
+            )}
 
-          {/* Live demo action: real link if available, disabled 'Live demo coming' if unconfigured */}
-          {project.live ? (
-            <Button
-              variant="secondary"
-              size="sm"
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${project.name} live deployment`}
-            >
-              <FiExternalLink aria-hidden="true" />
-              <span>Live demo</span>
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled
-              title="Deployment URL not yet configured"
-              aria-label="Live demo coming"
-            >
-              <FiExternalLink aria-hidden="true" />
-              <span>Live demo coming</span>
-            </Button>
-          )}
-        </div>
+            {project.live && (
+              <Button
+                variant="secondary"
+                size="sm"
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${project.name} live deployment`}
+              >
+                <FiExternalLink aria-hidden="true" />
+                <span>Live demo</span>
+              </Button>
+            )}
+          </div>
+        )}
 
         {/* Working navigation action to open project detail page */}
         <Link
           to={`/projects/${project.slug}`}
-          className={styles.viewDetailsBtn}
+          className={`${styles.viewDetailsBtn} ${!project.github && !project.live ? styles.fullWidthBtn : ''}`}
           tabIndex={-1}
         >
           <Button variant="primary" size="sm">
