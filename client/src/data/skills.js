@@ -17,7 +17,7 @@ export const skills = {
       group: 'frontend',
       level: 'comfortable', // CONFIRM
       brandColor: '#F7DF1E',
-      evidence: 'Full-stack application logic across React, Node.js & Portfolio',
+      evidence: 'Interactive client and service logic in SellerLensIQ & Vaani Bill',
       relations: ['react', 'node'],
     },
     {
@@ -26,7 +26,7 @@ export const skills = {
       group: 'frontend',
       level: 'comfortable', // CONFIRM
       brandColor: '#61DAFB',
-      evidence: 'Frontend interfaces for SellerLensIQ, Vaani Bill & Portfolio',
+      evidence: 'Frontend interfaces for SellerLensIQ & Vaani Bill',
       relations: ['javascript'],
     },
   ],
@@ -93,7 +93,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#5FA04E',
-        evidence: 'Backend service for Vaani Bill (AI Voice POS) & Portfolio API',
+        evidence: 'Backend service orchestration for Vaani Bill (AI Voice POS)',
         relations: ['express', 'javascript'],
       },
       {
@@ -103,7 +103,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#EAF1EE',
-        evidence: 'REST routing and middleware for Vaani Bill & Portfolio server',
+        evidence: 'REST routing, audio streaming & transaction handling in Vaani Bill',
         relations: ['node', 'mongodb', 'rest-apis'],
       },
     ],
@@ -116,7 +116,7 @@ export const skills = {
         sub: 'Databases',
         level: 'comfortable', // CONFIRM
         brandColor: '#47A248',
-        evidence: 'Document store for Portfolio contact submissions & inquiries',
+        evidence: 'NoSQL document schema design, aggregation pipelines & indexing',
         relations: ['express'],
       },
       {
