@@ -1,5 +1,6 @@
 import Hero from '../sections/Hero/Hero.jsx';
 import About from '../sections/About/About.jsx';
+import Skills from '../sections/Skills/Skills.jsx';
 import SectionShell from '../components/SectionShell/SectionShell.jsx';
 import Button from '../components/primitives/Button.jsx';
 import Badge from '../components/primitives/Badge.jsx';
@@ -17,56 +18,7 @@ export default function Home() {
       <About />
 
       {/* 03 / STACK — SKILLS */}
-      <SectionShell
-        id="stack"
-        nodeNumber="03"
-        nodeLabel="STACK"
-        title="Skills & Technologies"
-        subtitle="Grouped across Frontend, Backend, and Tools & Technologies"
-      >
-        <div className={`${styles.grid} ${styles.grid3}`}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>Frontend</h3>
-              <Port active />
-            </div>
-            <div className={styles.badgeRow}>
-              <Badge variant="signal">JavaScript</Badge>
-              <Badge variant="signal">React</Badge>
-            </div>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>Backend</h3>
-              <Port active />
-            </div>
-            <div className={styles.badgeRow}>
-              <Badge variant="signal">Java</Badge>
-              <Badge variant="signal">Spring Boot</Badge>
-              <Badge variant="signal">Node.js</Badge>
-              <Badge variant="signal">Express</Badge>
-              <Badge variant="signal">REST APIs</Badge>
-              <Badge variant="signal">MongoDB</Badge>
-              <Badge variant="signal">PostgreSQL</Badge>
-              <Badge variant="signal">MySQL</Badge>
-            </div>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>Tools & Tech</h3>
-              <Port active />
-            </div>
-            <div className={styles.badgeRow}>
-              <Badge variant="neutral">Git</Badge>
-              <Badge variant="neutral">GitHub</Badge>
-              <Badge variant="neutral">Maven</Badge>
-              <Badge variant="neutral">Postman</Badge>
-            </div>
-          </div>
-        </div>
-      </SectionShell>
+      <Skills />
 
       {/* 04 / SERVICES — PROJECTS */}
       <SectionShell
