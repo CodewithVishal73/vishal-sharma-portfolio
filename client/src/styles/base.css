@@ -1,47 +1,3 @@
-@import './tokens.css';
-
-/* ============================================================
-   Self-Hosted Font Declarations
-   ============================================================ */
-@font-face {
-  font-family: 'Instrument Serif';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/instrument-serif-latin-400-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Instrument Serif';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Inter Tight Variable';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/fonts/inter-tight-latin-wght-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Inter Tight Variable';
-  font-style: italic;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/fonts/inter-tight-latin-wght-italic.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* ============================================================
-   Reset & Document Base
-   ============================================================ */
 *,
 *::before,
 *::after {
@@ -50,140 +6,24 @@
   padding: 0;
 }
 
-html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
+html,
+body {
+  min-height: 100%;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  min-height: 100svh;
-  background-color: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-body);
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-body);
-  transition: background-color var(--dur-ui) var(--ease-out),
-              color var(--dur-ui) var(--ease-out);
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Focus styles: 2px visible ring, 3px offset, never removed */
-:focus {
-  outline: none;
-}
-
-:focus-visible {
-  outline: var(--focus-ring-width) solid var(--focus-ring-color);
-  outline-offset: var(--focus-ring-offset);
-}
-
-/* Base typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: inherit;
-}
-
-h1 {
-  font-size: var(--font-size-title);
-  line-height: var(--line-height-title);
-}
-
-p {
-  max-width: var(--max-measure);
 }
 
 a {
   color: inherit;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition: color var(--dur-micro) var(--ease-out);
-}
-
-a:hover {
-  color: var(--accent);
+  text-decoration: none;
 }
 
 button {
   font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  background: transparent;
-  border: none;
   cursor: pointer;
-}
-
-/* Skip to content link */
-.skip-link {
-  position: absolute;
-  top: -120px;
-  left: var(--space-4);
-  background: var(--bg);
-  color: var(--accent);
-  padding: var(--space-3) var(--space-5);
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  font-weight: 600;
-  z-index: 9999;
-  transition: top var(--dur-micro) var(--ease-out);
-  text-decoration: none;
-}
-
-.skip-link:focus {
-  top: var(--space-4);
-}
-
-/* Section tone styles & grain */
-[data-tone] {
-  background-color: var(--bg);
-  color: var(--fg);
-  position: relative;
-  transition: background-color var(--dur-ui) var(--ease-out),
-              color var(--dur-ui) var(--ease-out);
-}
-
-[data-tone]::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: var(--grain-image);
-  opacity: var(--grain-opacity);
-  mix-blend-mode: overlay;
-  z-index: 1;
-}
-
-[data-tone] > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* Visually Hidden Utility */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-/* Reduced Motion Override */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
 }

@@ -1,148 +1,50 @@
-/* Design Tokens: Dual-Theme (Light / Dark) x Three Tones (Surface / Mid / Deep) */
-
+:root[data-theme="light"],
 :root {
-  /* Typography */
-  --font-display: 'Instrument Serif', Georgia, serif;
-  --font-body: 'Inter Tight Variable', 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --bg: #F3F0E8;
+  --surface: #FBF9F4;
+  --surface-2: #ECE8DD;
+  --ink: #12141A;
+  --ink-2: #4A4F5C;
+  --line: #D9D4C7;
+  --signal: #2433F2;
+  --on-signal: #FFFFFF;
+  --ok: #166A45;
+  --err: #B3261E;
 
-  /* Fluid Type Scale */
-  --font-size-hero: clamp(4.25rem, 13vw, 12rem);
-  --line-height-hero: 0.88;
-  --font-size-title: clamp(2.75rem, 7vw, 6.5rem);
-  --line-height-title: 1.02;
-  --font-size-statement: clamp(1.75rem, 3.4vw, 3.25rem);
-  --line-height-statement: 1.15;
-  --font-size-body: 1.0625rem;
-  --line-height-body: 1.6;
-  --max-measure: 60ch;
+  /* Motion Tokens */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 420ms;
+  --dur-slow: 800ms;
 
-  /* Layout & Spacing */
-  --max-width: 1360px;
-  --gutter: clamp(20px, 5vw, 72px);
+  /* Spacing Scale */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-20: 80px;
-  --space-24: 96px;
-  --min-touch-target: 44px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
 
-  /* Motion Tokens */
-  --dur-micro: 160ms;
-  --dur-ui: 280ms;
-  --dur-reveal: 800ms;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
-
-  /* Decorative Signal (beam, pulse, glows) */
-  --signal: #FF5A28;
-
-  /* Focus Ring */
-  --focus-ring-width: 2px;
-  --focus-ring-offset: 3px;
-
-  /* Noise pattern data URI */
-  --grain-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  /* Typography */
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* ============================================================
-   LIGHT THEME
-   ============================================================ */
-:root[data-theme="light"],
-[data-theme="light"] {
-  color-scheme: light;
-  --grain-opacity: 0.05;
-
-  /* Default tone: surface */
-  --bg: #ECE6DA;
-  --fg: #14110E;
-  --muted: #5A564E;
-  --line: rgba(20, 17, 14, 0.15);
-  --accent: #B3300C;      /* adjusted from #C2360F to guarantee >= 4.5:1 body text */
-  --accent-fg: #FFFFFF;   /* 6.28:1 contrast on #B3300C */
-  --focus-ring-color: #B3300C;
-}
-
-[data-theme="light"] [data-tone="surface"],
-[data-theme="light"][data-tone="surface"] {
-  --bg: #ECE6DA;
-  --fg: #14110E;
-  --muted: #5A564E;
-  --line: rgba(20, 17, 14, 0.15);
-  --accent: #B3300C;
-  --accent-fg: #FFFFFF;
-}
-
-[data-theme="light"] [data-tone="mid"],
-[data-theme="light"][data-tone="mid"] {
-  --bg: #E2DACB;
-  --fg: #14110E;
-  --muted: #55514A;
-  --line: rgba(20, 17, 14, 0.15);
-  --accent: #B3300C;
-  --accent-fg: #FFFFFF;
-}
-
-[data-theme="light"] [data-tone="deep"],
-[data-theme="light"][data-tone="deep"] {
-  --bg: #0A0B0D;
-  --fg: #EDE7DB;
-  --muted: #A29C90;
-  --line: rgba(237, 231, 219, 0.15);
-  --accent: #FF6A3A;
-  --accent-fg: #0A0B0D;
-}
-
-/* ============================================================
-   DARK THEME
-   ============================================================ */
-:root[data-theme="dark"],
-[data-theme="dark"] {
-  color-scheme: dark;
-  --grain-opacity: 0.07;
-
-  /* Default tone: surface */
-  --bg: #121316;
-  --fg: #EDE7DB;
-  --muted: #A29C90;
-  --line: rgba(237, 231, 219, 0.15);
-  --accent: #FF6A3A;
-  --accent-fg: #0A0B0D;   /* 7.04:1 contrast on #FF6A3A */
-  --focus-ring-color: #FF6A3A;
-}
-
-[data-theme="dark"] [data-tone="surface"],
-[data-theme="dark"][data-tone="surface"] {
-  --bg: #121316;
-  --fg: #EDE7DB;
-  --muted: #A29C90;
-  --line: rgba(237, 231, 219, 0.15);
-  --accent: #FF6A3A;
-  --accent-fg: #0A0B0D;
-}
-
-[data-theme="dark"] [data-tone="mid"],
-[data-theme="dark"][data-tone="mid"] {
-  --bg: #0D0E10;
-  --fg: #EDE7DB;
-  --muted: #A29C90;
-  --line: rgba(237, 231, 219, 0.15);
-  --accent: #FF6A3A;
-  --accent-fg: #0A0B0D;
-}
-
-[data-theme="dark"] [data-tone="deep"],
-[data-theme="dark"][data-tone="deep"] {
-  --bg: #07080A;
-  --fg: #EDE7DB;
-  --muted: #A29C90;
-  --line: rgba(237, 231, 219, 0.15);
-  --accent: #FF6A3A;
-  --accent-fg: #0A0B0D;
+:root[data-theme="dark"] {
+  --bg: #0B0F0E;
+  --surface: #121817;
+  --surface-2: #18201E;
+  --ink: #EAF1EE;
+  --ink-2: #9AA9A3;
+  --line: #223029;
+  --signal: #7DF2C4;
+  --on-signal: #04140E;
+  --ok: #4ADE9A;
+  --err: #FF7B72;
 }
