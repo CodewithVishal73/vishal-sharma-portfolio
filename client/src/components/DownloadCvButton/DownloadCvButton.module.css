@@ -1,0 +1,169 @@
+.splitWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 8px;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.splitWrapper:hover {
+  border-color: var(--ink-2);
+  box-shadow: 0 4px 14px var(--signal-subtle);
+}
+
+.mainBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 10px 16px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  border-right: 1px solid var(--line);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.mainBtn:hover {
+  background-color: var(--surface-2);
+  color: var(--signal);
+}
+
+.downloadIcon {
+  font-size: 16px;
+  color: var(--signal);
+}
+
+.badgeFormat {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--signal-subtle);
+  color: var(--signal);
+}
+
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  width: 36px;
+  background: transparent;
+  border: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  border-radius: 0 8px 8px 0;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.toggleBtn:hover,
+.toggleOpen {
+  background-color: var(--surface-2);
+  color: var(--signal);
+}
+
+.chevronIcon {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.toggleOpen .chevronIcon {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 310px;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: var(--space-3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  animation: fadeIn 0.16s var(--ease-out);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuHeader {
+  padding: 4px 8px 8px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 4px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.menuItem:hover {
+  background-color: var(--surface-2);
+}
+
+.itemInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.itemIcon {
+  font-size: 20px;
+  color: var(--signal);
+}
+
+.itemTitle {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.itemMeta {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.badgePdf {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: color-mix(in oklab, var(--ok) 16%, transparent);
+  color: var(--ok);
+}
+
+.badgeDocx {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--surface-2);
+  color: var(--ink-2);
+}
