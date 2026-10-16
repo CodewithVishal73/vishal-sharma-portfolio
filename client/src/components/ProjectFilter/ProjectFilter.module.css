@@ -1,0 +1,166 @@
+.filterBar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.resultCount {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+}
+
+.highlightCount {
+  color: var(--signal);
+  font-weight: 600;
+}
+
+.sortWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sortLabel {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sortSelect {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink);
+  background-color: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.sortSelect:hover,
+.sortSelect:focus-visible {
+  border-color: var(--signal);
+  background-color: var(--surface-2);
+}
+
+.sortSelect:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* Chip list */
+.chipList {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 2px 0;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  background-color: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  padding: 0.4rem 0.85rem;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  transition:
+    color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background-color: var(--surface-2);
+  transform: translateY(-1px);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.chipActive {
+  color: var(--signal) !important;
+  background-color: var(--surface-2) !important;
+  border-color: var(--signal) !important;
+  font-weight: 600;
+  box-shadow: 0 0 12px var(--signal-glow);
+}
+
+/* Empty state */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 2rem;
+  background-color: var(--surface-0);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  gap: 1rem;
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.emptyText {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  max-width: 42ch;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .controlsRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sortWrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .chipList {
+    gap: 0.35rem;
+  }
+
+  .chip {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.7rem;
+    min-height: 44px; /* Accessible touch target */
+  }
+}
