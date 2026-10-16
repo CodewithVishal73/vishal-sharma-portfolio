@@ -17,7 +17,7 @@ export const skills = {
       group: 'frontend',
       level: 'comfortable', // CONFIRM
       brandColor: '#F7DF1E',
-      evidence: 'Core client scripting & React integration',
+      evidence: 'Full-stack application logic across React, Node.js & Portfolio',
       relations: ['react', 'node'],
     },
     {
@@ -26,7 +26,7 @@ export const skills = {
       group: 'frontend',
       level: 'comfortable', // CONFIRM
       brandColor: '#61DAFB',
-      evidence: 'Used in SellerLensIQ & Portfolio SPA',
+      evidence: 'Frontend interfaces for SellerLensIQ, Vaani Bill & Portfolio',
       relations: ['javascript'],
     },
   ],
@@ -40,7 +40,7 @@ export const skills = {
         sub: 'Languages',
         level: 'comfortable', // CONFIRM
         brandColor: '#ED8B00',
-        evidence: 'Used in Clinic Management System',
+        evidence: 'Enterprise backend services for SellerLensIQ & ClinicSaaS',
         relations: ['spring-boot'],
       },
       {
@@ -50,7 +50,7 @@ export const skills = {
         sub: 'Languages',
         level: 'working', // CONFIRM
         brandColor: '#00599C',
-        evidence: 'Object-oriented programming & core algorithms',
+        evidence: 'Object-oriented programming, data structures & core algorithms',
         relations: [],
       },
       {
@@ -60,7 +60,7 @@ export const skills = {
         sub: 'Languages',
         level: 'working', // CONFIRM
         brandColor: '#3776AB',
-        evidence: 'Data processing & automation scripts',
+        evidence: 'Data processing, automation scripts & AI experimentation',
         relations: [],
       },
     ],
@@ -73,8 +73,8 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#6DB33F',
-        evidence: 'Used in Clinic Management System',
-        relations: ['java', 'rest-apis', 'mysql'],
+        evidence: 'REST controllers, service layers & security in SellerLensIQ & ClinicSaaS',
+        relations: ['java', 'rest-apis', 'mysql', 'postgres'],
       },
       {
         id: 'rest-apis',
@@ -83,7 +83,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'strong', // CONFIRM
         brandColor: '#FF6C37',
-        evidence: 'Architected across all project services',
+        evidence: 'Contract-first API design across SellerLensIQ, ClinicSaaS & Vaani Bill',
         relations: ['spring-boot', 'express'],
       },
       {
@@ -93,7 +93,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#5FA04E',
-        evidence: 'Used in SellerLensIQ & Portfolio API',
+        evidence: 'Backend service for Vaani Bill (AI Voice POS) & Portfolio API',
         relations: ['express', 'javascript'],
       },
       {
@@ -103,7 +103,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#EAF1EE',
-        evidence: 'Backend REST API for Portfolio & CV Serving',
+        evidence: 'REST routing and middleware for Vaani Bill & Portfolio server',
         relations: ['node', 'mongodb', 'rest-apis'],
       },
     ],
@@ -116,7 +116,7 @@ export const skills = {
         sub: 'Databases',
         level: 'comfortable', // CONFIRM
         brandColor: '#47A248',
-        evidence: 'Document store for Portfolio Contact & SellerLensIQ',
+        evidence: 'Document store for Portfolio contact submissions & inquiries',
         relations: ['express'],
       },
       {
@@ -126,8 +126,8 @@ export const skills = {
         sub: 'Databases',
         level: 'working', // CONFIRM
         brandColor: '#4169E1',
-        evidence: 'Relational database schema modeling',
-        relations: ['sql'],
+        evidence: 'Relational data store & tenant RLS isolation in SellerLensIQ',
+        relations: ['sql', 'spring-boot'],
       },
       {
         id: 'mysql',
@@ -136,7 +136,7 @@ export const skills = {
         sub: 'Databases',
         level: 'comfortable', // CONFIRM
         brandColor: '#4479A1',
-        evidence: 'Database for Clinic Management System',
+        evidence: 'Relational database schema & registries for ClinicSaaS',
         relations: ['spring-boot', 'sql'],
       },
       {
@@ -146,7 +146,7 @@ export const skills = {
         sub: 'Databases',
         level: 'comfortable', // CONFIRM
         brandColor: '#336791',
-        evidence: 'Relational query design and indexing',
+        evidence: 'Relational query design, indexing & DDL across Postgres & MySQL',
         relations: ['postgres', 'mysql'],
       },
     ],
@@ -177,7 +177,7 @@ export const skills = {
       group: 'tools',
       level: 'working', // CONFIRM
       brandColor: '#C71A36',
-      evidence: 'Build automation & dependency management for Java services',
+      evidence: 'Build automation & dependency management for ClinicSaaS & Java services',
       relations: ['java', 'spring-boot'],
     },
     {
@@ -186,7 +186,7 @@ export const skills = {
       group: 'tools',
       level: 'strong', // CONFIRM
       brandColor: '#FF6C37',
-      evidence: 'REST API testing, collection runs & schema validation',
+      evidence: 'REST API testing, collection runs & schema validation for ClinicSaaS',
       relations: ['rest-apis'],
     },
   ],
