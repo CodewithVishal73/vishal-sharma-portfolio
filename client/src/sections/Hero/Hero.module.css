@@ -1,0 +1,121 @@
+.heroSection {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(64px, 10vw, 112px) 0 clamp(48px, 8vw, 80px);
+  overflow: hidden;
+}
+
+/* Background gradient mesh + faint grid tinted with --signal */
+.gridBackdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(ellipse at 70% 20%, var(--signal-subtle), transparent 55%),
+    radial-gradient(ellipse at 20% 80%, color-mix(in oklab, var(--signal) 8%, transparent), transparent 60%),
+    linear-gradient(to right, color-mix(in oklab, var(--line) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--line) 40%, transparent) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.heroContainer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.nodeMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.metaPort {
+  margin-right: 2px;
+}
+
+.nameMask {
+  overflow: hidden;
+  padding-bottom: 4px;
+}
+
+.heroName {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7.5vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  line-height: 1.05;
+}
+
+.designationWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.designationBadge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--signal);
+  background-color: var(--signal-subtle);
+  border: 1px solid var(--signal);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.headlineRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.headlineLead {
+  color: var(--ink);
+}
+
+.typewriter {
+  color: var(--signal);
+}
+
+.supportLine {
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 58ch;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.primaryCta {
+  box-shadow: 0 4px 18px var(--signal-glow);
+}
+
+.mapWrapper {
+  margin-top: var(--space-4);
+  width: 100%;
+}

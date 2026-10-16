@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Hero from '../sections/Hero/Hero.jsx';
 import SectionShell from '../components/SectionShell/SectionShell.jsx';
 import Button from '../components/primitives/Button.jsx';
 import Badge from '../components/primitives/Badge.jsx';
@@ -11,53 +12,7 @@ export default function Home() {
   return (
     <div className={styles.homeContainer}>
       {/* 01 / CLIENT — HERO */}
-      <SectionShell
-        id="client"
-        nodeNumber="01"
-        nodeLabel="CLIENT"
-        title="Vishal Sharma"
-        subtitle="Software Engineer"
-      >
-        <div className={styles.heroContent}>
-          <div className={styles.heroTagline}>
-            Engineering the Future of{' '}
-            <span className={styles.rotatingPhrase}>Backend Infrastructure</span>
-          </div>
-          <p className={styles.heroSupport}>
-            Building scalable software, reliable backend systems, and intelligent digital experiences.
-          </p>
-
-          <div className={styles.heroActions}>
-            <Button variant="primary" href="#services">
-              View Projects
-            </Button>
-            <Button
-              variant="secondary"
-              href="http://localhost:5000/api/cv/pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Download CV (PDF)
-            </Button>
-          </div>
-
-          <div className={styles.systemMapPlaceholder}>
-            <div className={styles.cardHeader}>
-              <span className="mono-label">LIVE REQUEST PIPELINE METAPHOR</span>
-              <Badge variant="signal">STATUS: CONNECTED</Badge>
-            </div>
-            <div className={styles.mapNodes}>
-              <span>01. Browser (User)</span>
-              <span className={styles.arrow}>→</span>
-              <span>02. React (Client)</span>
-              <span className={styles.arrow}>→</span>
-              <span>03. Express (REST API)</span>
-              <span className={styles.arrow}>→</span>
-              <span>04. MongoDB (Atlas)</span>
-            </div>
-          </div>
-        </div>
-      </SectionShell>
+      <Hero />
 
       {/* 02 / IDENTITY — ABOUT */}
       <SectionShell

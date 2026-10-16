@@ -1,0 +1,30 @@
+.container {
+  display: inline-flex;
+  align-items: baseline;
+  position: relative;
+}
+
+.text {
+  color: var(--signal);
+  font-family: var(--font-display);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--signal);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
