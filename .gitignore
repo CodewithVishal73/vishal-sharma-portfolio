@@ -2,7 +2,12 @@ node_modules
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.log
+coverage/
 dist
 build
 logs
 .DS_Store
+

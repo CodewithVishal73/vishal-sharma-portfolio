@@ -1,6 +1,13 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Prioritize server/.env relative to this file
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// Also fallback to process.cwd() .env if present
 dotenv.config();
+
 
 const isTest = process.env.NODE_ENV === 'test';
 const skipValidation = process.env.SKIP_ENV_VALIDATION === 'true';
