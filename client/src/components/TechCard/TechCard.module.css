@@ -127,7 +127,49 @@
   transform-origin: left;
 }
 
+/* Evidence badge row */
+.evidenceRow {
+  margin: 0.35rem 0 0.6rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.usedInBadge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--signal);
+  background-color: var(--signal-subtle);
+  border: 1px solid color-mix(in oklab, var(--signal) 28%, transparent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.usedInBadge strong {
+  font-weight: 700;
+}
+
+.knowledgeBadge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-2);
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
 /* Highlighting states */
+.active {
+  border-color: var(--signal);
+  background-color: var(--surface-2);
+  box-shadow: 0 0 16px var(--signal-glow);
+}
+
 .related {
   border-color: var(--signal);
   background-color: var(--surface-2);
@@ -135,7 +177,7 @@
 }
 
 .dimmed {
-  opacity: 0.45;
+  opacity: 0.35;
 }
 
 @media (max-width: 768px) {

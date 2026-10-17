@@ -1,8 +1,6 @@
-import React, { forwardRef, useRef, useState, useId } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { TechIcon } from './iconMap.jsx';
-import TechTooltip from './TechTooltip.jsx';
-import { LEVEL_MAP } from '../../data/skills.js';
 import styles from './TechCard.module.css';
 
 const TechCard = forwardRef(function TechCard(
@@ -14,16 +12,12 @@ const TechCard = forwardRef(function TechCard(
     isDimmed = false,
     onHover,
     onLeave,
+    onClick,
   },
   forwardedRef
 ) {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const cardRef = useRef(null);
-  const tooltipId = useId();
   const shouldReduceMotion = useReducedMotion();
-
-  const levelInfo = LEVEL_MAP[skill.level] || LEVEL_MAP.working;
-  const levelValue = levelInfo.value;
 
   // Combine forwarded ref and internal ref
   const handleRef = (el) => {
@@ -35,8 +29,13 @@ const TechCard = forwardRef(function TechCard(
     }
   };
 
+  // Evidence ratio: 0.35 for working knowledge, up to 1.0 for multi-project usage
+  const evidenceRatio =
+    skill.projectCount > 0 ? Math.min(1, 0.45 + skill.projectCount * 0.18) : 0.35;
+
   const cardClasses = [
     styles.card,
+    isHovered ? styles.active : '',
     isRelated ? styles.related : '',
     isDimmed ? styles.dimmed : '',
   ]
@@ -44,47 +43,39 @@ const TechCard = forwardRef(function TechCard(
     .join(' ');
 
   const handleMouseEnter = () => {
-    setIsTooltipOpen(true);
-    if (onHover) onHover(skill.id);
+    if (onHover) onHover(skill);
   };
 
   const handleMouseLeave = () => {
-    setIsTooltipOpen(false);
-    if (onLeave) onLeave(skill.id);
+    if (onLeave) onLeave(skill);
   };
 
   const handleFocus = () => {
-    setIsTooltipOpen(true);
-    if (onHover) onHover(skill.id);
+    if (onHover) onHover(skill);
   };
 
   const handleBlur = () => {
-    setIsTooltipOpen(false);
-    if (onLeave) onLeave(skill.id);
+    if (onLeave) onLeave(skill);
   };
 
   const handleClick = () => {
-    // Tap to toggle on mobile / touch
-    setIsTooltipOpen((prev) => !prev);
-    if (!isTooltipOpen && onHover) {
-      onHover(skill.id);
-    } else if (isTooltipOpen && onLeave) {
-      onLeave(skill.id);
+    if (onClick) {
+      onClick(skill);
+    } else if (onHover) {
+      onHover(skill);
     }
-  };
-
-  const handleDismissTooltip = () => {
-    setIsTooltipOpen(false);
-    if (onLeave) onLeave(skill.id);
   };
 
   return (
     <div
       ref={handleRef}
       tabIndex={0}
-      role="group"
-      aria-label={`${skill.name} - ${levelInfo.label}`}
-      aria-describedby={isTooltipOpen ? tooltipId : undefined}
+      role="button"
+      aria-label={`${skill.name} - ${
+        skill.evidenceType === 'project'
+          ? `Used in ${skill.usedIn.join(', ')}`
+          : 'Working knowledge'
+      }`}
       className={cardClasses}
       style={{ '--brand-color': skill.brandColor }}
       onMouseEnter={handleMouseEnter}
@@ -92,14 +83,20 @@ const TechCard = forwardRef(function TechCard(
       onFocus={handleFocus}
       onBlur={handleBlur}
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
     >
-      {/* Port indicator on left edge (lights up on view/hover/relation) */}
+      {/* Port indicator on left edge (lights up on relation / hover) */}
       <span
         className={`${styles.port} ${isHovered || isRelated ? styles.portActive : ''}`}
         aria-hidden="true"
       />
 
-      {/* Card Header with Icon and Name */}
+      {/* Card Header with Authentic Mark and Name */}
       <div className={styles.cardHeader}>
         <div
           className={`${styles.iconWrapper} ${isHovered || isRelated ? styles.iconActive : ''}`}
@@ -112,38 +109,43 @@ const TechCard = forwardRef(function TechCard(
         </div>
       </div>
 
-      {/* Slim animated meter bar (scaleX, staggered, once, no percentage rendered) */}
+      {/* Evidence Tag: Used in <projects> OR Working knowledge (No scores, no percentages) */}
+      <div className={styles.evidenceRow}>
+        {skill.evidenceType === 'project' ? (
+          <span className={styles.usedInBadge}>
+            Used in: <strong>{skill.usedIn.join(', ')}</strong>
+          </span>
+        ) : (
+          <span className={styles.knowledgeBadge}>Working knowledge</span>
+        )}
+      </div>
+
+      {/* Animated Evidence Breadth Meter Bar (Visual progression without numbers) */}
       <div
         role="meter"
-        aria-label={`${skill.name} proficiency level`}
-        aria-valuenow={levelValue}
+        aria-label={`${skill.name} application breadth`}
+        aria-valuenow={evidenceRatio}
         aria-valuemin={0}
         aria-valuemax={1}
-        aria-valuetext={levelInfo.label}
+        aria-valuetext={
+          skill.evidenceType === 'project'
+            ? `Demonstrated across ${skill.usedIn.length} project(s)`
+            : 'Working knowledge'
+        }
         className={styles.meterTrack}
       >
         <motion.div
           className={styles.meterBar}
-          initial={{ scaleX: shouldReduceMotion ? levelValue : 0 }}
-          whileInView={{ scaleX: levelValue }}
+          initial={{ scaleX: shouldReduceMotion ? evidenceRatio : 0 }}
+          whileInView={{ scaleX: evidenceRatio }}
           viewport={{ once: true }}
           transition={{
-            duration: shouldReduceMotion ? 0 : 0.7,
+            duration: shouldReduceMotion ? 0 : 0.65,
             ease: [0.2, 0.8, 0.2, 1],
             delay: shouldReduceMotion ? 0 : delay,
           }}
         />
       </div>
-
-      {/* Accessible anti-clipping tooltip */}
-      {isTooltipOpen && (
-        <TechTooltip
-          id={tooltipId}
-          skill={skill}
-          cardElement={cardRef.current}
-          onDismiss={handleDismissTooltip}
-        />
-      )}
     </div>
   );
 });
