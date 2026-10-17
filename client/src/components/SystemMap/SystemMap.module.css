@@ -5,6 +5,8 @@
   padding: var(--space-5);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   transition: border-color var(--dur-fast) var(--ease-out);
+  position: relative;
+  min-height: 480px;
 }
 
 .systemMapCard:hover {
@@ -76,40 +78,85 @@
   }
 }
 
+/* SVG Canvas & Tracks */
 .svgWrapper {
   width: 100%;
   overflow-x: auto;
   padding: var(--space-4) 0;
+  display: flex;
+  justify-content: center;
 }
 
 .svgCanvas {
   width: 100%;
+  max-width: 940px;
   min-width: 580px;
   height: auto;
   display: block;
 }
 
-.circuitTrack {
-  transition: stroke var(--dur-fast) var(--ease-out);
+.circuitLine {
+  transition: stroke var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
 }
 
-.flowLabel {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  fill: var(--ink-2);
-  opacity: 0.6;
+.circuitDashed {
+  stroke-dasharray: 4 4;
+}
+
+.branchActive {
+  stroke: var(--ink-2);
+  opacity: 0.8;
+}
+
+.branchDimmed {
+  stroke: var(--line);
+  opacity: 0.35;
+}
+
+.activeTrackGlow {
+  stroke: var(--signal);
+  stroke-width: 4;
+  opacity: 0.35;
+  filter: drop-shadow(0 0 6px var(--signal));
+  transition: all var(--dur-base) var(--ease-out);
+}
+
+.activeTrackStroke {
+  stroke: var(--signal);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 6 5;
+  opacity: 0.85;
+  transition: all var(--dur-base) var(--ease-out);
 }
 
 .packetDot {
   fill: var(--signal);
-  filter: drop-shadow(0 0 6px var(--signal));
+  filter: drop-shadow(0 0 7px var(--signal));
 }
 
+.branchHeaderLabel {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  fill: var(--ink-2);
+  opacity: 0.55;
+  user-select: none;
+}
+
+/* Node Elements */
 .nodeGroup {
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease-out);
+  cursor: default;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.nodeBranchActive {
+  opacity: 1;
+}
+
+.nodeBranchDimmed {
+  opacity: 0.35;
 }
 
 .nodeTile {
@@ -119,7 +166,12 @@
   transition: all var(--dur-fast) var(--ease-out);
 }
 
-.iconContainer {
+.nodePulseRing {
+  pointer-events: none;
+  transition: stroke var(--dur-fast) var(--ease-out);
+}
+
+.iconFlex {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,27 +179,93 @@
   height: 100%;
 }
 
+.dualIconRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
 .nodeIcon {
-  font-size: 22px;
+  font-size: 19px;
   color: var(--ink);
   transition: color var(--dur-fast) var(--ease-out);
 }
 
 .nodeTitle {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   fill: var(--ink);
+  user-select: none;
 }
 
 .nodeSub {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 9px;
   fill: var(--ink-2);
+  user-select: none;
 }
 
-/* Node Hit State */
+.chipsLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  fill: var(--ink-2);
+  opacity: 0.85;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+/* Badges on Nodes */
+.miniBadgeBg {
+  fill: var(--surface);
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.miniBadgeContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  height: 100%;
+}
+
+.miniBadgeIcon {
+  font-size: 9px;
+  color: var(--signal);
+}
+
+.siteBadgeBg {
+  fill: var(--signal-subtle);
+  stroke: var(--signal);
+  stroke-width: 1;
+}
+
+.siteBadgeText {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  fill: var(--signal);
+  user-select: none;
+}
+
+.aiTagText {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  fill: var(--ink-2);
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+
+/* Node Hit State (proximity to packet) */
 .nodeHit .nodeTile {
   stroke: var(--signal);
   fill: var(--signal-subtle);
@@ -163,13 +281,322 @@
 
 @keyframes ripple {
   0% {
-    r: 24;
+    r: 28;
     opacity: 1;
   }
   100% {
-    r: 38;
+    r: 42;
     opacity: 0;
   }
+}
+
+/* Narrow Stacked Layout (< 480px) */
+.narrowStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+}
+
+.narrowNodeCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: border-color var(--dur-fast);
+}
+
+.narrowSiteCard {
+  border-color: var(--signal);
+  background-color: var(--signal-subtle);
+}
+
+.narrowIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.narrowIcon {
+  font-size: 20px;
+  color: var(--signal);
+  flex-shrink: 0;
+}
+
+.narrowNodeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.narrowTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.narrowNodeName {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+
+.narrowNodeSub {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.narrowTrunkTag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: auto;
+}
+
+.narrowSiteBadge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--signal);
+  background: var(--signal-subtle);
+  border: 1px solid var(--signal);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.narrowBuildBadge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.narrowChipsLine {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+
+.narrowArrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 14px;
+  color: var(--line);
+}
+
+.arrowStem {
+  width: 1px;
+  height: 6px;
+  background: var(--line);
+}
+
+.arrowHead {
+  font-size: 7px;
+  line-height: 7px;
+  color: var(--line);
+}
+
+.narrowForkHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  margin: var(--space-1) 0;
+}
+
+.forkLead {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.05em;
+}
+
+.forkActiveName {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--signal);
+}
+
+/* Selector Bar & Radiogroup */
+.selectorBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--line);
+}
+
+.segmentedGroup {
+  display: flex;
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.segmentBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  outline: none;
+}
+
+.segmentBtn:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.segmentBtn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.segmentBtnActive {
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 700;
+  border-color: var(--line);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.segmentIndicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background-color var(--dur-fast);
+}
+
+.segmentBtnActive .segmentIndicator {
+  background: var(--signal);
+  box-shadow: 0 0 6px var(--signal);
+}
+
+.segmentLabel {
+  letter-spacing: 0.02em;
+}
+
+.segmentTag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tagReal {
+  background: var(--signal-subtle);
+  color: var(--signal);
+  border: 1px solid color-mix(in oklab, var(--signal) 40%, transparent);
+}
+
+.tagIllustrative {
+  background: var(--surface-2);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+}
+
+.autoToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.autoToggleBtn:hover {
+  color: var(--ink);
+  border-color: var(--ink-2);
+}
+
+.autoToggleBtn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.autoActive {
+  color: var(--signal);
+  border-color: var(--signal);
+  background: var(--signal-subtle);
+}
+
+/* Caption Area */
+.captionArea {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-2);
+  min-height: 20px;
+}
+
+.captionPrefix {
+  font-weight: 700;
+  color: var(--signal);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.captionText {
+  color: var(--ink-2);
+  line-height: 1.4;
 }
 
 /* Telemetry Banner */
@@ -204,4 +631,17 @@
 
 .bannerText {
   flex: 1;
+}
+
+/* Screen reader only utility */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
