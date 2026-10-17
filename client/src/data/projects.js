@@ -8,6 +8,7 @@ export const projects = [
     name: 'SellerLensIQ',
     status: 'in-progress',
     stage: 'In Progress',
+    internshipChip: 'Developed during JGS internship',
     category: 'Full-Stack Engineering',
     summary:
       'An Amazon keyword research and listing SEO intelligence platform for keyword portfolio management and listing quality evaluation.',

@@ -219,6 +219,39 @@
   margin: 0;
 }
 
+/* Associated Project Row */
+.associatedProjectRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--surface-0);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.associatedLabel {
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+.projectLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--signal);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+
+.projectLink:hover {
+  text-decoration: underline;
+}
+
 /* Highlights */
 .highlightsList {
   list-style: none;

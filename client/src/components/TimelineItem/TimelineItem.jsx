@@ -1,19 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FaGraduationCap } from 'react-icons/fa';
-import { FiGitCommit, FiGitBranch, FiCalendar, FiMapPin } from 'react-icons/fi';
+import { FiGitCommit, FiGitBranch, FiCalendar, FiMapPin, FiArrowUpRight, FiBriefcase } from 'react-icons/fi';
 import styles from './TimelineItem.module.css';
 
 export default function TimelineItem({ entry, isLeft = false, index = 0 }) {
   const shouldReduceMotion = useReducedMotion();
 
   const isEducation = entry.type === 'education';
-  const OrgIcon = isEducation ? FaGraduationCap : FiGitCommit;
+  const isExperience = entry.type === 'experience';
+  const OrgIcon = isEducation ? FaGraduationCap : isExperience ? FiBriefcase : FiGitCommit;
 
   const rowClasses = [
     styles.itemRow,
     isLeft ? styles.leftRow : styles.rightRow,
   ].join(' ');
+
+  const dateText = entry.startDate
+    ? `${entry.startDate} — ${entry.endDate}`
+    : entry.dateLabel || entry.endDate;
 
   return (
     <div className={rowClasses}>
@@ -63,9 +69,7 @@ export default function TimelineItem({ entry, isLeft = false, index = 0 }) {
 
             <span className={styles.dateBadge}>
               <FiCalendar aria-hidden="true" size={12} />
-              <span>
-                {entry.startDate} — {entry.endDate}
-              </span>
+              <span>{dateText}</span>
             </span>
           </div>
 
@@ -93,9 +97,24 @@ export default function TimelineItem({ entry, isLeft = false, index = 0 }) {
           {/* Concise description */}
           <p className={styles.description}>{entry.description}</p>
 
+          {/* Associated Project Row */}
+          {entry.associatedProject && (
+            <div className={styles.associatedProjectRow}>
+              <span className={styles.associatedLabel}>Associated project:</span>
+              <Link
+                to={`/projects/${entry.associatedProject.slug}`}
+                className={styles.projectLink}
+                title={`View ${entry.associatedProject.name} project architecture details`}
+              >
+                <span>{entry.associatedProject.name}</span>
+                <FiArrowUpRight size={13} aria-hidden="true" />
+              </Link>
+            </div>
+          )}
+
           {/* Core Milestones / Highlights */}
           {entry.highlights && entry.highlights.length > 0 && (
-            <ul className={styles.highlightsList} aria-label="Key Coursework & Engineering Highlights">
+            <ul className={styles.highlightsList} aria-label="Key Highlights">
               {entry.highlights.map((highlight, idx) => (
                 <li key={idx} className={styles.highlightItem}>
                   <span className={styles.highlightBullet}>›</span>

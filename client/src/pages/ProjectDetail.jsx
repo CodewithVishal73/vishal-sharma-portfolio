@@ -64,6 +64,11 @@ export default function ProjectDetail() {
         <div className={styles.metaRow}>
           <span className={styles.category}>{project.category}</span>
           <div className={styles.metaRight}>
+            {project.internshipChip && (
+              <span className={styles.stageBadge} style={{ color: 'var(--signal)', borderColor: 'var(--signal)' }}>
+                {project.internshipChip}
+              </span>
+            )}
             <span className={styles.yearBadge}>{project.year}</span>
             <span className={styles.stageBadge}>{statusLabel}</span>
           </div>

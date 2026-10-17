@@ -113,6 +113,25 @@
   text-transform: uppercase;
 }
 
+.stageBadgesGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.internshipChip {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--signal);
+  background-color: var(--signal-subtle);
+  border: 1px solid color-mix(in oklab, var(--signal) 35%, transparent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 .stageBadge {
   font-family: var(--font-mono);
   font-size: 0.7rem;

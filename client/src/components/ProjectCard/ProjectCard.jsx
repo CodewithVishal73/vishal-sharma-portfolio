@@ -49,7 +49,12 @@ export default function ProjectCard({ project, className = '' }) {
             <span className={styles.subtitle}>{project.subtitle}</span>
           )}
         </div>
-        <span className={styles.stageBadge}>{statusLabel}</span>
+        <div className={styles.stageBadgesGroup}>
+          {project.internshipChip && (
+            <span className={styles.internshipChip}>{project.internshipChip}</span>
+          )}
+          <span className={styles.stageBadge}>{statusLabel}</span>
+        </div>
       </header>
 
       {/* One-sentence summary */}
