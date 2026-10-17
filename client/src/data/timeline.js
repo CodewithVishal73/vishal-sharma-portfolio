@@ -39,7 +39,7 @@ export const timeline = [
     description:
       'Active development of modular production-style architectures, including e-commerce SEO intelligence (SellerLensIQ) and structured healthcare management (ClinicSaaS).',
     highlights: [
-      'Architecting Spring Boot REST APIs with PostgreSQL Row-Level Security',
+      'Architecting Spring Boot REST APIs with PostgreSQL relational persistence',
       'Full-stack client-server data lifecycle and state orchestration',
       'Relational query optimization with MySQL & PostgreSQL indexing',
       'System protocol verification and API contract testing via Postman',

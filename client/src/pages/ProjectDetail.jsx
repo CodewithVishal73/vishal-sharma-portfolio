@@ -9,6 +9,8 @@ import {
   FiLayers,
   FiCode,
   FiAlertCircle,
+  FiLock,
+  FiClock,
 } from 'react-icons/fi';
 import Button from '../components/primitives/Button.jsx';
 import ArchitectureMini from '../components/ArchitectureMini/ArchitectureMini.jsx';
@@ -27,6 +29,15 @@ export default function ProjectDetail() {
   }
 
   const { prev, next } = getAdjacentProjects(slug);
+
+  const statusLabel =
+    project.status === 'in-progress'
+      ? 'In Progress'
+      : project.status === 'working'
+      ? 'Working'
+      : project.status === 'concept'
+      ? 'Concept'
+      : project.stage || 'In Progress';
 
   return (
     <motion.div
@@ -54,7 +65,7 @@ export default function ProjectDetail() {
           <span className={styles.category}>{project.category}</span>
           <div className={styles.metaRight}>
             <span className={styles.yearBadge}>{project.year}</span>
-            <span className={styles.stageBadge}>{project.stage}</span>
+            <span className={styles.stageBadge}>{statusLabel}</span>
           </div>
         </div>
 
@@ -70,7 +81,7 @@ export default function ProjectDetail() {
         <p className={styles.summaryText}>{project.summary}</p>
       </section>
 
-      {/* Problem & What I Built Grid */}
+      {/* Problem & What I Built / Planned Grid */}
       <div className={styles.gridTwoCol}>
         {/* The Problem */}
         <section className={styles.sectionCard} aria-labelledby="section-problem-title">
@@ -83,23 +94,48 @@ export default function ProjectDetail() {
           <p className={styles.problemText}>{project.problem}</p>
         </section>
 
-        {/* What I Built */}
-        <section className={styles.sectionCard} aria-labelledby="section-built-title">
-          <header className={styles.sectionHeader}>
-            <FiCode size={16} color="var(--signal)" aria-hidden="true" />
-            <h2 id="section-built-title" className={styles.sectionTitle}>
-              What I Built
-            </h2>
-          </header>
-          <ul className={styles.bulletList}>
-            {project.built.map((bullet, idx) => (
-              <li key={idx} className={styles.bulletItem}>
-                <span className={styles.bulletMarker}>0{idx + 1} //</span>
-                <span>{bullet}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* What I Built (if present) */}
+        {project.built && project.built.length > 0 && (
+          <section className={styles.sectionCard} aria-labelledby="section-built-title">
+            <header className={styles.sectionHeader}>
+              <FiCode size={16} color="var(--signal)" aria-hidden="true" />
+              <h2 id="section-built-title" className={styles.sectionTitle}>
+                Implemented Capabilities
+              </h2>
+            </header>
+            <ul className={styles.bulletList}>
+              {project.built.map((bullet, idx) => (
+                <li key={idx} className={styles.bulletItem}>
+                  <span className={styles.bulletMarker}>0{idx + 1} //</span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Planned Direction & Integrations (Visually separated for concept stage) */}
+        {project.planned && project.planned.length > 0 && (
+          <section className={styles.sectionCard} aria-labelledby="section-planned-title">
+            <header className={styles.sectionHeader}>
+              <FiLayers size={16} color="var(--signal)" aria-hidden="true" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <h2 id="section-planned-title" className={styles.sectionTitle}>
+                  Planned Direction
+                </h2>
+                <span className={styles.plannedChip}>Not Shipped</span>
+              </div>
+            </header>
+            <ul className={styles.bulletList}>
+              {project.planned.map((bullet, idx) => (
+                <li key={idx} className={styles.bulletItem}>
+                  <span className={styles.bulletMarker} style={{ color: 'var(--ink-2)' }}>P0{idx + 1} //</span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
 
       {/* Architecture Deep Dive */}
@@ -140,38 +176,46 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      {/* Actions and External Links (only rendered when real links are present) */}
-      {(project.github || project.live) && (
-        <section className={styles.actionsCard} aria-label="Project actions and source code links">
-          <div className={styles.actionsGroup}>
-            {project.github && (
-              <Button
-                variant="secondary"
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`View ${project.name} GitHub repository`}
-              >
-                <FiGithub aria-hidden="true" />
-                <span>GitHub Repository</span>
-              </Button>
-            )}
+      {/* Actions and External Links */}
+      <section className={styles.actionsCard} aria-label="Project actions and source code links">
+        <div className={styles.actionsGroup}>
+          {project.github ? (
+            <Button
+              variant="secondary"
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.name} GitHub repository`}
+            >
+              <FiGithub aria-hidden="true" />
+              <span>GitHub Repository</span>
+            </Button>
+          ) : (
+            <span className={styles.honestBadge} title="Source repository is private / not publicly hosted">
+              <FiLock aria-hidden="true" className={styles.honestIcon} />
+              <span>Repository private</span>
+            </span>
+          )}
 
-            {project.live && (
-              <Button
-                variant="primary"
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`View ${project.name} live deployment`}
-              >
-                <FiExternalLink aria-hidden="true" />
-                <span>Live Demonstration</span>
-              </Button>
-            )}
-          </div>
-        </section>
-      )}
+          {project.live ? (
+            <Button
+              variant="primary"
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.name} live deployment`}
+            >
+              <FiExternalLink aria-hidden="true" />
+              <span>Live Demonstration</span>
+            </Button>
+          ) : (
+            <span className={styles.honestBadge} title="No public live demonstration is deployed yet">
+              <FiClock aria-hidden="true" className={styles.honestIcon} />
+              <span>No public demo yet</span>
+            </span>
+          )}
+        </div>
+      </section>
 
       {/* Previous / Next Project Navigation */}
       <nav className={styles.navRow} aria-label="Adjacent project navigation">

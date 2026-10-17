@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { FiGithub, FiExternalLink, FiArrowRight } from 'react-icons/fi';
+import { FiGithub, FiExternalLink, FiArrowRight, FiLock, FiClock } from 'react-icons/fi';
 import Button from '../primitives/Button.jsx';
 import ArchitectureMini from '../ArchitectureMini/ArchitectureMini.jsx';
 import ProjectTechBadge from '../ProjectTechBadge/ProjectTechBadge.jsx';
@@ -18,6 +18,15 @@ export default function ProjectCard({ project, className = '' }) {
     cardRef.current.style.setProperty('--mouse-x', `${x}px`);
     cardRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
+
+  const statusLabel =
+    project.status === 'in-progress'
+      ? 'In Progress'
+      : project.status === 'working'
+      ? 'Working'
+      : project.status === 'concept'
+      ? 'Concept'
+      : project.stage || 'In Progress';
 
   return (
     <article
@@ -40,7 +49,7 @@ export default function ProjectCard({ project, className = '' }) {
             <span className={styles.subtitle}>{project.subtitle}</span>
           )}
         </div>
-        <span className={styles.stageBadge}>{project.stage}</span>
+        <span className={styles.stageBadge}>{statusLabel}</span>
       </header>
 
       {/* One-sentence summary */}
@@ -70,42 +79,50 @@ export default function ProjectCard({ project, className = '' }) {
 
       {/* Actions footer */}
       <footer className={styles.actions}>
-        {(project.github || project.live) && (
-          <div className={styles.linkGroup}>
-            {project.github && (
-              <Button
-                variant="secondary"
-                size="sm"
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`View ${project.name} GitHub repository`}
-              >
-                <FiGithub aria-hidden="true" />
-                <span>Repository</span>
-              </Button>
-            )}
+        <div className={styles.linkGroup}>
+          {project.github ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.name} GitHub repository`}
+            >
+              <FiGithub aria-hidden="true" />
+              <span>Repository</span>
+            </Button>
+          ) : (
+            <span className={styles.honestBadge} title="Repository is private / not publicly hosted">
+              <FiLock aria-hidden="true" className={styles.honestIcon} />
+              <span>Repository private</span>
+            </span>
+          )}
 
-            {project.live && (
-              <Button
-                variant="secondary"
-                size="sm"
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`View ${project.name} live deployment`}
-              >
-                <FiExternalLink aria-hidden="true" />
-                <span>Live demo</span>
-              </Button>
-            )}
-          </div>
-        )}
+          {project.live ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.name} live deployment`}
+            >
+              <FiExternalLink aria-hidden="true" />
+              <span>Live demo</span>
+            </Button>
+          ) : (
+            <span className={styles.honestBadge} title="No public demo is currently deployed">
+              <FiClock aria-hidden="true" className={styles.honestIcon} />
+              <span>No public demo yet</span>
+            </span>
+          )}
+        </div>
 
         {/* Working navigation action to open project detail page */}
         <Link
           to={`/projects/${project.slug}`}
-          className={`${styles.viewDetailsBtn} ${!project.github && !project.live ? styles.fullWidthBtn : ''}`}
+          className={styles.viewDetailsBtn}
           tabIndex={-1}
         >
           <Button variant="primary" size="sm">

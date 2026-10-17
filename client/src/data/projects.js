@@ -1,48 +1,45 @@
 // Verified project data for faculty Section 4: Projects Showcase
-// All data points strictly verified from PROJECT_CONTEXT.md and TASK P5 specification.
-// Any unverified items are flagged with // CONFIRM.
+// Strictly aligned with owner-stated facts and CLAIMS.md.
+// All claims adhere strictly to verification constraints: no multitenancy, no unverified metrics.
 
 export const projects = [
   {
     slug: 'seller-lens-iq',
     name: 'SellerLensIQ',
+    status: 'in-progress',
+    stage: 'In Progress',
     category: 'Full-Stack Engineering',
     summary:
-      'An end-to-end Amazon keyword research and SEO intelligence platform for managing keyword portfolios, analyzing competitors, and evaluating product listing quality.',
+      'An Amazon keyword research and listing SEO intelligence platform for keyword portfolio management and listing quality evaluation.',
     problem:
-      'Amazon sellers and catalog teams need a centralized way to organize keyword research, evaluate listing quality, track portfolio health, and identify competitor keyword opportunities.',
+      'Amazon catalog managers lack a unified backend service to import bulk keyword data via CSV, manage keyword portfolios, and evaluate listing SEO performance.',
     built: [
-      'React frontend integrated with a Java/Spring Boot REST API.',
-      'PostgreSQL-backed data layer for keyword and portfolio management.',
-      'JWT-based authentication and organization-level data isolation using PostgreSQL Row-Level Security.',
-      'CSV-based bulk keyword import and processing pipeline.',
-      'Competitor gap analysis and listing-quality analytics engine.',
+      'Spring Boot REST API service layer for keyword and portfolio management.',
+      'PostgreSQL database persistence for listing catalog and keyword datasets.',
+      'Authentication service for user session and credential handling.',
+      'CSV file ingestion pipeline for bulk keyword data uploads.',
+      'Listing SEO quality and keyword performance analytics computation.',
     ],
     stack: [
       'Java',
       'Spring Boot',
-      'React',
       'PostgreSQL',
       'REST APIs',
-      'JWT',
-      'Git',
-      'GitHub',
     ],
-    tags: ['Full-Stack', 'Java', 'Spring Boot', 'PostgreSQL', 'React', 'REST APIs'],
-    github: null, // CONFIRM: repository URL not provided
-    live: null, // CONFIRM: live demo URL not provided
-    year: 2024, // CONFIRM: project year
-    stage: 'In Development',
+    tags: ['Full-Stack', 'Java', 'Spring Boot', 'PostgreSQL', 'REST APIs'],
+    github: null, // Repository is private / not publicly hosted
+    live: null, // No public live deployment hosted yet
+    year: 2024,
     architecture: {
       type: 'implemented',
-      title: 'Full-Stack REST Architecture',
-      description: 'React Client → Spring Boot REST API (Auth & RLS) → PostgreSQL Database',
+      title: 'Full-Stack Service Architecture',
+      description: 'Client Interface → Spring Boot REST API → PostgreSQL Database',
       nodes: [
         {
           id: 'client',
-          label: 'React Frontend',
+          label: 'Client Interface',
           layer: 'Presentation Layer',
-          detail: 'Keyword dashboards, CSV ingestion UI, and listing score views',
+          detail: 'Keyword management dashboards and CSV upload interface',
           x: 65,
           y: 70,
         },
@@ -50,15 +47,15 @@ export const projects = [
           id: 'api',
           label: 'Spring Boot REST API',
           layer: 'Application Layer',
-          detail: 'JWT authentication, controller-service logic & tenant RLS isolation',
+          detail: 'Authentication, service logic & listing SEO analytics',
           x: 200,
           y: 70,
         },
         {
           id: 'db',
-          label: 'PostgreSQL DB',
+          label: 'PostgreSQL Database',
           layer: 'Persistence Layer',
-          detail: 'Keyword portfolios, competitor catalog tables & RLS policies',
+          detail: 'Keyword portfolios and listing catalog persistence',
           x: 335,
           y: 70,
         },
@@ -72,41 +69,36 @@ export const projects = [
   {
     slug: 'clinic-saas',
     name: 'ClinicSaaS',
+    status: 'in-progress',
+    stage: 'In Progress',
     category: 'Backend & Systems',
     summary:
-      'A clinic management platform designed to organize core healthcare administration workflows through a structured software application.',
+      'A structured clinic management application designed to organize core healthcare administration and appointment workflows.',
     problem:
-      'Clinics need a consistent way to organize patient information, doctor records, appointments, and related administrative workflows.',
+      'Healthcare clinics face administrative friction when managing doctor availability, patient intake records, and appointment scheduling.',
     built: [
-      'Java and Spring Boot backend service implementing modular controller-service-repository architecture.',
-      'REST API endpoints for doctor records, patient registries, and appointment scheduling.',
-      'Relational database integration with MySQL for structured healthcare entities.',
-      'DTO-based input validation and centralized exception handling for clinical transactions.',
-      'Postman collection test suites covering appointment booking lifecycle.',
+      'Java and Spring Boot application core for clinic operational workflows.',
+      'REST endpoints for doctor schedules, patient intake records, and appointments.',
     ],
     stack: [
       'Java',
       'Spring Boot',
-      'MySQL',
-      'Maven',
       'REST APIs',
-      'Postman',
     ],
-    tags: ['Backend', 'Java', 'Spring Boot', 'MySQL', 'REST APIs'],
-    github: null, // CONFIRM: repository URL not provided
-    live: null, // CONFIRM: live demo URL not provided
-    year: 2024, // CONFIRM: project year
-    stage: 'Application Prototype',
+    tags: ['Backend', 'Java', 'Spring Boot', 'REST APIs'],
+    github: null, // Repository is private / not publicly hosted
+    live: null, // No public live deployment hosted yet
+    year: 2024,
     architecture: {
       type: 'implemented',
       title: 'Modular Healthcare Backend',
-      description: 'Clinic Interface → Spring Boot REST API & Service Layer → MySQL Database',
+      description: 'Clinic Consumer → Spring Boot REST API → Relational Database',
       nodes: [
         {
           id: 'client',
           label: 'Clinic Interface',
           layer: 'Interface Layer',
-          detail: 'Administrative client requests & appointment booking consumers',
+          detail: 'Administrative client requests & appointment workflows',
           x: 65,
           y: 70,
         },
@@ -114,87 +106,85 @@ export const projects = [
           id: 'api',
           label: 'Spring Boot API',
           layer: 'Application Layer',
-          detail: 'Doctor scheduling logic, patient registries & DTO validators',
+          detail: 'Doctor scheduling logic and patient records services',
           x: 200,
           y: 70,
         },
         {
           id: 'db',
-          label: 'MySQL Database',
+          label: 'Relational Database',
           layer: 'Persistence Layer',
-          detail: 'Relational tables for doctors, patients, and appointment slots',
+          detail: 'Data persistence for doctors, patients, and appointments',
           x: 335,
           y: 70,
         },
       ],
       edges: [
         { from: 'client', to: 'api', label: 'JSON REST Endpoints' },
-        { from: 'api', to: 'db', label: 'JPA / Hibernate' },
+        { from: 'api', to: 'db', label: 'JDBC / SQL' },
       ],
     },
   },
   {
     slug: 'vaani-bill',
     name: 'Vaani Bill',
-    subtitle: 'AI Voice POS',
-    category: 'Voice AI & Point-of-Sale',
+    subtitle: 'AI Voice POS Concept',
+    status: 'concept',
+    stage: 'Concept',
+    category: 'Voice AI & Point-of-Sale (Concept)',
     summary:
-      'An AI-assisted voice point-of-sale concept designed to simplify billing for small businesses through Hindi, English, and Hinglish voice interactions.',
+      'An AI-assisted voice point-of-sale concept designed to explore billing simplification through Hindi, English, and Hinglish speech interactions.',
     problem:
-      'Small-business billing can be slow and inconvenient when users must manually enter every product and transaction detail, particularly when speaking is more practical than typing.',
-    built: [
-      'Voice-first point-of-sale interface built with React and Tailwind CSS.',
-      'Node.js and Express backend service written in TypeScript for transaction orchestration.',
-      'Lovable Cloud Database persistence layer for catalog items and ledger entries.',
-      'Multilingual voice parsing architecture designed for Hindi, English, and Hinglish workflows (Planned).',
-      'Offline queue synchronization, QR-payment integration, and PDF receipt rendering (Planned).',
+      'Retail billing counters experience input bottlenecks during peak hours when entering product itemization manually instead of using spoken dialogue.',
+    built: [],
+    planned: [
+      'Multilingual voice capture concept supporting Hindi, English, and Hinglish phrases.',
+      'Planned speech parsing model to identify catalog items and quantities from spoken phrases.',
+      'Planned transaction orchestration service for billing workflow and invoice creation.',
+      'Planned integration with payment gateways and receipt printers.',
     ],
     stack: [
       'React',
-      'Tailwind CSS',
       'Node.js',
-      'Express',
-      'TypeScript',
-      'Lovable Cloud DB',
+      'REST APIs',
     ],
-    tags: ['Voice AI', 'React', 'Node.js', 'TypeScript', 'Tailwind CSS'],
-    github: null, // CONFIRM: repository URL not provided
-    live: null, // CONFIRM: live demo URL not provided
-    year: 2025, // CONFIRM: project year
-    stage: 'Planned Architecture',
+    tags: ['Voice AI Concept', 'React', 'Node.js', 'REST APIs'],
+    github: null, // Repository is private / concept stage
+    live: null, // No public live deployment (concept stage)
+    year: 2025,
     architecture: {
       type: 'planned',
-      title: 'Voice-First POS Architecture (Planned)',
-      description: 'Voice-Enabled React POS → Node.js / Express (TS) API → Lovable Cloud Database',
+      title: 'Planned Voice POS Architecture (Concept)',
+      description: 'Planned Concept: Multilingual Speech Capture → Orchestration API → Data Persistence',
       nodes: [
         {
           id: 'client',
-          label: 'Voice POS (React)',
-          layer: 'Presentation Layer',
-          detail: 'Multilingual speech capture (Hindi/Eng/Hinglish) & Tailwind POS',
+          label: 'Planned POS UI',
+          layer: 'Presentation Concept',
+          detail: 'Multilingual speech capture concept (Hindi / English / Hinglish)',
           x: 65,
           y: 70,
         },
         {
           id: 'api',
-          label: 'Node / Express (TS)',
-          layer: 'Orchestration Layer',
-          detail: 'Audio stream parser, cart assembler & offline transaction queue',
+          label: 'Planned API Layer',
+          layer: 'Orchestration Concept',
+          detail: 'Planned audio stream ingestion & cart parsing pipeline',
           x: 200,
           y: 70,
         },
         {
           id: 'db',
-          label: 'Lovable Cloud DB',
-          layer: 'Cloud Persistence',
-          detail: 'Product catalog, customer receipts & cloud-synchronized ledgers',
+          label: 'Planned Persistence',
+          layer: 'Persistence Concept',
+          detail: 'Planned catalog items and transaction records storage',
           x: 335,
           y: 70,
         },
       ],
       edges: [
-        { from: 'client', to: 'api', label: 'Audio & Cart Payload' },
-        { from: 'api', to: 'db', label: 'Cloud DB Queries' },
+        { from: 'client', to: 'api', label: 'Audio & Payload (Planned)' },
+        { from: 'api', to: 'db', label: 'Queries (Planned)' },
       ],
     },
   },

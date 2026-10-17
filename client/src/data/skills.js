@@ -17,7 +17,7 @@ export const skills = {
       group: 'frontend',
       level: 'comfortable', // CONFIRM
       brandColor: '#F7DF1E',
-      evidence: 'Interactive client and service logic in SellerLensIQ & Vaani Bill',
+      evidence: 'Interactive client and service logic in developer projects',
       relations: ['react', 'node'],
     },
     {
@@ -26,7 +26,7 @@ export const skills = {
       group: 'frontend',
       level: 'comfortable', // CONFIRM
       brandColor: '#61DAFB',
-      evidence: 'Frontend interfaces for SellerLensIQ & Vaani Bill',
+      evidence: 'Component-driven frontend interfaces and reactive client architecture',
       relations: ['javascript'],
     },
   ],
@@ -40,7 +40,7 @@ export const skills = {
         sub: 'Languages',
         level: 'comfortable', // CONFIRM
         brandColor: '#ED8B00',
-        evidence: 'Enterprise backend services for SellerLensIQ & ClinicSaaS',
+        evidence: 'Backend services for SellerLensIQ & ClinicSaaS',
         relations: ['spring-boot'],
       },
       {
@@ -73,7 +73,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#6DB33F',
-        evidence: 'REST controllers, service layers & security in SellerLensIQ & ClinicSaaS',
+        evidence: 'REST controllers, service layers & authentication in SellerLensIQ & ClinicSaaS',
         relations: ['java', 'rest-apis', 'mysql', 'postgres'],
       },
       {
@@ -83,7 +83,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'strong', // CONFIRM
         brandColor: '#FF6C37',
-        evidence: 'Contract-first API design across SellerLensIQ, ClinicSaaS & Vaani Bill',
+        evidence: 'RESTful API design across SellerLensIQ, ClinicSaaS & backend services',
         relations: ['spring-boot', 'express'],
       },
       {
@@ -93,7 +93,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#5FA04E',
-        evidence: 'Backend service orchestration for Vaani Bill (AI Voice POS)',
+        evidence: 'Server-side JavaScript runtime for backend services',
         relations: ['express', 'javascript'],
       },
       {
@@ -103,7 +103,7 @@ export const skills = {
         sub: 'Frameworks & APIs',
         level: 'comfortable', // CONFIRM
         brandColor: '#EAF1EE',
-        evidence: 'REST routing, audio streaming & transaction handling in Vaani Bill',
+        evidence: 'REST routing, middleware architecture and request handling',
         relations: ['node', 'mongodb', 'rest-apis'],
       },
     ],
@@ -126,7 +126,7 @@ export const skills = {
         sub: 'Databases',
         level: 'working', // CONFIRM
         brandColor: '#4169E1',
-        evidence: 'Relational data store & tenant RLS isolation in SellerLensIQ',
+        evidence: 'Relational data store and SQL schema design in SellerLensIQ',
         relations: ['sql', 'spring-boot'],
       },
       {
@@ -136,7 +136,7 @@ export const skills = {
         sub: 'Databases',
         level: 'comfortable', // CONFIRM
         brandColor: '#4479A1',
-        evidence: 'Relational database schema & registries for ClinicSaaS',
+        evidence: 'Relational database schema modeling and structured queries',
         relations: ['spring-boot', 'sql'],
       },
       {
@@ -168,7 +168,7 @@ export const skills = {
       group: 'tools',
       level: 'strong', // CONFIRM
       brandColor: '#EAF1EE',
-      evidence: 'Monorepo hosting, actions & release management',
+      evidence: 'Monorepo hosting, collaboration & repository management',
       relations: ['git'],
     },
     {
@@ -177,7 +177,7 @@ export const skills = {
       group: 'tools',
       level: 'working', // CONFIRM
       brandColor: '#C71A36',
-      evidence: 'Build automation & dependency management for ClinicSaaS & Java services',
+      evidence: 'Build automation & dependency management for Java services',
       relations: ['java', 'spring-boot'],
     },
     {
@@ -186,7 +186,7 @@ export const skills = {
       group: 'tools',
       level: 'strong', // CONFIRM
       brandColor: '#FF6C37',
-      evidence: 'REST API testing, collection runs & schema validation for ClinicSaaS',
+      evidence: 'REST API testing, collection runs & schema validation',
       relations: ['rest-apis'],
     },
   ],

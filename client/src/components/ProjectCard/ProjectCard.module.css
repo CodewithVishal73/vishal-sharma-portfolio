@@ -173,6 +173,26 @@
   flex-wrap: wrap;
 }
 
+.honestBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-2);
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.honestIcon {
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  opacity: 0.85;
+}
+
 .viewDetailsBtn {
   margin-left: auto;
 }

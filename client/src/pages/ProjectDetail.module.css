@@ -263,6 +263,38 @@
   flex-wrap: wrap;
 }
 
+.honestBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.honestIcon {
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  opacity: 0.85;
+}
+
+.plannedChip {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--signal);
+  background-color: var(--signal-subtle);
+  border: 1px solid var(--line);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
 .unconfiguredNotice {
   font-family: var(--font-mono);
   font-size: 0.75rem;

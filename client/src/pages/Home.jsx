@@ -10,6 +10,16 @@ import Contact from '../sections/Contact/Contact.jsx';
 import styles from './Home.module.css';
 
 export default function Home() {
+  React.useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'instant' });
+      }
+    }
+  }, []);
+
   return (
     <div className={styles.homeContainer}>
       {/* 01 / CLIENT — HERO */}
