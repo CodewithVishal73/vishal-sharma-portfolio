@@ -536,10 +536,66 @@
   border: 1px solid color-mix(in oklab, var(--signal) 40%, transparent);
 }
 
-.tagIllustrative {
+.tagProject {
+  background: color-mix(in oklab, var(--signal) 15%, transparent);
+  color: var(--signal);
+  border: 1px solid color-mix(in oklab, var(--signal) 40%, transparent);
+}
+
+.legendBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: 8px 12px;
   background: var(--surface-2);
-  color: var(--ink-2);
   border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.legendTitle {
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.05em;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legend_actual {
+  background: var(--signal);
+  box-shadow: 0 0 6px var(--signal);
+}
+
+.legend_project {
+  background: var(--signal);
+  border: 1px dashed var(--signal);
+}
+
+.legend_illustrative {
+  background: transparent;
+  border: 1px dashed var(--ink-2);
+}
+
+.legendTag {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.legendText {
+  color: var(--ink-2);
 }
 
 .autoToggleBtn {
@@ -610,6 +666,18 @@
   font-family: var(--font-mono);
   font-size: 12px;
   animation: fadeIn 0.2s var(--ease-out);
+}
+
+.telemetryIdle {
+  background-color: var(--surface-2);
+  border: 1px dashed var(--line);
+  color: var(--ink-2);
+}
+
+.telemetryWaking {
+  background-color: color-mix(in oklab, #f59e0b 14%, transparent);
+  border: 1px solid #f59e0b;
+  color: #f59e0b;
 }
 
 .telemetrySuccess {

@@ -29,17 +29,17 @@ import {
   ARCHITECTURE_META,
   ARCHITECTURE_PATHS,
   ARCHITECTURE_NODES,
+  ARCHITECTURE_LEGEND,
 } from '../../data/architecture.js';
 import styles from './SystemMap.module.css';
 
-// SVG coordinate maps and racetrack paths
+// SVG coordinate maps and continuous racetrack paths
 const SVG_VIEWBOX = '0 0 940 370';
 
-// Mathematical continuous SVG paths for packet motion
 const PATH_DATA = {
   java: 'M 80 155 L 235 155 C 320 155, 345 80, 435 80 L 645 80 L 855 80 L 645 80 L 435 80 C 345 80, 320 155, 235 155 L 80 155 Z',
-  node: 'M 80 155 L 235 155 C 320 155, 345 220, 435 220 L 645 220 L 855 220 L 645 220 L 435 220 C 345 220, 320 155, 235 155 L 80 155 Z',
-  ai: 'M 80 155 L 235 155 C 320 155, 345 220, 435 220 L 645 220 L 645 315 L 645 220 L 435 220 C 345 220, 320 155, 235 155 L 80 155 Z',
+  node: 'M 80 155 L 235 155 C 320 155, 345 215, 435 215 L 645 215 L 855 215 L 645 215 L 435 215 C 345 215, 320 155, 235 155 L 80 155 Z',
+  ai: 'M 80 155 L 235 155 C 320 155, 345 215, 435 215 L 645 215 L 645 310 L 645 215 L 435 215 C 345 215, 320 155, 235 155 L 80 155 Z',
 };
 
 const PATH_KEYS = ['node', 'java', 'ai'];
@@ -48,24 +48,28 @@ export default function SystemMap() {
   const containerRef = useRef(null);
   const activeTrackRef = useRef(null);
   const animationFrameId = useRef(null);
+  const autoTimerRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Container width detection for layout mode
+  // Container width detection for responsive layout modes
   const [containerWidth, setContainerWidth] = useState(800);
 
-  // Selected architecture path & Auto rotation state
+  // Single source of truth in React state for Auto rotation
   const [selectedPathId, setSelectedPathId] = useState('node');
-  const [isAuto, setIsAuto] = useState(!prefersReducedMotion);
+  const [autoPlay, setAutoPlay] = useState(!prefersReducedMotion);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [isTabVisible, setIsTabVisible] = useState(true);
+  const [isCardIntersecting, setIsCardIntersecting] = useState(true);
 
   // Packet animation state
   const [packetCoord, setPacketCoord] = useState({ x: 80, y: 155 });
   const [activeNodeId, setActiveNodeId] = useState(null);
 
   // Real API ping state (strictly for the real portfolio backend)
-  const [pinging, setPinging] = useState(false);
-  const [pingResult, setPingResult] = useState(null);
-  const [pingError, setPingError] = useState(null);
+  // Status: 'idle' | 'pinging' | 'success' | 'error' | 'waking'
+  const [pingStatus, setPingStatus] = useState('idle');
+  const [pingData, setPingData] = useState(null);
+  const [pingErrorMsg, setPingErrorMsg] = useState(null);
 
   const activePath = ARCHITECTURE_PATHS[selectedPathId] || ARCHITECTURE_PATHS.node;
 
@@ -81,12 +85,41 @@ export default function SystemMap() {
     return () => observer.disconnect();
   }, []);
 
-  // 2. Auto rotation loop across paths (pauses when hovering, focused, or reduced motion)
+  // 2. Tab visibility & Intersection observation for pause controls
   useEffect(() => {
-    if (!isAuto || isInteracting || prefersReducedMotion) return;
+    const handleVisibility = () => {
+      setIsTabVisible(document.visibilityState === 'visible');
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
-    // Advance to next path after 7 seconds of packet travel
-    const timer = setTimeout(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsCardIntersecting(entry.isIntersecting);
+    });
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      observer.disconnect();
+    };
+  }, []);
+
+  // 3. Strict single-owner timer for Auto rotation
+  useEffect(() => {
+    // Clear any active timer immediately
+    if (autoTimerRef.current) {
+      clearTimeout(autoTimerRef.current);
+      autoTimerRef.current = null;
+    }
+
+    // Do not set timer if autoPlay is paused, user is interacting, tab is hidden, off-screen, or reduced motion
+    if (!autoPlay || isInteracting || !isTabVisible || !isCardIntersecting || prefersReducedMotion) {
+      return;
+    }
+
+    // Single timer instance
+    autoTimerRef.current = setTimeout(() => {
       setSelectedPathId((current) => {
         const idx = PATH_KEYS.indexOf(current);
         const nextIdx = (idx + 1) % PATH_KEYS.length;
@@ -94,10 +127,15 @@ export default function SystemMap() {
       });
     }, 7200);
 
-    return () => clearTimeout(timer);
-  }, [selectedPathId, isAuto, isInteracting, prefersReducedMotion]);
+    return () => {
+      if (autoTimerRef.current) {
+        clearTimeout(autoTimerRef.current);
+        autoTimerRef.current = null;
+      }
+    };
+  }, [autoPlay, selectedPathId, isInteracting, isTabVisible, isCardIntersecting, prefersReducedMotion]);
 
-  // 3. Single rAF animation loop for the traveling packet
+  // 4. Single rAF animation loop for the traveling packet
   useEffect(() => {
     if (prefersReducedMotion || containerWidth < 480) {
       setPacketCoord({ x: 80, y: 155 });
@@ -105,26 +143,11 @@ export default function SystemMap() {
       return;
     }
 
-    let isVisible = true;
-    let isIntersecting = true;
     let progress = 0;
     const speed = 0.0022;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      isIntersecting = entry.isIntersecting;
-    });
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    const handleVisibility = () => {
-      isVisible = document.visibilityState === 'visible';
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-
     const step = () => {
-      if (isVisible && isIntersecting && activeTrackRef.current) {
+      if (isTabVisible && isCardIntersecting && activeTrackRef.current) {
         progress = (progress + speed) % 1;
         const totalLen = activeTrackRef.current.getTotalLength();
         const pt = activeTrackRef.current.getPointAtLength(progress * totalLen);
@@ -146,29 +169,47 @@ export default function SystemMap() {
     animationFrameId.current = requestAnimationFrame(step);
 
     return () => {
-      cancelAnimationFrame(animationFrameId.current);
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', handleVisibility);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
     };
-  }, [selectedPathId, prefersReducedMotion, containerWidth]);
+  }, [selectedPathId, prefersReducedMotion, containerWidth, isTabVisible, isCardIntersecting]);
 
-  // 4. Real Ping API handler (calls portfolio's /api/health)
+  // 5. Real Ping API handler (calls portfolio's /api/health)
   const handlePing = async () => {
-    setPinging(true);
-    setPingError(null);
-    setPingResult(null);
+    setPingStatus('pinging');
+    setPingErrorMsg(null);
+    setPingData(null);
+
+    const startTime = performance.now();
 
     try {
       const data = await pingApi();
-      if (data.ok) {
-        setPingResult(data);
+      const elapsed = Math.round(performance.now() - startTime);
+
+      if (data.ok && data.status === 'up') {
+        setPingStatus('success');
+        setPingData({
+          statusCode: data.status ? 200 : 500,
+          latency: data.latency || elapsed,
+          db: data.db, // 'connected' or 'disconnected'
+          uptime: data.uptime,
+          ts: data.ts,
+          isColdStart: elapsed > 2500,
+        });
       } else {
-        setPingError(data.error?.message || 'Server waking up, retrying…');
+        const isWaking = elapsed > 3000;
+        setPingStatus(isWaking ? 'waking' : 'error');
+        setPingErrorMsg(
+          data.error?.message ||
+            (isWaking
+              ? 'Server instance is spinning up (cold start), retrying…'
+              : `HTTP error ${data.status || 500}`)
+        );
       }
-    } catch {
-      setPingError('Server waking up, retrying…');
-    } finally {
-      setPinging(false);
+    } catch (err) {
+      setPingStatus('error');
+      setPingErrorMsg(err.message || 'Network connection failed');
     }
   };
 
@@ -194,7 +235,7 @@ export default function SystemMap() {
     if (nextIndex !== currentIndex) {
       const nextPath = PATH_KEYS[nextIndex];
       setSelectedPathId(nextPath);
-      setIsAuto(false);
+      setAutoPlay(false);
       const nextBtn = document.getElementById(`arch-tab-${nextPath}`);
       if (nextBtn) nextBtn.focus();
     }
@@ -221,7 +262,7 @@ export default function SystemMap() {
             const node = ARCHITECTURE_NODES[nId];
             return (
               <li key={nId}>
-                Step {idx + 1}: {node?.label} ({node?.sub}) - {node?.category}
+                Step {idx + 1}: {node?.label} ({node?.sub}) - {node?.category} [{node?.archKind}]
               </li>
             );
           })}
@@ -243,12 +284,14 @@ export default function SystemMap() {
           variant="secondary"
           size="sm"
           onClick={handlePing}
-          disabled={pinging}
+          disabled={pingStatus === 'pinging'}
           className={styles.pingBtn}
           aria-label="Ping live portfolio backend API health endpoint"
         >
-          <FiActivity className={`${styles.pingIcon} ${pinging ? styles.spin : ''}`} />
-          <span>{pinging ? 'Pinging…' : 'Ping Backend'}</span>
+          <FiActivity
+            className={`${styles.pingIcon} ${pingStatus === 'pinging' ? styles.spin : ''}`}
+          />
+          <span>{pingStatus === 'pinging' ? 'Pinging…' : 'Ping Backend'}</span>
         </Button>
       </header>
 
@@ -265,30 +308,6 @@ export default function SystemMap() {
                 <feGaussianBlur stdDeviation="3.5" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
-
-              <marker
-                id="arch-arrow"
-                viewBox="0 0 10 10"
-                refX="7"
-                refY="5"
-                markerWidth="5"
-                markerHeight="5"
-                orient="auto-start-reverse"
-              >
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--signal)" />
-              </marker>
-
-              <marker
-                id="arch-arrow-dim"
-                viewBox="0 0 10 10"
-                refX="7"
-                refY="5"
-                markerWidth="5"
-                markerHeight="5"
-                orient="auto-start-reverse"
-              >
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--line)" />
-              </marker>
             </defs>
 
             {/* Static Background Circuit Guides for All Branches */}
@@ -303,47 +322,61 @@ export default function SystemMap() {
             {/* Fork to Java */}
             <path
               d="M 272 155 C 330 155, 345 80, 396 80"
-              className={`${styles.circuitLine} ${selectedPathId === 'java' ? styles.branchActive : styles.branchDimmed}`}
+              className={`${styles.circuitLine} ${
+                selectedPathId === 'java' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
             />
             <path
               d="M 474 80 L 606 80"
-              className={`${styles.circuitLine} ${selectedPathId === 'java' ? styles.branchActive : styles.branchDimmed}`}
+              className={`${styles.circuitLine} ${
+                selectedPathId === 'java' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
             />
             <path
               d="M 684 80 L 816 80"
-              className={`${styles.circuitLine} ${selectedPathId === 'java' ? styles.branchActive : styles.branchDimmed}`}
+              className={`${styles.circuitLine} ${
+                selectedPathId === 'java' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
             />
 
             {/* Fork to Node */}
             <path
-              d="M 272 155 C 330 155, 345 220, 396 220"
-              className={`${styles.circuitLine} ${selectedPathId === 'node' ? styles.branchActive : styles.branchDimmed}`}
+              d="M 272 155 C 330 155, 345 215, 396 215"
+              className={`${styles.circuitLine} ${
+                selectedPathId === 'node' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
             />
             <path
-              d="M 474 220 L 606 220"
-              className={`${styles.circuitLine} ${selectedPathId === 'node' ? styles.branchActive : styles.branchDimmed}`}
+              d="M 474 215 L 606 215"
+              className={`${styles.circuitLine} ${
+                selectedPathId === 'node' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
             />
             <path
-              d="M 684 220 L 816 220"
-              className={`${styles.circuitLine} ${selectedPathId === 'node' ? styles.branchActive : styles.branchDimmed}`}
+              d="M 684 215 L 816 215"
+              className={`${styles.circuitLine} ${
+                selectedPathId === 'node' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
             />
 
             {/* Optional AI Integration Branch (Dashed connector from Node backend) */}
             <path
-              d="M 645 258 L 645 288"
-              className={`${styles.circuitLine} ${styles.circuitDashed} ${selectedPathId === 'ai' ? styles.branchActive : styles.branchDimmed}`}
+              d="M 645 248 L 645 282"
+              className={`${styles.circuitLine} ${styles.circuitDashed} ${
+                selectedPathId === 'ai' ? styles.branchActive : styles.branchDimmed
+              }`}
               stroke="var(--line)"
               strokeWidth="1.5"
               strokeDasharray="4 4"
@@ -380,12 +413,12 @@ export default function SystemMap() {
               />
             )}
 
-            {/* Directional Flow Labels */}
+            {/* Branch Header Watermarks */}
             <text x="350" y="46" className={styles.branchHeaderLabel}>
-              BRANCH A: JAVA / SPRING BOOT ECOSYSTEM
+              BRANCH A: JAVA / SPRING BOOT ECOSYSTEM [SELLERLENSIQ]
             </text>
             <text x="350" y="278" className={styles.branchHeaderLabel}>
-              BRANCH B: NODE.JS / EXPRESS (THIS SITE BACKEND)
+              BRANCH B: NODE.JS / EXPRESS [THIS SITE RUNTIME]
             </text>
 
             {/* RENDER ALL SYSTEM NODES */}
@@ -607,6 +640,18 @@ export default function SystemMap() {
         </div>
       )}
 
+      {/* Architecture Legend (Three kinds of architecture) */}
+      <div className={styles.legendBar} aria-label="Architecture classification legend">
+        <span className={styles.legendTitle}>CLASSIFICATION:</span>
+        {ARCHITECTURE_LEGEND.map((item) => (
+          <div key={item.kind} className={styles.legendItem}>
+            <span className={`${styles.legendDot} ${styles[`legend_${item.kind}`]}`} />
+            <span className={styles.legendTag}>{item.tag}</span>
+            <span className={styles.legendText}>({item.label})</span>
+          </div>
+        ))}
+      </div>
+
       {/* Segmented Architecture Selector & Auto Play/Pause */}
       <div className={styles.selectorBar}>
         <div
@@ -628,7 +673,7 @@ export default function SystemMap() {
                 className={`${styles.segmentBtn} ${isSelected ? styles.segmentBtnActive : ''}`}
                 onClick={() => {
                   setSelectedPathId(pKey);
-                  setIsAuto(false);
+                  setAutoPlay(false);
                 }}
                 onKeyDown={(e) => handleSelectorKeyDown(e, pKey)}
               >
@@ -636,7 +681,11 @@ export default function SystemMap() {
                 <span className={styles.segmentLabel}>{item.shortLabel}</span>
                 <span
                   className={`${styles.segmentTag} ${
-                    item.kind === 'real' ? styles.tagReal : styles.tagIllustrative
+                    item.kind === 'actual'
+                      ? styles.tagReal
+                      : item.kind === 'project'
+                      ? styles.tagProject
+                      : styles.tagIllustrative
                   }`}
                 >
                   {item.statusTag}
@@ -649,13 +698,18 @@ export default function SystemMap() {
         {/* Auto Play / Pause Toggle Button */}
         <button
           type="button"
-          className={`${styles.autoToggleBtn} ${isAuto ? styles.autoActive : ''}`}
-          onClick={() => setIsAuto((prev) => !prev)}
-          aria-label={isAuto ? 'Pause automatic path rotation' : 'Resume automatic path rotation'}
-          title={isAuto ? 'Auto rotation active (Click to pause)' : 'Paused (Click to start auto rotation)'}
+          aria-pressed={autoPlay}
+          className={`${styles.autoToggleBtn} ${autoPlay ? styles.autoActive : ''}`}
+          onClick={() => setAutoPlay((prev) => !prev)}
+          aria-label={autoPlay ? 'Pause automatic path rotation' : 'Resume automatic path rotation'}
+          title={
+            autoPlay
+              ? 'Auto rotation active (Click to pause)'
+              : 'Paused (Click to resume auto rotation)'
+          }
         >
-          {isAuto ? <FiPause size={13} /> : <FiPlay size={13} />}
-          <span>{isAuto ? 'Auto: Playing' : 'Auto: Paused'}</span>
+          {autoPlay ? <FiPause size={13} /> : <FiPlay size={13} />}
+          <span>{autoPlay ? 'Auto: Playing' : 'Auto: Paused'}</span>
         </button>
       </div>
 
@@ -665,34 +719,72 @@ export default function SystemMap() {
         <span className={styles.captionText}>{activePath.caption}</span>
       </div>
 
-      {/* Real Ping Telemetry Status Banner (strictly for portfolio backend) */}
-      {(pingResult || pingError) && (
-        <div
-          className={`${styles.telemetryBanner} ${
-            pingError ? styles.telemetryError : styles.telemetrySuccess
-          }`}
-          role="status"
-          aria-live="polite"
-        >
-          {pingResult ? (
-            <>
-              <FiCheckCircle className={styles.bannerIcon} />
-              <div className={styles.bannerText}>
-                <strong>Portfolio API:</strong> 200 OK · Latency:{' '}
-                <strong>{pingResult.latency} ms</strong> · DB:{' '}
-                <strong>{pingResult.db}</strong> · Uptime: {pingResult.uptime}s
-              </div>
-            </>
-          ) : (
-            <>
-              <FiAlertCircle className={styles.bannerIcon} />
-              <div className={styles.bannerText}>
-                <strong>Portfolio API:</strong> {pingError}
-              </div>
-            </>
-          )}
-        </div>
-      )}
+      {/* Real Ping Telemetry Status Banner (Strictly for Node.js / Express path) */}
+      <div
+        className={`${styles.telemetryBanner} ${
+          pingStatus === 'success'
+            ? styles.telemetrySuccess
+            : pingStatus === 'error'
+            ? styles.telemetryError
+            : pingStatus === 'waking'
+            ? styles.telemetryWaking
+            : styles.telemetryIdle
+        }`}
+        role="status"
+        aria-live="polite"
+      >
+        {pingStatus === 'idle' && (
+          <>
+            <FiActivity className={styles.bannerIcon} />
+            <div className={styles.bannerText}>
+              <strong>Telemetry inactive:</strong> Click "Ping Backend" to execute a live roundtrip
+              verification against this portfolio's Express &amp; MongoDB Atlas service.
+            </div>
+          </>
+        )}
+
+        {pingStatus === 'pinging' && (
+          <>
+            <FiActivity className={`${styles.bannerIcon} ${styles.spin}`} />
+            <div className={styles.bannerText}>
+              <strong>Calling /api/health:</strong> Measuring roundtrip network latency and MongoDB
+              connection state…
+            </div>
+          </>
+        )}
+
+        {pingStatus === 'success' && pingData && (
+          <>
+            <FiCheckCircle className={styles.bannerIcon} />
+            <div className={styles.bannerText}>
+              <strong>Portfolio API:</strong> 200 OK · Roundtrip Latency:{' '}
+              <strong>{pingData.latency} ms</strong>
+              {pingData.isColdStart ? ' (Cold-start)' : ''} · Database:{' '}
+              <strong>{pingData.db === 'connected' ? 'Connected (Atlas)' : 'Disconnected'}</strong> ·
+              Uptime: {pingData.uptime}s
+            </div>
+          </>
+        )}
+
+        {pingStatus === 'waking' && (
+          <>
+            <FiAlertCircle className={styles.bannerIcon} />
+            <div className={styles.bannerText}>
+              <strong>Instance Waking:</strong> Free-tier service instance is waking from sleep.
+              Latency exceeds 3s. Retrying connection…
+            </div>
+          </>
+        )}
+
+        {pingStatus === 'error' && (
+          <>
+            <FiAlertCircle className={styles.bannerIcon} />
+            <div className={styles.bannerText}>
+              <strong>Portfolio API Offline / Error:</strong> {pingErrorMsg}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
