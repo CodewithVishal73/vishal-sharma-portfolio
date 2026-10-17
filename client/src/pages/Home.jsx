@@ -6,11 +6,7 @@ import Skills from '../sections/Skills/Skills.jsx';
 import Projects from '../sections/Projects/Projects.jsx';
 import Timeline from '../sections/Timeline/Timeline.jsx';
 import Certifications from '../sections/Certifications/Certifications.jsx';
-import SectionShell from '../components/SectionShell/SectionShell.jsx';
-import Button from '../components/primitives/Button.jsx';
-import Badge from '../components/primitives/Badge.jsx';
-import Chip from '../components/primitives/Chip.jsx';
-import Port from '../components/primitives/Port.jsx';
+import Contact from '../sections/Contact/Contact.jsx';
 import styles from './Home.module.css';
 
 export default function Home() {
@@ -28,7 +24,6 @@ export default function Home() {
       {/* 04 / SERVICES — PROJECTS */}
       <Projects />
 
-      {/* 05 / HISTORY — EDUCATION */}
       {/* 05 / HISTORY — EDUCATION & EXPERIENCE */}
       <Timeline />
 
@@ -36,30 +31,7 @@ export default function Home() {
       <Certifications />
 
       {/* 07 / RESPONSE — CONTACT */}
-      <SectionShell
-        id="response"
-        nodeNumber="07"
-        nodeLabel="RESPONSE"
-        title="Contact"
-        subtitle="Send a real-time message through the Express & MongoDB backend"
-      >
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <span className="mono-label">SEND A REQUEST (201 CREATED)</span>
-              <Port active />
-            </div>
-            <p className={styles.cardDesc}>
-              Direct pipeline to MongoDB Atlas with server rate-limiting, Zod input validation, and optional SMTP notification.
-            </p>
-            <div className={styles.heroActions}>
-              <Button variant="primary">
-                Open Contact Form
-              </Button>
-            </div>
-          </div>
-        </div>
-      </SectionShell>
+      <Contact />
     </div>
   );
 }

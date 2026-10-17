@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 /**
  * Fetch wrapper with timeout and normalized JSON response/error shape.
@@ -42,7 +42,7 @@ export async function request(path, options = {}) {
       };
     }
 
-    return data;
+    return { ...data, status: response.status };
   } catch (err) {
     clearTimeout(timer);
     const isTimeout = err.name === 'AbortError';
