@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { id: 'client', label: 'Client' },
   { id: 'identity', label: 'Identity' },
   { id: 'stack', label: 'Stack' },
+  { id: 'intelligence', label: 'Intelligence' },
   { id: 'services', label: 'Services' },
   { id: 'history', label: 'History' },
   { id: 'proof', label: 'Proof' },

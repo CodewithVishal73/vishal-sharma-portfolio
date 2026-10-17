@@ -45,9 +45,19 @@ Authoritative audit of all technical, educational, and project claims made acros
 | **Certification: McKinsey.org Forward Program** | `certifications.js`, `CertCard.jsx` | Credly badge URL `bef2840b-...` | `verified` |
 | **Certification: Google AI Essentials** | `certifications.js`, `CertCard.jsx` | Coursera verification URL `4FEA75A7SLPY` | `verified` |
 | **Certification: IBM Generative AI: Prompt Engineering Basics** | `certifications.js`, `CertCard.jsx` | Coursera course URL | `verified` |
+| **Intelligence Layer: User / Application Node** | `intelligence.js`, `Intelligence.jsx` | Portfolio React client (`client/package.json`) | `verified` |
+| **Intelligence Layer: Application Logic Node** | `intelligence.js`, `Intelligence.jsx` | Portfolio Express server (`server/package.json`) | `verified` |
+| **Intelligence Layer: API Integration Layer Node** | `intelligence.js`, `Intelligence.jsx` | Portfolio REST API contracts (`routes/` in server) | `verified` |
+| **Intelligence Layer: External AI Service Node** | `intelligence.js`, `Intelligence.jsx` | Generic architecture concept (no vendor lock-in) | `conceptual / planned` (educational only) |
+| **Intelligence Layer: Database & Context Node** | `intelligence.js`, `Intelligence.jsx` | Portfolio MongoDB Atlas (`server/package.json`) | `verified` |
+| **Intelligence Scenario: Augment Existing App (S1)** | `intelligence.js`, `Intelligence.jsx` | Architecture integration concept | `conceptual / planned` |
+| **Intelligence Scenario: Voice Input to Structured Data (S2)** | `intelligence.js`, `Intelligence.jsx` | Vaani Bill concept | `conceptual / planned` (owner-stated concept) |
+| **Intelligence Scenario: Persisted Context for Repeat Use (S3)** | `intelligence.js`, `Intelligence.jsx` | Stateful architecture pattern | `conceptual / planned` |
 
 ## Summary of Removals and UI Adjustments
 
 1. **Unverified multitenancy and RLS claims removed:** References to PostgreSQL Row-Level Security tenant isolation in SellerLensIQ have been removed from `projects.js`, `skills.js`, and `timeline.js`.
 2. **Unverified working voice/AI pipeline claims removed:** All claims implying that Vaani Bill has working audio streaming or deployed speech models were removed from `skills.js` and `projects.js`. Vaani Bill is presented strictly as a planned concept with an explicit `Concept` chip and `Planned Direction (Not Shipped)` separation.
 3. **Honest states for missing project links:** Since no public GitHub or live demo URLs are provided or readable in the repository for any of the 3 projects, buttons are not rendered as disabled or fake links. Instead, the UI explicitly renders truthful status chips: `"Repository private"` and `"No public demo yet"`.
+4. **Intelligent Systems Layer evidence tiers:** Each node and scenario in the Intelligence section carries an explicit evidence tier chip. External AI service and scenarios are strictly flagged as `"Conceptual / planned"` with a mandatory caption confirming it is an educational diagram and not part of the portfolio runtime.
+

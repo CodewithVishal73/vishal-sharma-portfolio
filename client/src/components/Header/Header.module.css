@@ -59,8 +59,9 @@
 .navList {
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: clamp(10px, 1.3vw, var(--space-5));
   list-style: none;
+  flex-wrap: nowrap;
 }
 
 .navLink {
@@ -72,6 +73,7 @@
   color: var(--ink-2);
   text-decoration: none;
   padding: 8px 4px;
+  white-space: nowrap;
   transition: color var(--dur-fast) var(--ease-out);
 }
 

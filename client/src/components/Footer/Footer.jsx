@@ -12,6 +12,7 @@ export default function Footer() {
     { href: '#client', label: 'Top' },
     { href: '#identity', label: 'About' },
     { href: '#stack', label: 'Skills' },
+    { href: '#intelligence', label: 'Intelligence' },
     { href: '#services', label: 'Projects' },
     { href: '#history', label: 'Timeline' },
     { href: '#proof', label: 'Credentials' },

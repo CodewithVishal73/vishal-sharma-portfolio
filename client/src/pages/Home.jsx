@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Hero from '../sections/Hero/Hero.jsx';
 import About from '../sections/About/About.jsx';
 import Skills from '../sections/Skills/Skills.jsx';
+import Intelligence from '../sections/Intelligence/Intelligence.jsx';
 import Projects from '../sections/Projects/Projects.jsx';
 import Timeline from '../sections/Timeline/Timeline.jsx';
 import Certifications from '../sections/Certifications/Certifications.jsx';
@@ -31,16 +32,19 @@ export default function Home() {
       {/* 03 / STACK — SKILLS */}
       <Skills />
 
-      {/* 04 / SERVICES — PROJECTS */}
+      {/* 04 / INTELLIGENCE — INTELLIGENT SYSTEMS LAYER */}
+      <Intelligence />
+
+      {/* 05 / SERVICES — PROJECTS */}
       <Projects />
 
-      {/* 05 / HISTORY — EDUCATION & EXPERIENCE */}
+      {/* 06 / HISTORY — EDUCATION & EXPERIENCE */}
       <Timeline />
 
-      {/* 06 / PROOF — CERTIFICATIONS & ACHIEVEMENTS */}
+      {/* 07 / PROOF — CERTIFICATIONS & ACHIEVEMENTS */}
       <Certifications />
 
-      {/* 07 / RESPONSE — CONTACT */}
+      {/* 08 / RESPONSE — CONTACT */}
       <Contact />
     </div>
   );

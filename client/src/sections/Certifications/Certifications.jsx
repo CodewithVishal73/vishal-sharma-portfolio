@@ -12,7 +12,7 @@ export default function Certifications() {
   return (
     <SectionShell
       id="proof"
-      nodeNumber="06"
+      nodeNumber="07"
       nodeLabel="PROOF"
       title="Certifications & Credentials"
       subtitle="Verified professional programs, technical enterprise specializations, and AI coursework."

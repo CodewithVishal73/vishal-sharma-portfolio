@@ -6,10 +6,11 @@ const NODES = [
   { id: 'client', num: '01', label: 'CLIENT' },
   { id: 'identity', num: '02', label: 'IDENTITY' },
   { id: 'stack', num: '03', label: 'STACK' },
-  { id: 'services', num: '04', label: 'SERVICES' },
-  { id: 'history', num: '05', label: 'HISTORY' },
-  { id: 'proof', num: '06', label: 'PROOF' },
-  { id: 'response', num: '07', label: 'RESPONSE' },
+  { id: 'intelligence', num: '04', label: 'INTELLIGENCE' },
+  { id: 'services', num: '05', label: 'SERVICES' },
+  { id: 'history', num: '06', label: 'HISTORY' },
+  { id: 'proof', num: '07', label: 'PROOF' },
+  { id: 'response', num: '08', label: 'RESPONSE' },
 ];
 
 export default function SpineRail() {

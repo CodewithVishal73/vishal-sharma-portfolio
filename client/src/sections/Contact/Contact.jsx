@@ -32,7 +32,7 @@ export default function Contact() {
   return (
     <SectionShell
       id="response"
-      nodeNumber="07"
+      nodeNumber="08"
       nodeLabel="RESPONSE"
       title="Contact & Transmission"
       subtitle="Establish a connection. Messages are validated by Express and stored directly in MongoDB Atlas."
