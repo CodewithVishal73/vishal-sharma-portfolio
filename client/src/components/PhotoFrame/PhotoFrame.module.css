@@ -10,31 +10,48 @@
   aspect-ratio: 3 / 4;
   width: 100%;
   border-radius: 20px;
-  background-color: var(--surface);
+  background-color: #0b0f0e;
   border: 1px solid var(--line);
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  transition: border-color var(--dur-fast) var(--ease-out);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
 }
 
 .frame:hover {
-  border-color: var(--ink-2);
+  border-color: #7df2c4;
+  box-shadow: 0 12px 36px rgba(125, 242, 196, 0.16);
 }
 
 .portIndicator {
   position: absolute;
   top: 14px;
   left: 16px;
-  z-index: 10;
+  z-index: 15;
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(11, 15, 14, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(125, 242, 196, 0.2);
 }
 
 .framePort {
-  box-shadow: 0 0 8px var(--signal);
+  background-color: #7df2c4 !important;
+  box-shadow: 0 0 8px #7df2c4 !important;
+}
+
+.portLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #c2d6ce;
 }
 
 /* Subtle scan line animation across the frame */
@@ -47,10 +64,10 @@
   background: linear-gradient(
     to right,
     transparent,
-    var(--signal),
+    #7df2c4,
     transparent
   );
-  opacity: 0.4;
+  opacity: 0.35;
   z-index: 5;
   animation: scan 4s linear infinite;
   pointer-events: none;
@@ -69,12 +86,64 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 15%;
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease-out);
+  display: block;
 }
 
 .photoVisible {
   opacity: 1;
+}
+
+/* Bottom metadata bar */
+.cardFooter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 28px 18px 14px 18px;
+  background: linear-gradient(
+    to top,
+    rgba(11, 15, 14, 0.98) 0%,
+    rgba(11, 15, 14, 0.88) 50%,
+    rgba(11, 15, 14, 0.45) 80%,
+    transparent 100%
+  );
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.metaTitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #7df2c4;
+  text-shadow: 0 0 10px rgba(125, 242, 196, 0.3);
+}
+
+.metaSub {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #9aa9a3;
+  letter-spacing: 0.01em;
+}
+
+.cornerMarker {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #7df2c4;
+  border-bottom: 2px solid #7df2c4;
+  z-index: 12;
+  pointer-events: none;
 }
 
 /* Graceful Monogram Placeholder */
@@ -87,8 +156,8 @@
   justify-content: center;
   gap: var(--space-4);
   background: 
-    radial-gradient(circle at 50% 40%, var(--signal-subtle), transparent 70%),
-    var(--surface);
+    radial-gradient(circle at 50% 40%, rgba(125, 242, 196, 0.12), transparent 70%),
+    #0b0f0e;
   padding: var(--space-6);
   text-align: center;
 }
@@ -98,39 +167,9 @@
   font-size: 5rem;
   font-weight: 800;
   letter-spacing: -0.05em;
-  color: var(--ink);
+  color: #eaf1ee;
   line-height: 1;
-  text-shadow: 0 4px 18px var(--signal-glow);
-}
-
-.placeholderMeta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.metaTitle {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--signal);
-}
-
-.metaSub {
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: var(--ink-2);
-}
-
-.cornerMarker {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 12px;
-  height: 12px;
-  border-right: 2px solid var(--signal);
-  border-bottom: 2px solid var(--signal);
+  text-shadow: 0 4px 18px rgba(125, 242, 196, 0.24);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -138,3 +177,4 @@
     display: none;
   }
 }
+

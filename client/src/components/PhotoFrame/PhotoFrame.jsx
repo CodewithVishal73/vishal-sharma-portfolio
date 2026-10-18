@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Port from '../primitives/Port.jsx';
+import portraitImage from '../../assets/profile-portrait.png';
 import styles from './PhotoFrame.module.css';
 
 export default function PhotoFrame({ className = '' }) {
@@ -12,35 +13,44 @@ export default function PhotoFrame({ className = '' }) {
         {/* Top Port indicator */}
         <div className={styles.portIndicator}>
           <Port active className={styles.framePort} />
-          <span className="mono-label">PORT : 02</span>
+          <span className={styles.portLabel}>PORT : 02</span>
         </div>
 
         {/* Scan line effect */}
         <div className={styles.scanLine} aria-hidden="true" />
 
-        {/* Real photo if available */}
+        {/* Real photo from local assets */}
         {!imgError && (
           <img
-            src="/photo/vishal.webp"
-            alt="Vishal Sharma portrait"
+            src={portraitImage}
+            alt="Portrait of Vishal Sharma"
+            width={320}
+            height={427}
+            loading="eager"
+            decoding="async"
             className={`${styles.photo} ${imgLoaded ? styles.photoVisible : ''}`}
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgError(true)}
           />
         )}
 
-        {/* Graceful Placeholder (initials "VS", no fake photos) */}
-        {(!imgLoaded || imgError) && (
+        {/* Graceful Placeholder if image fails */}
+        {imgError && (
           <div className={styles.placeholder} aria-label="Portrait placeholder for Vishal Sharma">
             <div className={styles.monogram}>VS</div>
-            <div className={styles.placeholderMeta}>
-              <span className={styles.metaTitle}>VISHAL SHARMA</span>
-              <span className={styles.metaSub}>B.Tech CSE · JKLU</span>
-            </div>
-            <div className={styles.cornerMarker} aria-hidden="true" />
           </div>
         )}
+
+        {/* Identity card metadata & labels */}
+        <div className={styles.cardFooter}>
+          <span className={styles.metaTitle}>VISHAL SHARMA</span>
+          <span className={styles.metaSub}>B.Tech CSE · JKLU</span>
+        </div>
+
+        {/* Corner marker */}
+        <div className={styles.cornerMarker} aria-hidden="true" />
       </div>
     </div>
   );
 }
+
