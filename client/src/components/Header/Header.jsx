@@ -4,6 +4,7 @@ import { FiMenu, FiX, FiDownload } from 'react-icons/fi';
 import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx';
 import Button from '../primitives/Button.jsx';
 import Port from '../primitives/Port.jsx';
+import { API_BASE_URL } from '../../lib/api.js';
 import { SECTIONS } from '../../data/sections.js';
 import styles from './Header.module.css';
 
@@ -90,10 +91,11 @@ export default function Header() {
           <Button
             variant="secondary"
             size="sm"
-            href="http://localhost:5000/api/cv/pdf"
+            href={`${API_BASE_URL}/api/cv/pdf`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.cvBtn}
+            aria-label="Download CV (PDF) from server"
           >
             <FiDownload aria-hidden="true" />
             <span>CV</span>

@@ -6,7 +6,7 @@ import ArchitectureMini from '../ArchitectureMini/ArchitectureMini.jsx';
 import ProjectTechBadge from '../ProjectTechBadge/ProjectTechBadge.jsx';
 import styles from './ProjectCard.module.css';
 
-export default function ProjectCard({ project, className = '' }) {
+export default function ProjectCard({ project, onSelectTag, className = '' }) {
   const cardRef = useRef(null);
 
   // Pointer-tracking glow driven directly through CSS variables (no React state updates)
@@ -21,12 +21,14 @@ export default function ProjectCard({ project, className = '' }) {
 
   const statusLabel =
     project.status === 'in-progress'
-      ? 'In Progress'
+      ? null
       : project.status === 'working'
       ? 'Working'
       : project.status === 'concept'
       ? 'Concept'
-      : project.stage || 'In Progress';
+      : project.stage && project.stage.toLowerCase() !== 'in progress'
+      ? project.stage
+      : null;
 
   return (
     <article
@@ -53,7 +55,7 @@ export default function ProjectCard({ project, className = '' }) {
           {project.internshipChip && (
             <span className={styles.internshipChip}>{project.internshipChip}</span>
           )}
-          <span className={styles.stageBadge}>{statusLabel}</span>
+          {statusLabel && <span className={styles.stageBadge}>{statusLabel}</span>}
         </div>
       </header>
 
@@ -68,7 +70,11 @@ export default function ProjectCard({ project, className = '' }) {
         <span className={styles.stackLabel}>Verified Stack</span>
         <div className={styles.stackRow}>
           {project.stack.map((tech) => (
-            <ProjectTechBadge key={tech} tech={tech} />
+            <ProjectTechBadge
+              key={tech}
+              tech={tech}
+              onClick={onSelectTag ? () => onSelectTag(tech) : undefined}
+            />
           ))}
         </div>
       </div>
@@ -76,9 +82,21 @@ export default function ProjectCard({ project, className = '' }) {
       {/* Project Tags */}
       <div className={styles.tagsRow}>
         {project.tags.map((tag) => (
-          <span key={tag} className={styles.tag}>
-            #{tag}
-          </span>
+          onSelectTag ? (
+            <button
+              key={tag}
+              type="button"
+              className={styles.tagBtn}
+              onClick={() => onSelectTag(tag)}
+              title={`Filter projects by #${tag}`}
+            >
+              #{tag}
+            </button>
+          ) : (
+            <span key={tag} className={styles.tag}>
+              #{tag}
+            </span>
+          )
         ))}
       </div>
 

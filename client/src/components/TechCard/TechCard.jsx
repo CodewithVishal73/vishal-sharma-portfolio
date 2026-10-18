@@ -1,153 +1,75 @@
-import React, { forwardRef, useRef } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import React from 'react';
 import { TechIcon } from './iconMap.jsx';
+import { LEVEL_MAP } from '../../data/skills.js';
 import styles from './TechCard.module.css';
 
-const TechCard = forwardRef(function TechCard(
-  {
-    skill,
-    delay = 0,
-    isHovered = false,
-    isRelated = false,
-    isDimmed = false,
-    onHover,
-    onLeave,
-    onClick,
-  },
-  forwardedRef
-) {
-  const cardRef = useRef(null);
-  const shouldReduceMotion = useReducedMotion();
+export default function TechCard({ skill, onSelectSkill, className = '' }) {
+  const levelInfo = LEVEL_MAP[skill.level] || LEVEL_MAP.working;
 
-  // Combine forwarded ref and internal ref
-  const handleRef = (el) => {
-    cardRef.current = el;
-    if (typeof forwardedRef === 'function') {
-      forwardedRef(el);
-    } else if (forwardedRef) {
-      forwardedRef.current = el;
+  const levelTagClass =
+    skill.level === 'core'
+      ? styles.levelTagCore
+      : skill.level === 'familiar'
+        ? styles.levelTagFamiliar
+        : styles.levelTagWorking;
+
+  const handleClick = (e) => {
+    if (onSelectSkill) {
+      e?.preventDefault();
+      onSelectSkill(skill.name);
     }
   };
 
-  // Evidence ratio: 0.35 for working knowledge, up to 1.0 for multi-project usage
-  const evidenceRatio =
-    skill.projectCount > 0 ? Math.min(1, 0.45 + skill.projectCount * 0.18) : 0.35;
-
-  const cardClasses = [
-    styles.card,
-    isHovered ? styles.active : '',
-    isRelated ? styles.related : '',
-    isDimmed ? styles.dimmed : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  const handleMouseEnter = () => {
-    if (onHover) onHover(skill);
-  };
-
-  const handleMouseLeave = () => {
-    if (onLeave) onLeave(skill);
-  };
-
-  const handleFocus = () => {
-    if (onHover) onHover(skill);
-  };
-
-  const handleBlur = () => {
-    if (onLeave) onLeave(skill);
-  };
-
-  const handleClick = () => {
-    if (onClick) {
-      onClick(skill);
-    } else if (onHover) {
-      onHover(skill);
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick(e);
     }
   };
+
+  const hasProjects = skill.evidenceType === 'project' && skill.usedIn?.length > 0;
 
   return (
     <div
-      ref={handleRef}
       tabIndex={0}
-      role="button"
-      aria-label={`${skill.name} - ${
-        skill.evidenceType === 'project'
-          ? `Used in ${skill.usedIn.join(', ')}`
-          : 'Working knowledge'
-      }`}
-      className={cardClasses}
-      style={{ '--brand-color': skill.brandColor }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
+      role={onSelectSkill ? 'button' : 'article'}
       onClick={handleClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick();
-        }
-      }}
+      onKeyDown={handleKeyDown}
+      aria-label={`${skill.name} (${levelInfo.label} proficiency) - Click to view projects using ${skill.name}`}
+      className={`${styles.card} ${onSelectSkill ? styles.clickableCard : ''} ${className}`}
+      style={{ '--brand-color': skill.brandColor }}
+      title={`Click to view projects using ${skill.name}`}
     >
-      {/* Port indicator on left edge (lights up on relation / hover) */}
-      <span
-        className={`${styles.port} ${isHovered || isRelated ? styles.portActive : ''}`}
-        aria-hidden="true"
-      />
-
-      {/* Card Header with Authentic Mark and Name */}
-      <div className={styles.cardHeader}>
-        <div
-          className={`${styles.iconWrapper} ${isHovered || isRelated ? styles.iconActive : ''}`}
-        >
-          <TechIcon id={skill.id} size={28} />
+      {/* Top Bar with Icon on left and Qualitative Level Tag on right */}
+      <div className={styles.cardTop}>
+        <div className={styles.iconWrapper}>
+          <TechIcon id={skill.id} size={26} />
         </div>
-        <div className={styles.nameWrapper}>
-          <span className={styles.name}>{skill.name}</span>
-          {skill.sub && <span className={styles.subLabel}>{skill.sub}</span>}
-        </div>
+        <span className={`${styles.levelTag} ${levelTagClass}`}>
+          {levelInfo.label}
+        </span>
       </div>
 
-      {/* Evidence Tag: Used in <projects> OR Working knowledge (No scores, no percentages) */}
+      {/* Card Title & Subcategory */}
+      <div className={styles.nameWrapper}>
+        <span className={styles.name} title={skill.name}>{skill.name}</span>
+        {skill.sub && <span className={styles.subLabel}>{skill.sub}</span>}
+      </div>
+
+      {/* Evidence Tag: Used in <projects> OR Foundational */}
       <div className={styles.evidenceRow}>
-        {skill.evidenceType === 'project' ? (
-          <span className={styles.usedInBadge}>
+        {hasProjects ? (
+          <span
+            className={styles.usedInBadge}
+            title={`Used in: ${skill.usedIn.join(', ')} (Click to view)`}
+          >
             Used in: <strong>{skill.usedIn.join(', ')}</strong>
+            <span className={styles.actionHint} aria-hidden="true">→</span>
           </span>
         ) : (
-          <span className={styles.knowledgeBadge}>Working knowledge</span>
+          <span className={styles.knowledgeBadge}>Foundational</span>
         )}
-      </div>
-
-      {/* Animated Evidence Breadth Meter Bar (Visual progression without numbers) */}
-      <div
-        role="meter"
-        aria-label={`${skill.name} application breadth`}
-        aria-valuenow={evidenceRatio}
-        aria-valuemin={0}
-        aria-valuemax={1}
-        aria-valuetext={
-          skill.evidenceType === 'project'
-            ? `Demonstrated across ${skill.usedIn.length} project(s)`
-            : 'Working knowledge'
-        }
-        className={styles.meterTrack}
-      >
-        <motion.div
-          className={styles.meterBar}
-          initial={{ scaleX: shouldReduceMotion ? evidenceRatio : 0 }}
-          whileInView={{ scaleX: evidenceRatio }}
-          viewport={{ once: true }}
-          transition={{
-            duration: shouldReduceMotion ? 0 : 0.65,
-            ease: [0.2, 0.8, 0.2, 1],
-            delay: shouldReduceMotion ? 0 : delay,
-          }}
-        />
       </div>
     </div>
   );
-});
-
-export default TechCard;
+}

@@ -119,7 +119,7 @@ export default function Contact() {
             {/* Verified CV Downloads */}
             <div className={styles.cvSection}>
               <span className={styles.cvLabel}>VERIFIED RESUME</span>
-              <DownloadCvButton className={styles.cvButton} />
+              <DownloadCvButton className={styles.cvButton} variant="primary" />
             </div>
           </div>
         </motion.div>

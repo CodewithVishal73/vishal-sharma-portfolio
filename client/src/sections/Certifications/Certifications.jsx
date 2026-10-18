@@ -4,16 +4,18 @@ import { FiAward } from 'react-icons/fi';
 import SectionShell from '../../components/SectionShell/SectionShell.jsx';
 import CertCard from '../../components/CertCard/CertCard.jsx';
 import { certifications } from '../../data/certifications.js';
+import { getSectionById } from '../../data/sections.js';
 import styles from './Certifications.module.css';
 
 export default function Certifications() {
+  const sectionMeta = getSectionById('proof');
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <SectionShell
       id="proof"
-      nodeNumber="08"
-      nodeLabel="PROOF"
+      nodeNumber={sectionMeta.num}
+      nodeLabel={sectionMeta.nodeLabel}
       title="Certifications & Credentials"
       subtitle="Verified professional programs, technical enterprise specializations, and AI coursework."
     >

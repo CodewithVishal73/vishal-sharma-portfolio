@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   FiArrowLeft,
@@ -21,7 +21,12 @@ import styles from './ProjectDetail.module.css';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const project = getProjectBySlug(slug);
+
+  const handleTechClick = (tech) => {
+    navigate(`/?tag=${encodeURIComponent(tech)}#services`);
+  };
 
   // If slug is unconfirmed or unknown, render NotFound
   if (!project) {
@@ -176,7 +181,12 @@ export default function ProjectDetail() {
         </header>
         <div className={styles.stackBadgesRow}>
           {project.stack.map((tech) => (
-            <ProjectTechBadge key={tech} tech={tech} size={16} />
+            <ProjectTechBadge
+              key={tech}
+              tech={tech}
+              size={16}
+              onClick={handleTechClick}
+            />
           ))}
         </div>
       </section>

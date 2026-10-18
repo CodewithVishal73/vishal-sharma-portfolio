@@ -3,12 +3,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1rem 1.15rem;
-  min-height: 96px;
+  padding: 1rem 1.15rem 1.05rem;
+  min-height: 108px;
   background-color: var(--surface-1);
   border: 1px solid var(--line);
   border-radius: 12px;
-  cursor: pointer;
   outline: none;
   width: 100%;
   max-width: 100%;
@@ -18,7 +17,6 @@
     border-color var(--dur-fast) ease,
     background-color var(--dur-fast) ease,
     transform var(--dur-fast) ease,
-    opacity var(--dur-fast) ease,
     box-shadow var(--dur-fast) ease;
 }
 
@@ -30,42 +28,45 @@
   box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.35);
 }
 
+.clickableCard {
+  cursor: pointer;
+  user-select: none;
+}
+
+.clickableCard:hover {
+  border-color: var(--signal);
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.35), 0 0 16px -6px var(--signal-subtle);
+}
+
+.clickableCard:active {
+  transform: translateY(0);
+}
+
+.actionHint {
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--signal);
+  font-weight: 700;
+  transition: transform var(--dur-fast) ease;
+}
+
+.clickableCard:hover .actionHint {
+  transform: translateX(3px);
+}
+
 .card:focus-visible {
   outline: 2px solid var(--signal);
   outline-offset: 2px;
 }
 
-/* Port indicator on left edge (spine motif) */
-.port {
-  position: absolute;
-  left: -4px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--line-strong);
-  border: 1.5px solid var(--bg);
-  transition:
-    background-color var(--dur-fast) ease,
-    box-shadow var(--dur-fast) ease,
-    transform var(--dur-fast) ease;
-}
-
-.card:hover .port,
-.card:focus-visible .port,
-.portActive {
-  background-color: var(--signal) !important;
-  box-shadow: 0 0 8px var(--signal-glow);
-  transform: translateY(-50%) scale(1.2);
-}
-
-/* Header with icon and name */
-.cardHeader {
+/* Top bar with icon and level tag */
+.cardTop {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+  width: 100%;
 }
 
 .iconWrapper {
@@ -80,8 +81,7 @@
 }
 
 .card:hover .iconWrapper,
-.card:focus-visible .iconWrapper,
-.iconActive {
+.card:focus-visible .iconWrapper {
   color: var(--brand-color, var(--signal)) !important;
   transform: scale(1.08);
 }
@@ -89,54 +89,70 @@
 .nameWrapper {
   display: flex;
   flex-direction: column;
+  gap: 0.15rem;
   min-width: 0;
+  margin-bottom: 0.65rem;
 }
 
 .name {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--ink);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .subLabel {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--ink-faint);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 1px;
-}
-
-/* Meter track and bar */
-.meterTrack {
-  position: relative;
-  width: 100%;
-  height: 4px;
-  background-color: var(--surface-3);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: auto;
-}
-
-.meterBar {
-  height: 100%;
-  width: 100%;
-  background-color: var(--signal);
-  border-radius: 2px;
-  transform-origin: left;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
 }
 
 /* Evidence badge row */
 .evidenceRow {
-  margin: 0.35rem 0 0.6rem 0;
+  margin-top: auto;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
+  min-width: 0;
 }
+
+.levelTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.levelTagCore {
+  background-color: color-mix(in oklab, var(--ok) 18%, transparent);
+  color: var(--ok);
+  border: 1px solid color-mix(in oklab, var(--ok) 32%, transparent);
+}
+
+.levelTagWorking {
+  background-color: color-mix(in oklab, var(--signal) 14%, transparent);
+  color: var(--signal);
+  border: 1px solid color-mix(in oklab, var(--signal) 28%, transparent);
+}
+
+.levelTagFamiliar {
+  background-color: var(--surface-2);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+}
+
 
 .usedInBadge {
   font-family: var(--font-mono);
@@ -145,11 +161,12 @@
   background-color: var(--signal-subtle);
   border: 1px solid color-mix(in oklab, var(--signal) 28%, transparent);
   border-radius: 4px;
-  padding: 1px 6px;
+  padding: 2px 7px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  line-height: 1.35;
 }
 
 .usedInBadge strong {
@@ -163,25 +180,9 @@
   background-color: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: 4px;
-  padding: 1px 6px;
+  padding: 2px 7px;
   white-space: nowrap;
-}
-
-/* Highlighting states */
-.active {
-  border-color: var(--signal);
-  background-color: var(--surface-2);
-  box-shadow: 0 0 16px var(--signal-glow);
-}
-
-.related {
-  border-color: var(--signal);
-  background-color: var(--surface-2);
-  box-shadow: 0 0 16px var(--signal-glow);
-}
-
-.dimmed {
-  opacity: 0.35;
+  line-height: 1.35;
 }
 
 @media (max-width: 768px) {

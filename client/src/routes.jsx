@@ -10,7 +10,7 @@ const ProjectDetail = lazy(() => import('./pages/ProjectDetail.jsx'));
 function Root() {
   return (
     <Layout>
-      <ScrollRestoration />
+      <ScrollRestoration getKey={(location) => location.pathname} />
       <Outlet />
     </Layout>
   );

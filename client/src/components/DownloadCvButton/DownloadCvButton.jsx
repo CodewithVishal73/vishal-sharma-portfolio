@@ -1,22 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiDownload, FiChevronDown, FiFileText } from 'react-icons/fi';
+import { FiDownload, FiChevronDown, FiFileText, FiAlertCircle, FiLoader } from 'react-icons/fi';
+import { downloadCv, API_BASE_URL } from '../../lib/api.js';
 import styles from './DownloadCvButton.module.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
-export default function DownloadCvButton({ className = '' }) {
+export default function DownloadCvButton({ className = '', variant = 'primary' }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isPreparing, setIsPreparing] = useState(false);
+  const [downloadingFormat, setDownloadingFormat] = useState(null); // 'pdf' | 'docx' | null
+  const [isWaking, setIsWaking] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [fallbackUrl, setFallbackUrl] = useState(null);
+
   const menuRef = useRef(null);
   const triggerRef = useRef(null);
+  const mainBtnRef = useRef(null);
 
-  const pdfUrl = `${API_BASE}/api/cv/pdf`;
-  const docxUrl = `${API_BASE}/api/cv/docx`;
+  const handleDownload = async (format) => {
+    setDownloadingFormat(format);
+    setIsWaking(false);
+    setErrorMessage(null);
+    setFallbackUrl(null);
+    const formatLabel = format.toUpperCase();
+    setStatusMessage(`Preparing ${formatLabel} CV...`);
 
-  const handleDownload = () => {
-    setIsPreparing(true);
-    setTimeout(() => setIsPreparing(false), 2000);
-    setIsOpen(false);
+    const result = await downloadCv(format, {
+      onWaking: (waking) => setIsWaking(waking),
+    });
+
+    setDownloadingFormat(null);
+    setIsWaking(false);
+
+    if (result.ok) {
+      setStatusMessage(`${formatLabel} CV downloaded successfully.`);
+      setTimeout(() => setStatusMessage(''), 4000);
+      setIsOpen(false);
+    } else {
+      setErrorMessage(result.error || 'Failed to download CV file from server.');
+      setFallbackUrl(result.fallbackUrl || `${API_BASE_URL}/api/cv/${format}`);
+      setStatusMessage(`Error: ${result.error || 'Download failed'}`);
+    }
   };
 
   // Close on Outside Click or Escape
@@ -45,27 +67,45 @@ export default function DownloadCvButton({ className = '' }) {
     };
   }, [isOpen]);
 
+  const isPreparing = Boolean(downloadingFormat);
+
   return (
-    <div className={`${styles.splitWrapper} ${className}`} ref={menuRef}>
-      {/* Primary Download Anchor (PDF) */}
-      <a
-        href={pdfUrl}
-        download="Vishal_Sharma_CV.pdf"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={handleDownload}
+    <div
+      className={`${styles.splitWrapper} ${styles[variant] || styles.primary} ${className}`}
+      ref={menuRef}
+    >
+      {/* Aria-live screen reader announcement */}
+      <span className={styles.srOnly} role="status" aria-live="polite">
+        {statusMessage}
+      </span>
+
+      {/* Primary Download Button (PDF default) */}
+      <button
+        ref={mainBtnRef}
+        type="button"
+        disabled={isPreparing}
+        onClick={() => handleDownload('pdf')}
         className={styles.mainBtn}
-        aria-label="Download CV (PDF) - Vishal Sharma"
+        aria-label={
+          isPreparing
+            ? 'Preparing CV download from server'
+            : 'Download CV in PDF format - Vishal Sharma'
+        }
       >
-        <FiDownload aria-hidden="true" className={styles.downloadIcon} />
-        <span>{isPreparing ? 'Preparing CV…' : 'Download CV'}</span>
+        {isPreparing ? (
+          <FiLoader aria-hidden="true" className={styles.downloadIcon} style={{ animation: 'spin 1s linear infinite' }} />
+        ) : (
+          <FiDownload aria-hidden="true" className={styles.downloadIcon} />
+        )}
+        <span>{isPreparing ? 'Preparing…' : 'Download CV'}</span>
         <span className={styles.badgeFormat}>PDF</span>
-      </a>
+      </button>
 
       {/* Split Menu Toggle */}
       <button
         ref={triggerRef}
         type="button"
+        disabled={isPreparing}
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${styles.toggleBtn} ${isOpen ? styles.toggleOpen : ''}`}
         aria-haspopup="menu"
@@ -82,43 +122,72 @@ export default function DownloadCvButton({ className = '' }) {
             <span className="mono-label">VERIFIED CV FORMATS</span>
           </div>
 
-          <a
-            href={pdfUrl}
-            download="Vishal_Sharma_CV.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={handleDownload}
+          {/* Calm line when server is cold starting */}
+          {isWaking && (
+            <div className={styles.wakingNotice} role="status">
+              <FiLoader aria-hidden="true" />
+              <span>The server is waking up (free hosting)...</span>
+            </div>
+          )}
+
+          {/* Error Banner with Direct Fallback Anchor */}
+          {errorMessage && (
+            <div className={styles.errorNotice} role="alert">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <FiAlertCircle color="var(--err)" />
+                <strong>Download issue:</strong>
+              </div>
+              <span>{errorMessage}</span>
+              {fallbackUrl && (
+                <a
+                  href={fallbackUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.fallbackAnchor}
+                >
+                  Open directly in browser ↗
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* Option 1: PDF */}
+          <button
+            type="button"
             role="menuitem"
-            className={styles.menuItem}
+            disabled={isPreparing}
+            onClick={() => handleDownload('pdf')}
+            className={`${styles.menuItem} ${styles.menuItemBtn}`}
+            aria-label="Download CV in PDF format"
           >
             <div className={styles.itemInfo}>
-              <FiFileText className={styles.itemIcon} />
+              <FiFileText className={styles.itemIcon} aria-hidden="true" />
               <div>
                 <div className={styles.itemTitle}>Adobe PDF (.pdf)</div>
-                <div className={styles.itemMeta}>1-Page verified layout · 3.5 kB</div>
+                <div className={styles.itemMeta}>1-Page ATS-formatted layout</div>
               </div>
             </div>
-            <span className={styles.badgePdf}>RECOMMENDED</span>
-          </a>
+            <span className={styles.badgePdf}>PDF</span>
+          </button>
 
-          <a
-            href={docxUrl}
-            download="Vishal_Sharma_CV.docx"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={handleDownload}
+          {/* Option 2: DOCX */}
+          <button
+            type="button"
             role="menuitem"
-            className={styles.menuItem}
+            disabled={isPreparing}
+            onClick={() => handleDownload('docx')}
+            className={`${styles.menuItem} ${styles.menuItemBtn}`}
+            aria-label="Download CV in Microsoft Word DOCX format"
           >
             <div className={styles.itemInfo}>
-              <FiFileText className={styles.itemIcon} />
+              <FiFileText className={styles.itemIcon} aria-hidden="true" />
               <div>
                 <div className={styles.itemTitle}>Microsoft Word (.docx)</div>
-                <div className={styles.itemMeta}>Applicant Tracking System ready · 10.8 kB</div>
+                <div className={styles.itemMeta}>Editable ATS document structure</div>
               </div>
             </div>
             <span className={styles.badgeDocx}>DOCX</span>
-          </a>
+          </button>
         </div>
       )}
     </div>

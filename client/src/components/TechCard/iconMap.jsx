@@ -16,8 +16,14 @@ import {
   SiPostman,
 } from 'react-icons/si';
 import { FaJava } from 'react-icons/fa';
-import { TbApi, TbSql } from 'react-icons/tb';
-import { FiCpu, FiLayers } from 'react-icons/fi';
+import {
+  TbApi,
+  TbSql,
+  TbPrompt,
+  TbBrain,
+  TbRobot,
+  TbMicrophone,
+} from 'react-icons/tb';
 
 export const TECH_ICONS = {
   javascript: SiJavascript,
@@ -37,8 +43,10 @@ export const TECH_ICONS = {
   github: SiGithub,
   maven: SiApachemaven,
   postman: SiPostman,
-  'practical-ai': FiCpu,
-  'ai-assisted': FiLayers,
+  'prompt-engineering': TbPrompt,
+  'practical-ai': TbBrain,
+  'ai-assisted-dev': TbRobot,
+  'voice-ai': TbMicrophone,
 };
 
 export function TechIcon({ id, className, style, size = 28 }) {

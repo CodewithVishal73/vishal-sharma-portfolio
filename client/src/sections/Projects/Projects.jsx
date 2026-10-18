@@ -5,9 +5,11 @@ import SectionShell from '../../components/SectionShell/SectionShell.jsx';
 import ProjectCard from '../../components/ProjectCard/ProjectCard.jsx';
 import ProjectFilter, { ProjectEmptyState } from '../../components/ProjectFilter/ProjectFilter.jsx';
 import { projects, getAllProjectTags } from '../../data/projects.js';
+import { getSectionById } from '../../data/sections.js';
 import styles from './Projects.module.css';
 
 export default function Projects() {
+  const sectionMeta = getSectionById('services');
   const [searchParams, setSearchParams] = useSearchParams();
   const shouldReduceMotion = useReducedMotion();
 
@@ -17,15 +19,15 @@ export default function Projects() {
   // Synchronized state with URL search params
   const rawTag = searchParams.get('tag') || searchParams.get('filter') || 'All';
   const activeTag = useMemo(() => {
-    // Graceful fallback if invalid query param
+    if (!rawTag || rawTag === 'All') return 'All';
     const match = tags.find((t) => t.toLowerCase() === rawTag.toLowerCase());
-    return match || 'All';
+    return match || rawTag;
   }, [tags, rawTag]);
 
   const rawSort = searchParams.get('sort') || 'newest';
   const sortBy = rawSort === 'az' ? 'az' : 'newest';
 
-  // Handlers to update URL query parameters
+  // Handlers to update URL query parameters with preventScrollReset
   const handleSelectTag = (tag) => {
     const nextParams = new URLSearchParams(searchParams);
     if (tag === 'All') {
@@ -35,7 +37,7 @@ export default function Projects() {
       nextParams.set('tag', tag);
       nextParams.delete('filter');
     }
-    setSearchParams(nextParams, { replace: true });
+    setSearchParams(nextParams, { replace: true, preventScrollReset: true });
   };
 
   const handleSelectSort = (sort) => {
@@ -45,17 +47,18 @@ export default function Projects() {
     } else {
       nextParams.set('sort', sort);
     }
-    setSearchParams(nextParams, { replace: true });
+    setSearchParams(nextParams, { replace: true, preventScrollReset: true });
   };
 
   // Filter and sort computation
   const filteredAndSortedProjects = useMemo(() => {
     let result = [...projects];
 
-    // Filter by tag
+    // Filter by tag or stack technology
     if (activeTag !== 'All') {
       result = result.filter((p) =>
-        p.tags.some((t) => t.toLowerCase() === activeTag.toLowerCase())
+        p.tags.some((t) => t.toLowerCase() === activeTag.toLowerCase()) ||
+        p.stack.some((s) => s.toLowerCase() === activeTag.toLowerCase())
       );
     }
 
@@ -76,8 +79,8 @@ export default function Projects() {
   return (
     <SectionShell
       id="services"
-      nodeNumber="06"
-      nodeLabel="SERVICES"
+      nodeNumber={sectionMeta.num}
+      nodeLabel={sectionMeta.nodeLabel}
       title="Featured Projects"
       subtitle="Engineering systems, intelligent point-of-sale platforms, and full-stack service architectures."
     >
@@ -114,6 +117,7 @@ export default function Projects() {
                 >
                   <ProjectCard
                     project={project}
+                    onSelectTag={handleSelectTag}
                     style={{ flex: 1, width: '100%' }}
                   />
                 </motion.div>

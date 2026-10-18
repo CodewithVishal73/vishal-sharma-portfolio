@@ -1,6 +1,32 @@
 // Authoritative Skills and Technologies Data
 // Reorganized under faculty headings: Frontend / Backend / Tools & Technologies
-// Strictly verified against CLAIMS.md. Evidence-based, with zero arbitrary scores or percentage numbers.
+// Strictly verified against CLAIMS.md. Evidence-based, with qualitative levels and zero arbitrary percentages.
+
+/**
+ * PROFICIENCY DERIVATION RULE (Derivation based on verified CLAIMS.md evidence):
+ * - Core (0.90 visual fill): Used in 2+ verified projects (Java, Spring Boot, JavaScript, REST APIs, Maven)
+ * - Working (0.60 visual fill): Used in 1 verified project (React, Node.js, Express, PostgreSQL, MongoDB, SQL, Git, GitHub, Postman)
+ * - Familiar (0.35 visual fill): Owner-stated / foundational knowledge without multi-project verification (C++, Python, MySQL)
+ *
+ * NOTE FOR OVERRIDES: To customize a skill level, adjust the `level` property directly on the skill object below.
+ */
+export const LEVEL_MAP = {
+  core: {
+    label: 'Core',
+    ratio: 0.9,
+    description: 'Core proficiency — verified across 2+ projects',
+  },
+  working: {
+    label: 'Working',
+    ratio: 0.6,
+    description: 'Working proficiency — verified in project implementations',
+  },
+  familiar: {
+    label: 'Familiar',
+    ratio: 0.35,
+    description: 'Familiar — foundational knowledge & applied exploration',
+  },
+};
 
 export const skillsData = {
   frontend: {
@@ -13,8 +39,10 @@ export const skillsData = {
         name: 'JavaScript',
         group: 'frontend',
         sub: 'Language',
+        level: 'core',
+        evidence: 'Core · used in SellerLensIQ, Vaani Bill',
         evidenceType: 'project',
-        usedIn: ['Portfolio Client', 'Portfolio Server'],
+        usedIn: ['SellerLensIQ', 'Vaani Bill'],
         projectCount: 2,
         brandColor: '#F7DF1E',
         context: 'Interactive client state, server runtime, and reactive asynchronous event handling.',
@@ -25,9 +53,11 @@ export const skillsData = {
         name: 'React',
         group: 'frontend',
         sub: 'UI Library',
+        level: 'core',
+        evidence: 'Core · used in SellerLensIQ, ClinicSaaS, Vaani Bill',
         evidenceType: 'project',
-        usedIn: ['Portfolio Client'],
-        projectCount: 1,
+        usedIn: ['SellerLensIQ', 'ClinicSaaS', 'Vaani Bill'],
+        projectCount: 3,
         brandColor: '#61DAFB',
         context: 'Component-driven user interfaces, React 18 hooks, and modular UI state.',
         relations: ['javascript', 'rest-apis'],
@@ -49,6 +79,8 @@ export const skillsData = {
             name: 'Java',
             group: 'backend',
             sub: 'Language',
+            level: 'core',
+            evidence: 'Core · used in SellerLensIQ, ClinicSaaS',
             evidenceType: 'project',
             usedIn: ['SellerLensIQ', 'ClinicSaaS'],
             projectCount: 2,
@@ -61,11 +93,13 @@ export const skillsData = {
             name: 'Node.js',
             group: 'backend',
             sub: 'Runtime',
+            level: 'working',
+            evidence: 'Working · used in Vaani Bill, Portfolio Server',
             evidenceType: 'project',
-            usedIn: ['Portfolio Server'],
-            projectCount: 1,
+            usedIn: ['Vaani Bill', 'Portfolio Server'],
+            projectCount: 2,
             brandColor: '#5FA04E',
-            context: 'Asynchronous event-driven backend runtime powering this portfolio site.',
+            context: 'Asynchronous event-driven backend runtime powering APIs and services.',
             relations: ['express', 'javascript', 'mongodb'],
           },
           {
@@ -73,6 +107,8 @@ export const skillsData = {
             name: 'C++',
             group: 'backend',
             sub: 'Language',
+            level: 'familiar',
+            evidence: 'Familiar · foundational systems knowledge',
             evidenceType: 'knowledge',
             usedIn: [],
             projectCount: 0,
@@ -85,12 +121,14 @@ export const skillsData = {
             name: 'Python',
             group: 'backend',
             sub: 'Language',
+            level: 'familiar',
+            evidence: 'Familiar · scripting and data experimentation',
             evidenceType: 'knowledge',
             usedIn: [],
             projectCount: 0,
             brandColor: '#3776AB',
             context: 'Automation scripting, data processing, and exploratory model prototyping.',
-            relations: ['practical-ai'],
+            relations: ['prompt-engineering', 'practical-ai'],
           },
         ],
       },
@@ -103,6 +141,8 @@ export const skillsData = {
             name: 'Spring Boot',
             group: 'backend',
             sub: 'Framework',
+            level: 'core',
+            evidence: 'Core · used in SellerLensIQ, ClinicSaaS',
             evidenceType: 'project',
             usedIn: ['SellerLensIQ', 'ClinicSaaS'],
             projectCount: 2,
@@ -115,6 +155,8 @@ export const skillsData = {
             name: 'Express',
             group: 'backend',
             sub: 'Framework',
+            level: 'working',
+            evidence: 'Working · used in Portfolio Server',
             evidenceType: 'project',
             usedIn: ['Portfolio Server'],
             projectCount: 1,
@@ -133,6 +175,8 @@ export const skillsData = {
             name: 'REST APIs',
             group: 'backend',
             sub: 'Architecture',
+            level: 'core',
+            evidence: 'Core · used in Portfolio Server, SellerLensIQ, ClinicSaaS',
             evidenceType: 'project',
             usedIn: ['Portfolio Server', 'SellerLensIQ', 'ClinicSaaS'],
             projectCount: 3,
@@ -151,6 +195,8 @@ export const skillsData = {
             name: 'PostgreSQL',
             group: 'backend',
             sub: 'Relational DB',
+            level: 'working',
+            evidence: 'Working · used in SellerLensIQ',
             evidenceType: 'project',
             usedIn: ['SellerLensIQ'],
             projectCount: 1,
@@ -163,6 +209,8 @@ export const skillsData = {
             name: 'MongoDB',
             group: 'backend',
             sub: 'Document Store',
+            level: 'working',
+            evidence: 'Working · used in Portfolio Server',
             evidenceType: 'project',
             usedIn: ['Portfolio Server'],
             projectCount: 1,
@@ -175,6 +223,8 @@ export const skillsData = {
             name: 'MySQL',
             group: 'backend',
             sub: 'Relational DB',
+            level: 'familiar',
+            evidence: 'Familiar · relational schema design',
             evidenceType: 'knowledge',
             usedIn: [],
             projectCount: 0,
@@ -187,6 +237,8 @@ export const skillsData = {
             name: 'SQL',
             group: 'backend',
             sub: 'Query Language',
+            level: 'working',
+            evidence: 'Working · used in SellerLensIQ',
             evidenceType: 'project',
             usedIn: ['SellerLensIQ'],
             projectCount: 1,
@@ -199,10 +251,74 @@ export const skillsData = {
     ],
   },
 
+  ai: {
+    title: 'Applied AI & Intelligent Systems',
+    nodeLabel: '03.3 / APPLIED AI',
+    description: 'Generative AI integration, structured prompt engineering, and intelligent application workflows.',
+    items: [
+      {
+        id: 'prompt-engineering',
+        name: 'Prompt Engineering',
+        group: 'ai',
+        sub: 'Technique',
+        level: 'working',
+        evidence: 'Certified · Google AI Essentials & IBM Generative AI',
+        evidenceType: 'project',
+        usedIn: ['IBM Prompt Spec.', 'Google AI Cert.'],
+        projectCount: 2,
+        brandColor: '#4285F4',
+        context: 'Structured system instructions, few-shot prompt formulation, parameter calibration, and deterministic LLM outputs.',
+        relations: ['practical-ai', 'python', 'rest-apis'],
+      },
+      {
+        id: 'practical-ai',
+        name: 'Practical AI Systems',
+        group: 'ai',
+        sub: 'Integration',
+        level: 'working',
+        evidence: 'Working · applied in Vaani Bill & portfolio architecture',
+        evidenceType: 'project',
+        usedIn: ['Vaani Bill Concept'],
+        projectCount: 1,
+        brandColor: '#10A37F',
+        context: 'Connecting LLM endpoints to production services, JSON contract enforcement, error boundaries, and contextual prompt augmentation.',
+        relations: ['prompt-engineering', 'rest-apis', 'node', 'express'],
+      },
+      {
+        id: 'ai-assisted-dev',
+        name: 'AI-Assisted Development',
+        group: 'ai',
+        sub: 'Toolchain & Flow',
+        level: 'working',
+        evidence: 'Working · accelerated engineering lifecycle',
+        evidenceType: 'knowledge',
+        usedIn: [],
+        projectCount: 0,
+        brandColor: '#8B5CF6',
+        context: 'Modern LLM-assisted coding workflows, test automation scaffolding, and context-aware codebase refactoring.',
+        relations: ['git', 'github', 'practical-ai'],
+      },
+      {
+        id: 'voice-ai',
+        name: 'Speech & Voice AI',
+        group: 'ai',
+        sub: 'Applied NLP',
+        level: 'familiar',
+        evidence: 'Familiar · conversational POS architecture concept',
+        evidenceType: 'knowledge',
+        usedIn: [],
+        projectCount: 0,
+        brandColor: '#F59E0B',
+        context: 'Multilingual speech-to-text pipeline concepts and conversational billing parsing for Hindi, Hinglish, and English.',
+        relations: ['practical-ai', 'react'],
+      },
+    ],
+  },
+
   tools: {
     title: 'Tools & Technologies',
-    nodeLabel: '03.3 / TOOLCHAIN & CAPABILITIES',
-    description: 'Version control lifecycle, build automation, API contract validation, and practical AI augmentation.',
+    nodeLabel: '03.4 / TOOLCHAIN & CAPABILITIES',
+    description: 'Version control lifecycle, build automation, API contract validation, and developer tooling.',
     subgroups: [
       {
         id: 'developer-tools',
@@ -213,6 +329,8 @@ export const skillsData = {
             name: 'Git',
             group: 'tools',
             sub: 'Version Control',
+            level: 'working',
+            evidence: 'Working · used in Portfolio Repository',
             evidenceType: 'project',
             usedIn: ['Portfolio Repository'],
             projectCount: 1,
@@ -225,6 +343,8 @@ export const skillsData = {
             name: 'GitHub',
             group: 'tools',
             sub: 'Collaboration',
+            level: 'working',
+            evidence: 'Working · used in Portfolio Monorepo',
             evidenceType: 'project',
             usedIn: ['Portfolio Monorepo'],
             projectCount: 1,
@@ -237,6 +357,8 @@ export const skillsData = {
             name: 'Maven',
             group: 'tools',
             sub: 'Build Tool',
+            level: 'core',
+            evidence: 'Core · used in SellerLensIQ, ClinicSaaS',
             evidenceType: 'project',
             usedIn: ['SellerLensIQ', 'ClinicSaaS'],
             projectCount: 2,
@@ -249,42 +371,14 @@ export const skillsData = {
             name: 'Postman',
             group: 'tools',
             sub: 'API Testing',
+            level: 'working',
+            evidence: 'Working · used in API Verification',
             evidenceType: 'project',
             usedIn: ['API Verification'],
             projectCount: 1,
             brandColor: '#FF6C37',
             context: 'REST API endpoint testing, request validation, and integration verification.',
             relations: ['rest-apis'],
-          },
-        ],
-      },
-      {
-        id: 'ai-integration',
-        title: 'AI integration',
-        items: [
-          {
-            id: 'practical-ai',
-            name: 'Practical AI Integration',
-            group: 'tools',
-            sub: 'Capability',
-            evidenceType: 'knowledge',
-            usedIn: [],
-            projectCount: 0,
-            brandColor: '#7DF2C4',
-            context: 'Integrating intelligent features into standard software architectures without vendor lock-in.',
-            relations: ['ai-assisted', 'python'],
-          },
-          {
-            id: 'ai-assisted',
-            name: 'AI-Assisted App Development',
-            group: 'tools',
-            sub: 'Capability',
-            evidenceType: 'knowledge',
-            usedIn: [],
-            projectCount: 0,
-            brandColor: '#7DF2C4',
-            context: 'Prompt workflow orchestration, system prompting, and developer productivity tooling.',
-            relations: ['practical-ai'],
           },
         ],
       },
@@ -298,6 +392,9 @@ export function getAllSkills() {
   skillsData.backend.subgroups.forEach((sg) => {
     list.push(...sg.items);
   });
+  if (skillsData.ai) {
+    list.push(...skillsData.ai.items);
+  }
   skillsData.tools.subgroups.forEach((sg) => {
     list.push(...sg.items);
   });

@@ -3,9 +3,11 @@ import { motion, useScroll, useReducedMotion } from 'framer-motion';
 import SectionShell from '../../components/SectionShell/SectionShell.jsx';
 import TimelineItem from '../../components/TimelineItem/TimelineItem.jsx';
 import { timeline } from '../../data/timeline.js';
+import { getSectionById } from '../../data/sections.js';
 import styles from '../../components/TimelineItem/TimelineItem.module.css';
 
 export default function Timeline() {
+  const sectionMeta = getSectionById('history');
   const containerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -18,8 +20,8 @@ export default function Timeline() {
   return (
     <SectionShell
       id="history"
-      nodeNumber="07"
-      nodeLabel="HISTORY"
+      nodeNumber={sectionMeta.num}
+      nodeLabel={sectionMeta.nodeLabel}
       title="Education & Engineering Timeline"
       subtitle="Git-graph-inspired progression of academic credentials and applied software engineering milestones."
     >

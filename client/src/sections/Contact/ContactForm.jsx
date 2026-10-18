@@ -19,7 +19,6 @@ export default function ContactForm() {
   const [isWaking, setIsWaking] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
-  const [responseData, setResponseData] = useState(null);
 
   const statusRef = useRef(null);
   const wakingTimerRef = useRef(null);
@@ -110,11 +109,6 @@ export default function ContactForm() {
 
       if (result.ok) {
         setSubmitSuccess(true);
-        setResponseData({
-          id: result.id,
-          createdAt: result.createdAt || new Date().toISOString(),
-          status: result.httpStatus || 201,
-        });
 
         // Clear form only on verified success
         setFormData({ name: '', email: '', message: '', website: '' });
@@ -146,7 +140,6 @@ export default function ContactForm() {
 
   const handleReset = () => {
     setSubmitSuccess(false);
-    setResponseData(null);
     setSubmitError(null);
   };
 
@@ -162,32 +155,21 @@ export default function ContactForm() {
         {submitSuccess && (
           <div className={styles.successCard}>
             <div className={styles.successHeader}>
-              <FiCheck className={styles.successIcon} aria-hidden="true" />
-              <div>
+              <div className={styles.successBadge}>
+                <FiCheck className={styles.successIcon} aria-hidden="true" />
+              </div>
+              <div className={styles.successTitleGroup}>
                 <h4 className={styles.successTitle}>Message Sent Successfully</h4>
-                <p className={styles.successRef}>
-                  Message received. Reference: <span className={styles.refId}>{responseData?.id}</span>
+                <p className={styles.successDesc}>
+                  Thank you for reaching out! Your message has been received, and I will get back to you as soon as possible.
                 </p>
               </div>
             </div>
 
-            {/* Optional Collapsed Technical Details */}
-            <details className={styles.techDetails}>
-              <summary className={styles.techSummary}>Technical details</summary>
-              <pre className={styles.techPre}>
-                <code>
-                  {JSON.stringify(
-                    {
-                      statusCode: responseData?.status || 201,
-                      referenceId: responseData?.id,
-                      timestamp: responseData?.createdAt,
-                    },
-                    null,
-                    2
-                  )}
-                </code>
-              </pre>
-            </details>
+            <div className={styles.deliveryPill}>
+              <span className={styles.deliveryDot} aria-hidden="true" />
+              <span>Delivered to inbox</span>
+            </div>
 
             <button
               type="button"

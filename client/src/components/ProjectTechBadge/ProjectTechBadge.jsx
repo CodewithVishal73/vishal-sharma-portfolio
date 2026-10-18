@@ -50,9 +50,30 @@ const ICON_MAP = {
   'voice ai': FiMic,
 };
 
-export default function ProjectTechBadge({ tech, size = 14, className = '' }) {
+export default function ProjectTechBadge({ tech, size = 14, onClick, className = '' }) {
   const normalizedKey = tech.toLowerCase().trim();
   const IconComponent = ICON_MAP[normalizedKey];
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick(tech);
+        }}
+        className={`${styles.badge} ${styles.clickableBadge} ${className}`}
+        title={`Filter projects by ${tech}`}
+      >
+        {IconComponent && (
+          <span className={styles.icon}>
+            <IconComponent size={size} aria-hidden="true" />
+          </span>
+        )}
+        <span className={styles.label}>{tech}</span>
+      </button>
+    );
+  }
 
   return (
     <span className={`${styles.badge} ${className}`}>

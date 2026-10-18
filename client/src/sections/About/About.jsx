@@ -70,7 +70,7 @@ export default function About() {
                   graduation: 2028,
                   coreAreas: [
                     'Backend & API Design',
-                    'Database Engineering',
+                    'System Design',
                     'Practical AI Integration',
                   ],
                 },

@@ -1,9 +1,26 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const rawApiUrl = import.meta.env.VITE_API_URL;
+export const API_BASE_URL = rawApiUrl || (import.meta.env.DEV ? 'http://localhost:5000' : '');
+
+if (import.meta.env.PROD && !rawApiUrl) {
+  console.error(
+    '\x1b[31m[CONFIG_ERROR] VITE_API_URL environment variable is missing in production build!\x1b[0m'
+  );
+}
 
 /**
  * Fetch wrapper with timeout and normalized JSON response/error shape.
  */
 export async function request(path, options = {}) {
+  if (import.meta.env.PROD && !API_BASE_URL) {
+    return {
+      ok: false,
+      httpStatus: 0,
+      error: {
+        code: 'MISSING_API_URL',
+        message: 'Production configuration error: VITE_API_URL is not set.',
+      },
+    };
+  }
   const { timeout = 8000, ...fetchOptions } = options;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -108,3 +125,113 @@ export async function submitContact(payload) {
     body: JSON.stringify(payload),
   });
 }
+
+/**
+ * Downloads CV in specified format ('pdf' | 'docx') from the Express backend.
+ * Handles 45s timeout, 2.5s waking notification, Content-Type & non-zero size checks,
+ * and direct browser saving via Object URL.
+ */
+export async function downloadCv(format = 'pdf', { onWaking } = {}) {
+  const normalizedFormat = format.toLowerCase() === 'docx' ? 'docx' : 'pdf';
+  const targetUrl = `${API_BASE_URL}/api/cv/${normalizedFormat}`;
+  const filename = `Vishal_Sharma_CV.${normalizedFormat}`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+  let wakingTimer = null;
+  if (typeof onWaking === 'function') {
+    wakingTimer = setTimeout(() => {
+      onWaking(true);
+    }, 2500);
+  }
+
+  try {
+    const response = await fetch(targetUrl, {
+      method: 'GET',
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+    if (wakingTimer) clearTimeout(wakingTimer);
+    if (typeof onWaking === 'function') onWaking(false);
+
+    if (!response.ok) {
+      let errorMsg = `Server returned status ${response.status}`;
+      try {
+        const errorJson = await response.json();
+        if (errorJson?.error?.message) {
+          errorMsg = errorJson.error.message;
+        }
+      } catch {
+        // Fall back to status text
+      }
+      return {
+        ok: false,
+        error: errorMsg,
+        fallbackUrl: targetUrl,
+      };
+    }
+
+    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+    if (normalizedFormat === 'pdf' && !contentType.includes('pdf')) {
+      return {
+        ok: false,
+        error: `Unexpected Content-Type: expected application/pdf but received ${contentType}`,
+        fallbackUrl: targetUrl,
+      };
+    }
+
+    if (
+      normalizedFormat === 'docx' &&
+      !contentType.includes('wordprocessingml') &&
+      !contentType.includes('octet-stream') &&
+      !contentType.includes('zip')
+    ) {
+      return {
+        ok: false,
+        error: `Unexpected Content-Type for Word document: received ${contentType}`,
+        fallbackUrl: targetUrl,
+      };
+    }
+
+    const blob = await response.blob();
+    if (!blob || blob.size === 0) {
+      return {
+        ok: false,
+        error: 'Received empty file payload from server.',
+        fallbackUrl: targetUrl,
+      };
+    }
+
+    // Save using Object URL
+    const objectUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => window.URL.revokeObjectURL(objectUrl), 1000);
+
+    return {
+      ok: true,
+      filename,
+      size: blob.size,
+    };
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (wakingTimer) clearTimeout(wakingTimer);
+    if (typeof onWaking === 'function') onWaking(false);
+
+    const isTimeout = err.name === 'AbortError';
+    return {
+      ok: false,
+      error: isTimeout
+        ? 'Download timed out after 45 seconds while waiting for the server.'
+        : err.message || 'Network error encountered during CV download.',
+      fallbackUrl: targetUrl,
+    };
+  }
+}
+

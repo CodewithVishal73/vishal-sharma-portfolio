@@ -5,12 +5,10 @@ export const SECTIONS = [
   { id: 'client', num: '01', navLabel: 'Client', nodeLabel: 'CLIENT' },
   { id: 'identity', num: '02', navLabel: 'Identity', nodeLabel: 'IDENTITY' },
   { id: 'stack', num: '03', navLabel: 'Stack', nodeLabel: 'STACK' },
-  { id: 'approach', num: '04', navLabel: 'Approach', nodeLabel: 'APPROACH' },
-  { id: 'intelligence', num: '05', navLabel: 'Intelligence', nodeLabel: 'INTELLIGENCE' },
-  { id: 'services', num: '06', navLabel: 'Services', nodeLabel: 'SERVICES' },
-  { id: 'history', num: '07', navLabel: 'History', nodeLabel: 'HISTORY' },
-  { id: 'proof', num: '08', navLabel: 'Proof', nodeLabel: 'PROOF' },
-  { id: 'response', num: '09', navLabel: 'Response', nodeLabel: 'RESPONSE' },
+  { id: 'services', num: '04', navLabel: 'Services', nodeLabel: 'SERVICES' },
+  { id: 'history', num: '05', navLabel: 'History', nodeLabel: 'HISTORY' },
+  { id: 'proof', num: '06', navLabel: 'Proof', nodeLabel: 'PROOF' },
+  { id: 'response', num: '07', navLabel: 'Response', nodeLabel: 'RESPONSE' },
 ];
 
 export function getSectionById(id) {

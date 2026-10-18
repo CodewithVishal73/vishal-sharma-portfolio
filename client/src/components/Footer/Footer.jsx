@@ -1,4 +1,6 @@
 import React from 'react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { SiLeetcode } from 'react-icons/si';
 import Port from '../primitives/Port.jsx';
 import { API_BASE_URL } from '../../lib/api.js';
 import { profile } from '../../data/profile.js';
@@ -12,11 +14,34 @@ export default function Footer() {
     { href: '#client', label: 'Top' },
     { href: '#identity', label: 'About' },
     { href: '#stack', label: 'Skills' },
-    { href: '#intelligence', label: 'Intelligence' },
     { href: '#services', label: 'Projects' },
     { href: '#history', label: 'Timeline' },
     { href: '#proof', label: 'Credentials' },
     { href: '#response', label: 'Contact' },
+  ];
+
+  const socialLinks = [
+    {
+      name: 'GitHub',
+      url: profile.social?.github || 'https://github.com/CodewithVishal73',
+      icon: FaGithub,
+      ariaLabel: "Visit Vishal's GitHub profile",
+      title: 'GitHub (CodewithVishal73)',
+    },
+    {
+      name: 'LinkedIn',
+      url: profile.social?.linkedin || 'https://linkedin.com/in/vishalsh1',
+      icon: FaLinkedin,
+      ariaLabel: "Visit Vishal's LinkedIn profile",
+      title: 'LinkedIn (vishalsh1)',
+    },
+    {
+      name: 'LeetCode',
+      url: profile.social?.leetcode || 'https://leetcode.com/u/Vishal_cd/',
+      icon: SiLeetcode,
+      ariaLabel: "Visit Vishal's LeetCode profile",
+      title: 'LeetCode (Vishal_cd)',
+    },
   ];
 
   return (
@@ -48,13 +73,34 @@ export default function Footer() {
         <div className={styles.bottomRow}>
           <div className={styles.metaInfo}>
             <p className={styles.copyright}>
-              © {currentYear} {profile.name || 'Vishal Sharma'}. Engineered with React, Express, and MongoDB Atlas.
+              © {currentYear} {profile.name || 'Vishal Sharma'}.
             </p>
             {profile.location && (
               <span className={styles.locationTag}>
                 {profile.location} · Available for Engineering Opportunities
               </span>
             )}
+          </div>
+
+          {/* Social Profiles */}
+          <div className={styles.socialGroup} aria-label="Social and coding profiles">
+            {socialLinks.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <a
+                  key={item.name}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialLink}
+                  aria-label={item.ariaLabel}
+                  title={item.title}
+                >
+                  <IconComponent size={19} aria-hidden="true" />
+                  <span className={styles.srOnly}>{item.name}</span>
+                </a>
+              );
+            })}
           </div>
 
           <div className={styles.actions}>

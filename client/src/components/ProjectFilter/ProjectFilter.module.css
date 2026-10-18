@@ -154,6 +154,12 @@
     justify-content: space-between;
   }
 
+  .sortSelect {
+    font-size: 16px;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+  }
+
   .chipList {
     gap: 0.35rem;
   }

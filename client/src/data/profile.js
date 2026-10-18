@@ -18,6 +18,11 @@ export const profile = {
   },
   status: 'Current Student · B.Tech CSE, JKLU, 2028',
   location: 'Jaipur, India', // CONFIRM: location line
-  focus: 'Backend · APIs · Practical AI',
-  email: 'vishal7719sharma@gmail.com', // CONFIRM: public display email
+  focus: 'Backend · System Design · Practical AI',
+  email: 'vishal.sharma.tech1@gmail.com', // CONFIRM: public display email
+  social: {
+    github: 'https://github.com/CodewithVishal73',
+    linkedin: 'https://linkedin.com/in/vishalsh1',
+    leetcode: 'https://leetcode.com/u/Vishal_cd/',
+  },
 };

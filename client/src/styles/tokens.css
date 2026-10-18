@@ -15,6 +15,11 @@
   /* Accent mixes for tints and glows */
   --signal-subtle: color-mix(in oklab, var(--signal) 12%, transparent);
   --signal-glow: color-mix(in oklab, var(--signal) 24%, transparent);
+  --surface-0: var(--surface);
+  --surface-1: var(--surface);
+  --surface-3: var(--surface-2);
+  --ink-muted: var(--ink-2);
+  --line-strong: color-mix(in oklab, var(--line) 65%, var(--ink));
 
   /* Typography */
   --font-display: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -59,6 +64,11 @@
 
   --signal-subtle: color-mix(in oklab, var(--signal) 12%, transparent);
   --signal-glow: color-mix(in oklab, var(--signal) 24%, transparent);
+  --surface-0: var(--surface);
+  --surface-1: var(--surface);
+  --surface-3: var(--surface-2);
+  --ink-muted: var(--ink-2);
+  --line-strong: color-mix(in oklab, var(--line) 70%, var(--ink));
 }
 
 /* View Transitions styling for smooth theme wipe */

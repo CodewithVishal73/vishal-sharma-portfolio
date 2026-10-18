@@ -15,6 +15,7 @@ export const projects = [
     problem:
       'Amazon catalog managers lack a unified backend service to import bulk keyword data via CSV, manage keyword portfolios, and evaluate listing SEO performance.',
     built: [
+      'Interactive React client interface for keyword portfolio dashboards and CSV data uploads.',
       'Spring Boot REST API service layer for keyword and portfolio management.',
       'PostgreSQL database persistence for listing catalog and keyword datasets.',
       'Authentication service for user session and credential handling.',
@@ -22,12 +23,13 @@ export const projects = [
       'Listing SEO quality and keyword performance analytics computation.',
     ],
     stack: [
+      'React',
       'Java',
       'Spring Boot',
       'PostgreSQL',
       'REST APIs',
     ],
-    tags: ['Full-Stack', 'Java', 'Spring Boot', 'PostgreSQL', 'REST APIs'],
+    tags: ['Full-Stack', 'Backend', 'React', 'Java', 'Spring Boot', 'PostgreSQL', 'REST APIs'],
     github: null, // Repository is private / not publicly hosted
     live: null, // No public live deployment hosted yet
     year: 2024,
@@ -72,21 +74,23 @@ export const projects = [
     name: 'ClinicSaaS',
     status: 'in-progress',
     stage: 'In Progress',
-    category: 'Backend & Systems',
+    category: 'Full-Stack Healthcare System',
     summary:
       'A structured clinic management application designed to organize core healthcare administration and appointment workflows.',
     problem:
       'Healthcare clinics face administrative friction when managing doctor availability, patient intake records, and appointment scheduling.',
     built: [
+      'Interactive React client interface for clinic administrative requests and appointment workflows.',
       'Java and Spring Boot application core for clinic operational workflows.',
       'REST endpoints for doctor schedules, patient intake records, and appointments.',
     ],
     stack: [
+      'React',
       'Java',
       'Spring Boot',
       'REST APIs',
     ],
-    tags: ['Backend', 'Java', 'Spring Boot', 'REST APIs'],
+    tags: ['Full-Stack', 'Backend', 'React', 'Java', 'Spring Boot', 'REST APIs'],
     github: null, // Repository is private / not publicly hosted
     live: null, // No public live deployment hosted yet
     year: 2024,
@@ -149,7 +153,7 @@ export const projects = [
       'Node.js',
       'REST APIs',
     ],
-    tags: ['Voice AI Concept', 'React', 'Node.js', 'REST APIs'],
+    tags: ['Full-Stack', 'Backend', 'Voice AI Concept', 'React', 'Node.js', 'REST APIs'],
     github: null, // Repository is private / concept stage
     live: null, // No public live deployment (concept stage)
     year: 2025,
@@ -208,11 +212,33 @@ export function getAdjacentProjects(slug) {
   return { prev, next };
 }
 
-// Helper to extract all unique tags dynamically
+// Helper to extract all unique tags dynamically in prioritized logical order
 export function getAllProjectTags() {
+  const preferredOrder = [
+    'All',
+    'Full-Stack',
+    'Backend',
+    'Java',
+    'Spring Boot',
+    'React',
+    'Node.js',
+    'PostgreSQL',
+    'REST APIs',
+    'Voice AI Concept',
+  ];
+
   const tagSet = new Set();
   projects.forEach((p) => {
-    p.tags.forEach((t) => tagSet.add(t));
+    p.tags?.forEach((t) => tagSet.add(t));
+    p.stack?.forEach((s) => tagSet.add(s));
   });
-  return ['All', ...Array.from(tagSet)];
+
+  const ordered = preferredOrder.filter((tag) => tag === 'All' || tagSet.has(tag));
+  tagSet.forEach((t) => {
+    if (!ordered.includes(t)) {
+      ordered.push(t);
+    }
+  });
+
+  return ordered;
 }

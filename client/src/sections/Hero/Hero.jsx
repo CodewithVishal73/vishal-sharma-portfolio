@@ -90,7 +90,7 @@ export default function Hero() {
           <Button variant="primary" href="#services" size="lg" className={styles.primaryCta}>
             View Projects
           </Button>
-          <DownloadCvButton className={styles.cvCta} />
+          <DownloadCvButton className={styles.cvCta} variant="secondary" />
         </motion.div>
       </motion.div>
     </section>

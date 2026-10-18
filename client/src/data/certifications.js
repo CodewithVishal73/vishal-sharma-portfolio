@@ -58,7 +58,7 @@ export const certifications = [
     issuerId: 'ibm',
     credentialType: 'Course Certificate',
     verifyUrl:
-      'https://www.coursera.org/learn/generative-ai-prompt-engineering-for-everyone',
+      'https://www.coursera.org/account/accomplishments/verify/VQ4XWX747IIH',
     actionLabel: 'Verify credential',
     destinationType: 'credential',
     year: null, // CONFIRM: completion year
