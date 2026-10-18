@@ -54,7 +54,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.container}>
         {/* Logo */}
-        <Link to="/" className={styles.logo} aria-label="Vishal Sharma - Home">
+        <Link to="/" className={styles.logo} aria-label="VS - Vishal Sharma Home">
           <span className={styles.logoMark}>VS</span>
           <Port active className={styles.logoPort} />
         </Link>

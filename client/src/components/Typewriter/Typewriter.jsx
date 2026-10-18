@@ -9,10 +9,8 @@ export default function Typewriter({ phrases = [], className = '' }) {
   const allPhrasesText = phrases.join(', ');
 
   return (
-    <span
-      className={`${styles.container} ${className}`}
-      aria-label={allPhrasesText}
-    >
+    <span className={`${styles.container} ${className}`}>
+      <span className={styles.srOnly}>{allPhrasesText}</span>
       <span aria-hidden="true" className={styles.text}>
         {currentText}
       </span>

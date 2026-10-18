@@ -55,7 +55,7 @@ export default function DownloadCvButton({ className = '' }) {
         rel="noopener noreferrer"
         onClick={handleDownload}
         className={styles.mainBtn}
-        aria-label="Download Vishal Sharma CV in PDF format"
+        aria-label="Download CV (PDF) - Vishal Sharma"
       >
         <FiDownload aria-hidden="true" className={styles.downloadIcon} />
         <span>{isPreparing ? 'Preparing CV…' : 'Download CV'}</span>

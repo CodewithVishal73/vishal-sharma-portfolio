@@ -30,7 +30,10 @@ export default function IssuerLogo({ issuerId, issuerName, height = 24, classNam
       <img
         src="/ibm.svg"
         alt={issuerName || 'IBM'}
+        width={59}
         height={height}
+        loading="lazy"
+        decoding="async"
         style={{
           height: `${height}px`,
           width: 'auto',
@@ -52,7 +55,10 @@ export default function IssuerLogo({ issuerId, issuerName, height = 24, classNam
       <img
         src="/google.svg"
         alt={issuerName || 'Google'}
+        width={71}
         height={height}
+        loading="lazy"
+        decoding="async"
         style={{
           height: `${height}px`,
           width: 'auto',
