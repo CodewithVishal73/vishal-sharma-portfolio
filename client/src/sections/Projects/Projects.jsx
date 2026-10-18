@@ -76,7 +76,7 @@ export default function Projects() {
   return (
     <SectionShell
       id="services"
-      nodeNumber="05"
+      nodeNumber="06"
       nodeLabel="SERVICES"
       title="Featured Projects"
       subtitle="Engineering systems, intelligent point-of-sale platforms, and full-stack service architectures."

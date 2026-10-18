@@ -18,7 +18,7 @@ export default function Timeline() {
   return (
     <SectionShell
       id="history"
-      nodeNumber="06"
+      nodeNumber="07"
       nodeLabel="HISTORY"
       title="Education & Engineering Timeline"
       subtitle="Git-graph-inspired progression of academic credentials and applied software engineering milestones."

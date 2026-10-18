@@ -40,9 +40,9 @@ Strictly derived from readable evidence in the workspace and explicit **Owner-St
 | **Certification: McKinsey.org Forward Program** | `certifications.js` | Credly `bef2840b-...` | `verified` | Credential link verified. |
 | **Certification: Google AI Essentials** | `certifications.js` | Coursera `4FEA75A7SLPY` | `verified` | Credential link verified. |
 | **Certification: IBM Generative AI: Prompt Engineering** | `certifications.js` | Coursera link | `verified` | Course completion verified. |
-| **Architecture: This site (Node.js + Express + MongoDB)** | `architecture.js`, `SystemMap.jsx` | `server/src/` | `verified` | Tag: "This site". Real telemetry endpoint. |
-| **Architecture: Project pattern (Spring Boot + PostgreSQL)** | `architecture.js`, `SystemMap.jsx` | Owner-stated facts | `project` | Tag: "SellerLensIQ". Pattern used in SellerLensIQ. |
-| **Architecture: AI service branch** | `architecture.js`, `SystemMap.jsx` | Architecture pattern | `illustrative` | Tag: "Illustrative". Generic AI service, educational. |
+| **Principle 1: Strict API Contracts** | `Approach.jsx` | `server/src/middleware/validate.js`, `server/src/routes/contact.js` | `verified` | Explicit request schemas, sanitization, predictable error shapes. |
+| **Principle 2: Structured Persistence Boundaries** | `Approach.jsx` | `server/src/models/Message.js`, `projects.js` | `verified` | Explicit constraints, indexed storage, CSV ingestion boundaries. |
+| **Principle 3: Defensive Security Boundaries** | `Approach.jsx` | `server/src/app.js`, `server/src/middleware/rateLimit.js`, `server/src/routes/contact.js` | `verified` | Helmet, origin-checked CORS, rate limiting, honeypot protection. |
 
 ## Truth Governance Rules
 1. **No Invented Experience**: JGS internship title is marked as a placeholder ("Internship") awaiting confirmation. Start year for university is omitted.
