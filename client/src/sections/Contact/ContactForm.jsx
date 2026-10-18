@@ -1,17 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiSend, FiCheck, FiAlertCircle, FiLoader, FiRotateCcw } from 'react-icons/fi';
+import { FiSend, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi';
 import { submitContact } from '../../lib/api.js';
 import styles from './ContactForm.module.css';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function ContactForm({
-  onStateChange,
-  onRequestPayload,
-  onResponseResult,
-  onWakingChange,
-  onElapsed,
-}) {
+export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,22 +15,14 @@ export default function ContactForm({
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const [lifecycleState, setLifecycleState] = useState('idle'); // 'idle' | 'validating' | 'sending' | 'waking' | 'success' | 'fieldError' | 'rateLimited' | 'networkError' | 'serverError'
-  const [statusMessage, setStatusMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isWaking, setIsWaking] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [responseData, setResponseData] = useState(null);
 
+  const statusRef = useRef(null);
   const wakingTimerRef = useRef(null);
-  const startTimeRef = useRef(null);
-
-  // Sync state upward
-  const updateState = (newState, payload, result, waking = false, elapsed = null) => {
-    setLifecycleState(newState);
-    if (onStateChange) onStateChange(newState);
-    if (payload !== undefined && onRequestPayload) onRequestPayload(payload);
-    if (result !== undefined && onResponseResult) onResponseResult(result);
-    if (onWakingChange) onWakingChange(waking);
-    if (elapsed !== null && onElapsed) onElapsed(elapsed);
-  };
 
   useEffect(() => {
     return () => {
@@ -44,7 +30,6 @@ export default function ContactForm({
     };
   }, []);
 
-  // Validation logic matching server's Zod schema
   const validateField = (fieldName, value) => {
     switch (fieldName) {
       case 'name':
@@ -66,324 +51,294 @@ export default function ContactForm({
     }
   };
 
-  const handleBlur = (field) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    const error = validateField(field, formData[field]);
-    setErrors((prev) => ({ ...prev, [field]: error }));
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Real-time error clearance if valid
     if (touched[name]) {
-      const error = validateField(name, value);
-      setErrors((prev) => ({ ...prev, [name]: error }));
+      const err = validateField(name, value);
+      setErrors((prev) => ({ ...prev, [name]: err }));
     }
   };
 
-  const validateAll = () => {
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const err = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: err }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError(null);
+
+    // Validate all fields
     const newErrors = {
       name: validateField('name', formData.name),
       email: validateField('email', formData.email),
       message: validateField('message', formData.message),
     };
 
-    const cleanErrors = {};
-    let isValid = true;
-    for (const [key, err] of Object.entries(newErrors)) {
-      if (err) {
-        cleanErrors[key] = err;
-        isValid = false;
-      }
-    }
-
-    setErrors(cleanErrors);
     setTouched({ name: true, email: true, message: true });
-    return isValid;
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Prevent duplicate in-flight submissions
-    if (lifecycleState === 'sending' || lifecycleState === 'waking') {
+    if (newErrors.name || newErrors.email || newErrors.message) {
+      setErrors(newErrors);
       return;
     }
 
-    updateState('validating', null, null, false);
-
-    // Client-side validation check
-    const isValid = validateAll();
-    if (!isValid) {
-      updateState('fieldError', null, {
-        ok: false,
-        status: 400,
-        error: {
-          code: 'VALIDATION_ERROR',
-          message: 'Please resolve form validation errors below.',
-          fields: errors,
-        },
-      });
-      setStatusMessage('Please fix the highlighted errors before submitting.');
-      return;
-    }
-
-    const payload = {
-      name: formData.name.trim(),
-      email: formData.email.trim().toLowerCase(),
-      message: formData.message.trim(),
-      website: formData.website || '',
-    };
-
-    // Begin sending
-    startTimeRef.current = performance.now();
-    updateState('sending', payload, null, false);
-    setStatusMessage('Transmitting message to Express gateway…');
+    setIsSubmitting(true);
     setIsWaking(false);
 
-    // 2.5 second cold start waking detector
+    // Free-tier cold start timer (2.5s)
     wakingTimerRef.current = setTimeout(() => {
       setIsWaking(true);
-      if (onWakingChange) onWakingChange(true);
-      setStatusMessage('Connecting to the server… this may take a moment.');
     }, 2500);
 
     try {
-      const response = await submitContact(payload);
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+        website: formData.website, // honeypot
+      };
+
+      const result = await submitContact(payload);
+
       if (wakingTimerRef.current) clearTimeout(wakingTimerRef.current);
       setIsWaking(false);
-      const elapsed = Math.round(performance.now() - startTimeRef.current);
+      setIsSubmitting(false);
 
-      if (response && response.ok && response.status === 201) {
-        // Confirmation from MongoDB Atlas persistence
-        updateState('success', payload, response, false, elapsed);
-        setStatusMessage('Your message has been saved to MongoDB Atlas.');
-
-        // Clear the form strictly on verified success
-        setFormData({
-          name: '',
-          email: '',
-          message: '',
-          website: '',
+      if (result.ok) {
+        setSubmitSuccess(true);
+        setResponseData({
+          id: result.id,
+          createdAt: result.createdAt || new Date().toISOString(),
+          status: result.httpStatus || 201,
         });
-        setTouched({});
-        setErrors({});
-      } else {
-        // Handle specific server response statuses
-        const status = response?.status;
-        const errCode = response?.error?.code;
 
-        if (status === 429 || errCode === 'RATE_LIMITED') {
-          updateState('rateLimited', payload, response, false, elapsed);
-          setStatusMessage(
-            response?.error?.message ||
-              'Too many requests from this IP. Please wait before retrying.'
-          );
-        } else if (status === 400 || errCode === 'VALIDATION_ERROR') {
-          if (response?.error?.fields) {
-            setErrors((prev) => ({ ...prev, ...response.error.fields }));
-          }
-          updateState('fieldError', payload, response, false, elapsed);
-          setStatusMessage('Server rejected submission due to invalid input fields.');
+        // Clear form only on verified success
+        setFormData({ name: '', email: '', message: '', website: '' });
+        setErrors({});
+        setTouched({});
+
+        // Shift focus to status message as required
+        setTimeout(() => {
+          statusRef.current?.focus();
+        }, 100);
+      } else {
+        // Specific friendly messages for rate limit, validation, network
+        if (result.httpStatus === 429) {
+          setSubmitError('Rate limit reached (5 requests / 15 minutes). Please wait a moment before sending another transmission.');
+        } else if (result.error?.fields) {
+          setErrors(result.error.fields);
+          setSubmitError(result.error.message || 'Please fix the highlighted fields above.');
         } else {
-          updateState('serverError', payload, response, false, elapsed);
-          setStatusMessage(
-            response?.error?.message || 'Server encountered an issue saving your message.'
-          );
+          setSubmitError(result.error?.message || 'Transmission failed. Your message text has been preserved. Please try again.');
         }
       }
     } catch (err) {
       if (wakingTimerRef.current) clearTimeout(wakingTimerRef.current);
       setIsWaking(false);
-      const elapsed = Math.round(performance.now() - (startTimeRef.current || performance.now()));
-
-      updateState(
-        'networkError',
-        payload,
-        {
-          ok: false,
-          status: 0,
-          error: {
-            code: 'NETWORK_ERROR',
-            message: 'Network connection failure. Server is unreachable.',
-          },
-        },
-        false,
-        elapsed
-      );
-      setStatusMessage('Network connection failed. Your message is preserved—please try again.');
+      setIsSubmitting(false);
+      setSubmitError(err.message || 'Network error occurred. Your message has been saved. Please retry.');
     }
   };
 
-  const handleResetSuccess = () => {
-    updateState('idle', null, null, false);
-    setStatusMessage('');
+  const handleReset = () => {
+    setSubmitSuccess(false);
+    setResponseData(null);
+    setSubmitError(null);
   };
 
-  const isSubmitting = lifecycleState === 'sending' || lifecycleState === 'waking';
-  const charCount = formData.message.length;
-  const isCharCountWarning = charCount > 1900;
-  const isCharCountExceeded = charCount > 2000;
-
   return (
-    <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      {/* Honeypot field (hidden from legitimate users) */}
-      <div className={styles.honeypot} aria-hidden="true">
-        <label htmlFor="contact-website">Website (Leave blank)</label>
-        <input
-          type="text"
-          id="contact-website"
-          name="website"
-          value={formData.website}
-          onChange={handleChange}
-          tabIndex={-1}
-          autoComplete="off"
-        />
-      </div>
-
-      {/* Name Input */}
-      <div className={styles.fieldGroup}>
-        <div className={styles.labelRow}>
-          <label htmlFor="contact-name" className={styles.label}>
-            Name <span className={styles.required}>*</span>
-          </label>
-          <span className={styles.fieldHint}>2–80 characters</span>
-        </div>
-        <input
-          type="text"
-          id="contact-name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          onBlur={() => handleBlur('name')}
-          disabled={isSubmitting}
-          autoComplete="name"
-          aria-required="true"
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? 'contact-name-error' : undefined}
-          className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-          placeholder="e.g. Elena Rostova"
-        />
-        {errors.name && (
-          <div id="contact-name-error" className={styles.errorText} role="alert">
-            <FiAlertCircle className={styles.errorIcon} />
-            <span>{errors.name}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Email Input */}
-      <div className={styles.fieldGroup}>
-        <div className={styles.labelRow}>
-          <label htmlFor="contact-email" className={styles.label}>
-            Email <span className={styles.required}>*</span>
-          </label>
-          <span className={styles.fieldHint}>Valid reply address</span>
-        </div>
-        <input
-          type="email"
-          id="contact-email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          onBlur={() => handleBlur('email')}
-          disabled={isSubmitting}
-          autoComplete="email"
-          aria-required="true"
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? 'contact-email-error' : undefined}
-          className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-          placeholder="name@example.com"
-        />
-        {errors.email && (
-          <div id="contact-email-error" className={styles.errorText} role="alert">
-            <FiAlertCircle className={styles.errorIcon} />
-            <span>{errors.email}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Message Textarea */}
-      <div className={styles.fieldGroup}>
-        <div className={styles.labelRow}>
-          <label htmlFor="contact-message" className={styles.label}>
-            Message <span className={styles.required}>*</span>
-          </label>
-          <span
-            className={`${styles.charCounter} ${isCharCountWarning ? styles.charWarning : ''} ${
-              isCharCountExceeded ? styles.charExceeded : ''
-            }`}
-            aria-live="polite"
-          >
-            {charCount} / 2000
-          </span>
-        </div>
-        <textarea
-          id="contact-message"
-          name="message"
-          rows={5}
-          value={formData.message}
-          onChange={handleChange}
-          onBlur={() => handleBlur('message')}
-          disabled={isSubmitting}
-          aria-required="true"
-          aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? 'contact-message-error' : undefined}
-          className={`${styles.textarea} ${errors.message ? styles.inputError : ''}`}
-          placeholder="Describe your engineering inquiry, project requirements, or opportunity..."
-        />
-        {errors.message && (
-          <div id="contact-message-error" className={styles.errorText} role="alert">
-            <FiAlertCircle className={styles.errorIcon} />
-            <span>{errors.message}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Accessible aria-live status announcement region */}
-      <div className={styles.liveRegion} role="status" aria-live="polite">
-        {statusMessage}
-      </div>
-
-      {/* Action button row */}
-      <div className={styles.actionRow}>
-        {lifecycleState === 'success' ? (
-          <div className={styles.successRow}>
-            <div className={styles.successTag}>
-              <FiCheck className={styles.successIcon} />
-              <span>Persisted to MongoDB Atlas</span>
+    <div className={styles.formContainer}>
+      {/* Live Region for Screen Readers */}
+      <div
+        ref={statusRef}
+        tabIndex={-1}
+        aria-live="polite"
+        className={styles.statusRegion}
+      >
+        {submitSuccess && (
+          <div className={styles.successCard}>
+            <div className={styles.successHeader}>
+              <FiCheck className={styles.successIcon} aria-hidden="true" />
+              <div>
+                <h4 className={styles.successTitle}>Message Sent Successfully</h4>
+                <p className={styles.successRef}>
+                  Message received. Reference: <span className={styles.refId}>{responseData?.id}</span>
+                </p>
+              </div>
             </div>
+
+            {/* Optional Collapsed Technical Details */}
+            <details className={styles.techDetails}>
+              <summary className={styles.techSummary}>Technical details</summary>
+              <pre className={styles.techPre}>
+                <code>
+                  {JSON.stringify(
+                    {
+                      statusCode: responseData?.status || 201,
+                      referenceId: responseData?.id,
+                      timestamp: responseData?.createdAt,
+                    },
+                    null,
+                    2
+                  )}
+                </code>
+              </pre>
+            </details>
+
             <button
               type="button"
-              onClick={handleResetSuccess}
-              className={styles.resetButton}
+              onClick={handleReset}
+              className={styles.resetBtn}
             >
-              <FiRotateCcw className={styles.resetIcon} />
-              <span>Send Another Message</span>
+              Send Another Message
             </button>
           </div>
-        ) : (
+        )}
+      </div>
+
+      {!submitSuccess && (
+        <form onSubmit={handleSubmit} noValidate className={styles.form} aria-label="Contact transmission form">
+          {/* Honeypot field (hidden from real users, caught by bots) */}
+          <div style={{ display: 'none' }} aria-hidden="true">
+            <label htmlFor="website-field">Website</label>
+            <input
+              id="website-field"
+              type="text"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
+          {/* Name Field */}
+          <div className={styles.fieldGroup}>
+            <label htmlFor="name-input" className={styles.label}>
+              Name <span className={styles.requiredMark}>*</span>
+            </label>
+            <input
+              id="name-input"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Your name or company"
+              disabled={isSubmitting}
+              className={`${styles.input} ${touched.name && errors.name ? styles.inputError : ''}`}
+              aria-invalid={Boolean(touched.name && errors.name)}
+              aria-describedby={touched.name && errors.name ? 'name-error' : undefined}
+              required
+            />
+            {touched.name && errors.name && (
+              <span id="name-error" className={styles.fieldError} role="alert">
+                <FiAlertCircle aria-hidden="true" />
+                <span>{errors.name}</span>
+              </span>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div className={styles.fieldGroup}>
+            <label htmlFor="email-input" className={styles.label}>
+              Email <span className={styles.requiredMark}>*</span>
+            </label>
+            <input
+              id="email-input"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="you@domain.com"
+              disabled={isSubmitting}
+              className={`${styles.input} ${touched.email && errors.email ? styles.inputError : ''}`}
+              aria-invalid={Boolean(touched.email && errors.email)}
+              aria-describedby={touched.email && errors.email ? 'email-error' : undefined}
+              required
+            />
+            {touched.email && errors.email && (
+              <span id="email-error" className={styles.fieldError} role="alert">
+                <FiAlertCircle aria-hidden="true" />
+                <span>{errors.email}</span>
+              </span>
+            )}
+          </div>
+
+          {/* Message Field */}
+          <div className={styles.fieldGroup}>
+            <div className={styles.messageLabelRow}>
+              <label htmlFor="message-input" className={styles.label}>
+                Message <span className={styles.requiredMark}>*</span>
+              </label>
+              <span className={styles.charCount}>
+                {formData.message.length} / 2000
+              </span>
+            </div>
+            <textarea
+              id="message-input"
+              name="message"
+              rows={5}
+              value={formData.message}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Discuss a software engineering role, collaborative project, or technical question..."
+              disabled={isSubmitting}
+              className={`${styles.textarea} ${touched.message && errors.message ? styles.inputError : ''}`}
+              aria-invalid={Boolean(touched.message && errors.message)}
+              aria-describedby={touched.message && errors.message ? 'message-error' : undefined}
+              required
+            />
+            {touched.message && errors.message && (
+              <span id="message-error" className={styles.fieldError} role="alert">
+                <FiAlertCircle aria-hidden="true" />
+                <span>{errors.message}</span>
+              </span>
+            )}
+          </div>
+
+          {/* Free-tier cold start message */}
+          {isWaking && (
+            <div className={styles.wakingNotice} role="status">
+              <span className={styles.wakingDot} />
+              <span>The server is waking up (free hosting). Still sending...</span>
+            </div>
+          )}
+
+          {/* General error message */}
+          {submitError && (
+            <div className={styles.submitErrorAlert} role="alert">
+              <FiAlertCircle className={styles.alertIcon} aria-hidden="true" />
+              <span>{submitError}</span>
+            </div>
+          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
-            disabled={isSubmitting || isCharCountExceeded}
-            className={`${styles.submitButton} ${isSubmitting ? styles.submitting : ''}`}
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+            className={styles.submitBtn}
           >
             {isSubmitting ? (
               <>
-                <FiLoader className={styles.spinIcon} />
-                <span>Dispatching Request…</span>
+                <FiLoader className={styles.spinner} aria-hidden="true" />
+                <span>Transmitting...</span>
               </>
             ) : (
               <>
-                <FiSend className={styles.btnIcon} />
-                <span>Send Request (POST)</span>
+                <FiSend aria-hidden="true" />
+                <span>Send Message</span>
               </>
             )}
           </button>
-        )}
-      </div>
-    </form>
+        </form>
+      )}
+    </div>
   );
 }

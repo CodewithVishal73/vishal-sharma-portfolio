@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FiMail, FiMapPin, FiCopy, FiCheck, FiCpu, FiShield, FiDatabase } from 'react-icons/fi';
+import { FiMail, FiCopy, FiCheck } from 'react-icons/fi';
 import SectionShell from '../../components/SectionShell/SectionShell.jsx';
 import ContactForm from './ContactForm.jsx';
-import RequestResponsePanel from './RequestResponsePanel.jsx';
 import Port from '../../components/primitives/Port.jsx';
+import DownloadCvButton from '../../components/DownloadCvButton/DownloadCvButton.jsx';
 import { profile } from '../../data/profile.js';
+import { getSectionById } from '../../data/sections.js';
+import { warmUp } from '../../lib/api.js';
 import styles from './Contact.module.css';
 
 export default function Contact() {
   const shouldReduceMotion = useReducedMotion();
-
-  // Coordinated lifecycle state for form and inspector panel
-  const [lifecycleState, setLifecycleState] = useState('idle');
-  const [requestPayload, setRequestPayload] = useState(null);
-  const [responseResult, setResponseResult] = useState(null);
-  const [isWaking, setIsWaking] = useState(false);
-  const [elapsedMs, setElapsedMs] = useState(null);
+  const sectionMeta = getSectionById('response');
+  const sectionRef = useRef(null);
 
   // Email copy state
   const [copied, setCopied] = useState(false);
@@ -29,59 +26,69 @@ export default function Contact() {
     }
   };
 
+  // Silent warm-up request when contact section nears viewport (no UI)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          warmUp();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <SectionShell
       id="response"
-      nodeNumber="09"
-      nodeLabel="RESPONSE"
-      title="Contact & Transmission"
-      subtitle="Establish a connection. Messages are validated by Express and stored directly in MongoDB Atlas."
+      nodeNumber={sectionMeta.num}
+      nodeLabel={sectionMeta.nodeLabel}
+      title="Contact"
+      subtitle="Establish a connection. Send a direct transmission to my verified inbox."
     >
-      <div className={styles.container}>
-        {/* Left Column: Authoritative Contact Info & Architecture Specs */}
+      <div className={styles.container} ref={sectionRef}>
+        {/* Left Column: Direct Invitation & Verified Links */}
         <motion.div
           className={styles.infoCol}
-          initial={{ opacity: shouldReduceMotion ? 1 : 0, x: shouldReduceMotion ? 0 : -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-8%' }}
           transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <div className={styles.introCard}>
             <div className={styles.cardHeader}>
-              <span className={styles.metaLabel}>COMMUNICATION PIPELINE</span>
+              <span className={styles.metaLabel}>COMMUNICATION CHANNEL</span>
               <Port active className={styles.signalPort} />
             </div>
 
-            <h3 className={styles.infoHeading}>
-              Let&apos;s build intelligent systems together.
-            </h3>
+            <h3 className={styles.infoHeading}>Let&apos;s Connect</h3>
             <p className={styles.infoDesc}>
-              Whether you are discussing engineering roles, distributed architecture, API integration, or academic research collaboration, my transmission channel is open.
+              Have an engineering role, collaborative project, or technical question? Send a message directly to my inbox.
             </p>
 
-            {/* Authoritative Verified Email Only */}
+            {/* Email link with copy action */}
             {profile.email && (
-              <div className={styles.channelRow}>
-                <div className={styles.channelMeta}>
-                  <div className={styles.channelIcon}>
-                    <FiMail />
-                  </div>
-                  <div className={styles.channelDetails}>
-                    <span className={styles.channelLabel}>PRIMARY INBOX</span>
-                    <a
-                      href={`mailto:${profile.email}`}
-                      className={styles.channelLink}
-                    >
-                      {profile.email}
-                    </a>
-                  </div>
-                </div>
+              <div className={styles.emailRow}>
+                <a
+                  href={`mailto:${profile.email}`}
+                  className={styles.emailLink}
+                  aria-label={`Send email to ${profile.email}`}
+                >
+                  <FiMail className={styles.emailIcon} aria-hidden="true" />
+                  <span>{profile.email}</span>
+                </a>
                 <button
                   type="button"
                   onClick={handleCopyEmail}
                   className={styles.copyBtn}
-                  aria-label="Copy email address"
-                  title="Copy email to clipboard"
+                  aria-label={copied ? 'Email copied to clipboard' : 'Copy email address'}
                 >
                   {copied ? <FiCheck className={styles.copiedIcon} /> : <FiCopy />}
                   <span className={styles.copyText}>{copied ? 'Copied' : 'Copy'}</span>
@@ -89,80 +96,43 @@ export default function Contact() {
               </div>
             )}
 
-            {/* Location & Timezone */}
-            {profile.location && (
-              <div className={styles.channelRow}>
-                <div className={styles.channelMeta}>
-                  <div className={styles.channelIcon}>
-                    <FiMapPin />
-                  </div>
-                  <div className={styles.channelDetails}>
-                    <span className={styles.channelLabel}>LOCATION</span>
-                    <span className={styles.channelValue}>
-                      {profile.location} · UTC+5:30 (IST)
-                    </span>
-                  </div>
-                </div>
+            {/* Social links ONLY if present and non-empty in profile */}
+            {profile.socials && Object.keys(profile.socials).length > 0 && (
+              <div className={styles.socialsRow}>
+                {Object.entries(profile.socials).map(([key, url]) => {
+                  if (!url || typeof url !== 'string' || url.trim() === '') return null;
+                  return (
+                    <a
+                      key={key}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.socialLink}
+                    >
+                      {key.toUpperCase()}
+                    </a>
+                  );
+                })}
               </div>
             )}
-          </div>
 
-          {/* Engineering Pipeline Specs */}
-          <div className={styles.specsCard}>
-            <div className={styles.cardHeader}>
-              <span className={styles.metaLabel}>BACKEND ARCHITECTURE</span>
+            {/* Verified CV Downloads */}
+            <div className={styles.cvSection}>
+              <span className={styles.cvLabel}>VERIFIED RESUME</span>
+              <DownloadCvButton className={styles.cvButton} />
             </div>
-            <ul className={styles.specList}>
-              <li className={styles.specItem}>
-                <FiCpu className={styles.specIcon} />
-                <div>
-                  <strong>Express REST Gateway</strong>
-                  <p>Handles incoming JSON with 10KB payload boundary and strict CORS headers.</p>
-                </div>
-              </li>
-              <li className={styles.specItem}>
-                <FiShield className={styles.specIcon} />
-                <div>
-                  <strong>Zod & Rate Limiting</strong>
-                  <p>Client input sanitization with 5-req/15m throttle and honeypot filtering.</p>
-                </div>
-              </li>
-              <li className={styles.specItem}>
-                <FiDatabase className={styles.specIcon} />
-                <div>
-                  <strong>MongoDB Atlas Cluster</strong>
-                  <p>Persisted Mongoose message schema with UTC timestamp indexing.</p>
-                </div>
-              </li>
-            </ul>
           </div>
         </motion.div>
 
-        {/* Right Column: Interactive Form & Real-time Request Inspector */}
+        {/* Right Column: Clean Form with Inline Validation & Post-Submission Details */}
         <motion.div
           className={styles.formCol}
-          initial={{ opacity: shouldReduceMotion ? 1 : 0, x: shouldReduceMotion ? 0 : 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-8%' }}
-          transition={{ duration: 0.45, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
+          transition={{ duration: 0.45, delay: shouldReduceMotion ? 0 : 0.1, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          {/* Contact Form */}
-          <ContactForm
-            onStateChange={setLifecycleState}
-            onRequestPayload={setRequestPayload}
-            onResponseResult={setResponseResult}
-            onWakingChange={setIsWaking}
-            onElapsed={setElapsedMs}
-          />
-
-          {/* Real Request/Response Visualization Panel */}
-          <RequestResponsePanel
-            lifecycleState={lifecycleState}
-            requestPayload={requestPayload}
-            responseResult={responseResult}
-            isWaking={isWaking}
-            elapsedMs={elapsedMs}
-          />
+          <ContactForm />
         </motion.div>
       </div>
     </SectionShell>
