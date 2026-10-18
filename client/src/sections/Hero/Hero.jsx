@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { profile } from '../../data/profile.js';
 import Typewriter from '../../components/Typewriter/Typewriter.jsx';
 import DownloadCvButton from '../../components/DownloadCvButton/DownloadCvButton.jsx';
-import SystemMap from '../../components/SystemMap/SystemMap.jsx';
 import Button from '../../components/primitives/Button.jsx';
 import Port from '../../components/primitives/Port.jsx';
 import styles from './Hero.module.css';
@@ -92,11 +91,6 @@ export default function Hero() {
             View Projects
           </Button>
           <DownloadCvButton className={styles.cvCta} />
-        </motion.div>
-
-        {/* 7. System Architecture Map */}
-        <motion.div className={styles.mapWrapper} variants={itemVariants}>
-          <SystemMap />
         </motion.div>
       </motion.div>
     </section>

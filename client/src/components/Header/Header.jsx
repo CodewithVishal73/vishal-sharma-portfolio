@@ -4,18 +4,11 @@ import { FiMenu, FiX, FiDownload } from 'react-icons/fi';
 import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx';
 import Button from '../primitives/Button.jsx';
 import Port from '../primitives/Port.jsx';
+import { SECTIONS } from '../../data/sections.js';
 import styles from './Header.module.css';
 
-const NAV_ITEMS = [
-  { id: 'client', label: 'Client' },
-  { id: 'identity', label: 'Identity' },
-  { id: 'stack', label: 'Stack' },
-  { id: 'intelligence', label: 'Intelligence' },
-  { id: 'services', label: 'Services' },
-  { id: 'history', label: 'History' },
-  { id: 'proof', label: 'Proof' },
-  { id: 'response', label: 'Response' },
-];
+const NAV_ITEMS = SECTIONS.map((s) => ({ id: s.id, label: s.navLabel }));
+
 
 export default function Header() {
   const [activeSection, setActiveSection] = useState('client');

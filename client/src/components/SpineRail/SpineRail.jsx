@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
+import { SECTIONS } from '../../data/sections.js';
 import styles from './SpineRail.module.css';
 
-const NODES = [
-  { id: 'client', num: '01', label: 'CLIENT' },
-  { id: 'identity', num: '02', label: 'IDENTITY' },
-  { id: 'stack', num: '03', label: 'STACK' },
-  { id: 'intelligence', num: '04', label: 'INTELLIGENCE' },
-  { id: 'services', num: '05', label: 'SERVICES' },
-  { id: 'history', num: '06', label: 'HISTORY' },
-  { id: 'proof', num: '07', label: 'PROOF' },
-  { id: 'response', num: '08', label: 'RESPONSE' },
-];
+const NODES = SECTIONS.map((s) => ({ id: s.id, num: s.num, label: s.nodeLabel }));
+
 
 export default function SpineRail() {
   const { scrollYProgress } = useScroll();

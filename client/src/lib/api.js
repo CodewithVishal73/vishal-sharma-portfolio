@@ -20,20 +20,34 @@ export async function request(path, options = {}) {
 
     clearTimeout(timer);
 
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+
     let data;
-    try {
-      data = await response.json();
-    } catch {
+    if (isJson) {
+      try {
+        data = await response.json();
+      } catch {
+        data = {
+          ok: false,
+          error: { code: 'PARSE_ERROR', message: 'Unable to parse server JSON response' },
+        };
+      }
+    } else {
+      // Non-JSON response (e.g. HTML from SPA rewrite when API_BASE_URL is missing or invalid)
       data = {
         ok: false,
-        error: { code: 'PARSE_ERROR', message: 'Unable to parse server response' },
+        error: {
+          code: 'INVALID_CONTENT_TYPE',
+          message: `Expected JSON response but received ${contentType || 'non-JSON body'}`,
+        },
       };
     }
 
     if (!response.ok) {
       return {
         ok: false,
-        status: response.status,
+        httpStatus: response.status,
         error:
           data.error || {
             code: 'HTTP_ERROR',
@@ -42,13 +56,18 @@ export async function request(path, options = {}) {
       };
     }
 
-    return { ...data, status: response.status };
+    // Preserve payload fields (e.g. data.status = 'up') without overwriting with HTTP status code
+    return {
+      httpStatus: response.status,
+      ...data,
+    };
   } catch (err) {
     clearTimeout(timer);
     const isTimeout = err.name === 'AbortError';
 
     return {
       ok: false,
+      httpStatus: 0,
       error: {
         code: isTimeout ? 'TIMEOUT' : 'NETWORK_ERROR',
         message: isTimeout
