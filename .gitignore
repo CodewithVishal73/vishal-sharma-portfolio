@@ -1,13 +1,43 @@
-node_modules
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment and Secrets (Never commit .env files)
 .env
 .env.*
 !.env.example
 *.pem
 *.key
-*.log
-coverage/
-dist
-build
-logs
-.DS_Store
 
+# Production Builds
+dist/
+build/
+.output/
+
+# Logs and Diagnostics
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# Coverage and Testing Artifacts
+coverage/
+.nyc_output/
+
+# OS and Editor Metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Platform Deployment Caches
+.netlify/
+.vercel/
+uploads/
+
+# Internal AI Notes and Scratchpads
+.context/
