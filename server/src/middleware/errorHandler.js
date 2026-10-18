@@ -34,9 +34,10 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
+  const isProd = config.nodeEnv === 'production';
   const statusCode = err.status || err.statusCode || 500;
   const errorCode = err.code || (statusCode === 400 ? 'VALIDATION_ERROR' : 'INTERNAL_ERROR');
-  const message = err.message || 'An unexpected error occurred';
+  const message = isProd && statusCode >= 500 ? 'An internal server error occurred' : (err.message || 'An unexpected error occurred');
 
   const response = {
     ok: false,

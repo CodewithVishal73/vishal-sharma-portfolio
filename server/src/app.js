@@ -10,6 +10,9 @@ import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
+// Disable X-Powered-By header
+app.disable('x-powered-by');
+
 // Trust reverse proxy for Render deployment
 app.set('trust proxy', 1);
 
@@ -43,8 +46,8 @@ app.use('/api/health', healthRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/cv', cvRoutes);
 
-// Catch-all JSON 404 for any other /api/* routes
-app.all('/api/*', notFoundHandler);
+// Catch-all JSON 404 for any unhandled routes
+app.use(notFoundHandler);
 
 // Central JSON error handler
 app.use(errorHandler);

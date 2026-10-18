@@ -1,13 +1,12 @@
-// Verified facts only from PROJECT_CONTEXT.md section 3
-// Never mention any business or startup. Never invent metrics or unverified links.
+// Authoritative CV data strictly derived from CLAIMS.md and profile.js
+// No separate business/startup. No phone number or home address.
+// No bracketed placeholders or unverified claims.
 export const cvData = {
   name: 'Vishal Sharma',
   role: 'Software Engineer',
   contact: {
     location: 'Jaipur, India',
-    email: '[Email – to confirm]',
-    github: '[GitHub URL – to confirm]',
-    linkedin: '[LinkedIn URL – to confirm]',
+    email: 'vishal.sharma.tech1@gmail.com',
   },
   summary:
     'Computer Science undergraduate specializing in backend architecture, REST API engineering, and scalable software systems. Experienced in developing secure service layers, relational and document database integrations, and intelligent web applications.',
@@ -19,39 +18,67 @@ export const cvData = {
       status: 'Current Student',
     },
   ],
+  experience: [
+    {
+      organization: 'JGS Jaipur Global Services Pvt. Ltd., Jaipur',
+      role: 'Internship',
+      duration: '18 May 2026 – 18 July 2026',
+      description:
+        'Engineered backend service layer and data persistence for SellerLensIQ, an Amazon keyword research and listing SEO platform. Built Spring Boot REST APIs, implemented authentication, CSV bulk ingestion pipeline, and PostgreSQL database models.',
+    },
+  ],
   skills: {
-    languages: ['Java', 'C++', 'JavaScript', 'Python', 'SQL'],
-    frameworksAndApis: ['Spring Boot', 'REST APIs', 'Node.js', 'Express', 'React'],
-    databases: ['PostgreSQL', 'MySQL', 'MongoDB'],
-    toolsAndWorkflow: ['Git', 'GitHub', 'Maven', 'Postman'],
+    frontend: ['JavaScript', 'React'],
+    backend: [
+      'Java',
+      'C++',
+      'Python',
+      'Spring Boot',
+      'REST APIs',
+      'Node.js',
+      'Express',
+      'PostgreSQL',
+      'MySQL',
+      'MongoDB',
+      'SQL',
+    ],
+    toolsAndTechnologies: [
+      'Git',
+      'GitHub',
+      'Maven',
+      'Postman',
+      'Practical AI Integration',
+      'AI-Assisted App Development',
+    ],
   },
   projects: [
     {
       name: 'SellerLensIQ',
-      tech: ['React', 'Node.js', 'MongoDB', 'REST APIs'],
+      tech: ['Java', 'Spring Boot', 'PostgreSQL', 'REST APIs'],
+      status: 'Associated with JGS',
       description:
-        'Intelligent e-commerce analytics and monitoring platform. Architected RESTful endpoints, implemented data persistence models, and designed interactive analytics views.',
-      links: '[GitHub URL – to confirm] · [Live Demo – to confirm]',
+        'Amazon keyword research and listing SEO intelligence platform. Engineered RESTful endpoints for keyword portfolio tracking, CSV bulk upload pipeline, and PostgreSQL persistence.',
     },
     {
-      name: 'Clinic Management System',
-      tech: ['Java', 'Spring Boot', 'MySQL', 'REST APIs'],
+      name: 'ClinicSaaS',
+      tech: ['Java', 'Spring Boot', 'REST APIs'],
+      status: 'In Progress',
       description:
-        'Healthcare scheduling and patient record management system. Implemented structured domain models, secure REST endpoints, and relational database persistence.',
-      links: '[GitHub URL – to confirm] · [Live Demo – to confirm]',
+        'Healthcare clinic management application for administrative and appointment workflows. Implemented structured domain models, doctor scheduling logic, and secure REST endpoints.',
     },
     {
-      name: 'Developer Portfolio',
-      tech: ['React', 'Node.js', 'Express', 'MongoDB'],
+      name: 'Vaani Bill',
+      tech: ['React', 'Node.js', 'REST APIs'],
+      status: 'Concept',
       description:
-        'Interactive full-stack portfolio built around a live request-path architecture. Features automated CV generation and serving, API health telemetry, and MongoDB contact persistence.',
-      links: '[GitHub URL – to confirm] · [Live Demo – to confirm]',
+        'AI voice point-of-sale concept exploring billing simplification through Hindi, English, and Hinglish speech interactions. (Product concept, not yet deployed).',
     },
   ],
   competencies: [
-    'API Design & Implementation',
-    'Database Integration & Modeling',
-    'Authentication & Security',
-    'AI-Assisted Application Development',
+    'Strict API Contracts & Schema Validation',
+    'Relational & Document Persistence Boundaries',
+    'Defensive Security & Middleware Architecture',
+    'Practical AI Systems Integration',
   ],
 };
+

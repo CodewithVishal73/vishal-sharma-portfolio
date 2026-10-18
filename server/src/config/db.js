@@ -3,6 +3,9 @@ import { config } from './env.js';
 
 let isConnecting = false;
 
+// Defensive query sanitization against NoSQL injection
+mongoose.set('sanitizeFilter', true);
+
 export async function connectDB(uri = config.mongodbUri) {
   if (!uri) {
     throw new Error('Cannot connect to MongoDB: URI is not provided');

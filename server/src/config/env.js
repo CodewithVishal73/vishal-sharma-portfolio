@@ -18,14 +18,17 @@ if (!process.env.MONGODB_URI && !isTest && !skipValidation) {
   process.exit(1);
 }
 
-const clientOriginsRaw = process.env.CLIENT_ORIGINS || 'http://localhost:5173';
+const clientOriginsRaw = process.env.CLIENT_ORIGINS || '';
 const clientOrigins = clientOriginsRaw
   .split(',')
-  .map((origin) => origin.trim())
+  .map((origin) => origin.trim().replace(/\/+$/, ''))
   .filter(Boolean);
 
-if (!clientOrigins.includes('http://localhost:5173')) {
-  clientOrigins.push('http://localhost:5173');
+// Localhost is only permitted when NODE_ENV is not production
+if (process.env.NODE_ENV !== 'production') {
+  if (!clientOrigins.includes('http://localhost:5173')) {
+    clientOrigins.push('http://localhost:5173');
+  }
 }
 
 export const config = {

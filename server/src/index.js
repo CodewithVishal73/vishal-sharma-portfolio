@@ -7,8 +7,8 @@ let server = null;
 export async function start() {
   try {
     await connectDB();
-    server = app.listen(config.port, () => {
-      console.log(`[server] Server running on port ${config.port} (${config.nodeEnv})`);
+    server = app.listen(config.port, '0.0.0.0', () => {
+      console.log(`[server] Server running on 0.0.0.0:${config.port} (${config.nodeEnv})`);
     });
     return server;
   } catch (err) {
