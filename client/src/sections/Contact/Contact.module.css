@@ -3,6 +3,7 @@
   grid-template-columns: 1fr;
   gap: var(--space-6);
   width: 100%;
+  max-width: 100%;
   align-items: start;
 }
 
@@ -16,6 +17,9 @@
 .infoCol {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .introCard {
@@ -178,4 +182,6 @@
 
 .formCol {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }

@@ -51,6 +51,13 @@
   justify-content: flex-start;
 }
 
+.cardWrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 .leftRow .cardWrapper {
   width: calc(50% - 48px);
   margin-right: auto;
@@ -314,6 +321,25 @@
 
   .title {
     font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .spineTrack {
+    left: 12px;
+  }
+
+  .itemRow {
+    padding-left: 36px;
+    margin-bottom: 2rem;
+  }
+
+  .nodeWrapper {
+    left: 12px;
+  }
+
+  .card {
+    padding: 1rem;
   }
 }
 

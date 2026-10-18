@@ -10,6 +10,10 @@
   border-radius: 12px;
   cursor: pointer;
   outline: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   transition:
     border-color var(--dur-fast) ease,
     background-color var(--dur-fast) ease,
