@@ -1,678 +1,269 @@
-.sectionContainer {
+.container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-6);
   width: 100%;
 }
 
-/* Scenario Selector Bar */
-.scenarioBar {
+.pipeline {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background-color: var(--surface-1);
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
 }
 
-.scenarioBarLabel {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-
-.scenarioButtonsGroup {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-}
-
-@media (min-width: 860px) {
-  .scenarioButtonsGroup {
-    grid-template-columns: repeat(3, 1fr);
+@media (min-width: 768px) {
+  .pipeline {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: var(--space-3);
   }
 }
 
-.scenarioButton {
+.stageCard {
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
-  padding: 0.85rem 1rem;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: var(--space-5);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.stageCard:hover {
+  border-color: var(--signal);
+  box-shadow: 0 6px 24px var(--signal-glow);
+}
+
+.centerCard {
+  background: radial-gradient(circle at 50% 50%, var(--signal-subtle), transparent 80%),
+              var(--surface);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px dashed var(--line);
+}
+
+.cardLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--signal);
+}
+
+.headerPort {
+  box-shadow: 0 0 6px var(--signal);
+}
+
+/* 1. Application Window Glyph */
+.windowGlyph {
   background-color: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: 8px;
-  cursor: pointer;
-  text-align: left;
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out);
-}
-
-.scenarioButton:hover {
-  border-color: var(--signal);
-  transform: translateY(-1px);
-}
-
-.scenarioButton:focus-visible {
-  outline: 2px solid var(--signal);
-  outline-offset: 2px;
-}
-
-.scenarioButtonActive {
-  border-color: var(--signal);
-  background-color: var(--signal-subtle);
-  box-shadow: 0 0 12px var(--signal-glow);
-}
-
-.scenarioNum {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--signal);
-}
-
-.scenarioTitle {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.35;
-}
-
-.scenarioBadge {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--ink-2);
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  padding: 1px 6px;
-  border-radius: 3px;
-  margin-top: 0.25rem;
-}
-
-/* Diagram Main Wrapper */
-.diagramWrapper {
+  padding: 10px 12px;
+  margin-bottom: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-6);
-  background-color: var(--surface-1);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
+  gap: 8px;
+  height: 90px;
+  justify-content: center;
 }
 
-@media (max-width: 640px) {
-  .diagramWrapper {
-    padding: var(--space-4);
-  }
-}
-
-.diagramHeader {
+.windowBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--line);
+  gap: 5px;
+  margin-bottom: 2px;
 }
 
-.diagramHeaderLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.layerLabel {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--signal);
-}
-
-.layerTitle {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0;
-}
-
-.activeScenarioIndicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--ink-2);
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-
-.indicatorDot {
+.windowDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--signal);
-  box-shadow: 0 0 6px var(--signal);
-}
-
-/* Nodes Layout Container */
-.nodesContainer {
-  position: relative;
-  width: 100%;
-}
-
-/* SVG Overlay for desktop connections */
-.svgOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  overflow: visible;
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .svgOverlay {
-    display: block;
-  }
-}
-
-.edgeLine {
-  stroke: var(--signal);
-  stroke-width: 1.5;
-  stroke-dasharray: 4 3;
-  opacity: 0.85;
-}
-
-.edgeGlow {
-  stroke: var(--signal);
-  stroke-width: 5;
-  opacity: 0.15;
-}
-
-.signalPacket {
-  fill: var(--signal);
-  filter: drop-shadow(0 0 4px var(--signal));
-}
-
-/* Nodes Grid */
-.nodesGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  position: relative;
-  z-index: 3;
-}
-
-@media (min-width: 768px) {
-  .nodesGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto auto;
-    gap: var(--space-5) var(--space-4);
-    padding: var(--space-4) 0;
-  }
-
-  .gridSlot_user-app {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .gridSlot_app-logic {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .gridSlot_api-layer {
-    grid-column: 3;
-    grid-row: 1;
-  }
-
-  .gridSlot_ai-service {
-    grid-column: 4;
-    grid-row: 1;
-  }
-
-  .gridSlot_db-context {
-    grid-column: 2 / span 2;
-    grid-row: 2;
-    margin: 0 auto;
-    width: 85%;
-  }
-}
-
-/* Individual Node Button */
-.nodeButton {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: left;
-  transition:
-    transform var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out);
-}
-
-.nodeButton:hover {
-  transform: translateY(-2px);
-  border-color: var(--signal);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.nodeButton:focus-visible {
-  outline: 2px solid var(--signal);
-  outline-offset: 2px;
-}
-
-.nodeInPath {
-  border-color: var(--signal);
-  box-shadow: 0 0 10px var(--signal-glow);
-}
-
-.nodeSelected {
-  border-color: var(--signal) !important;
-  background-color: var(--signal-subtle);
-  box-shadow: 0 0 16px var(--signal-glow) !important;
-}
-
-.nodeHeaderRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.4rem;
-}
-
-.nodeIndex {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--signal);
-}
-
-.nodeTierBadge {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  padding: 1px 6px;
-  border-radius: 3px;
-  border: 1px solid var(--line);
-  white-space: nowrap;
-}
-
-.nodeBody {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.iconCircle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  background-color: var(--surface-1);
-  border: 1px solid var(--line);
-  margin-bottom: 0.2rem;
-}
-
-.nodeIcon {
-  font-size: 0.95rem;
-  color: var(--signal);
-}
-
-.nodeName {
-  font-family: var(--font-display);
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.25;
-}
-
-.nodeRole {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--ink-2);
-  line-height: 1.35;
-}
-
-.nodePort {
-  position: absolute;
-  top: 10px;
-  right: -3px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--line);
-  transition: background-color var(--dur-fast) ease;
-}
-
-.nodeInPath .nodePort,
-.nodeSelected .nodePort {
-  background-color: var(--signal);
-  box-shadow: 0 0 6px var(--signal);
-}
-
-/* Mobile Connector between vertical items */
-.mobileConnector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 2px 0;
-  color: var(--ink-2);
+  background-color: var(--ink-2);
   opacity: 0.5;
 }
 
-@media (min-width: 768px) {
-  .mobileConnector {
-    display: none;
-  }
+.unstructuredBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.mobileConnectorActive {
-  color: var(--signal);
-  opacity: 1;
+.rawLine {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ink-2);
+  opacity: 0.35;
 }
 
-.connectorLine {
-  width: 1px;
-  height: 12px;
-  background-color: currentColor;
+.line1 {
+  width: 82%;
+  border-style: dashed;
 }
 
-.connectorArrow {
-  font-size: 0.65rem;
+.line2 {
+  width: 64%;
+}
+
+.line3 {
+  width: 90%;
+  border-style: dotted;
+}
+
+.line4 {
+  width: 50%;
+}
+
+/* 2. Cluster Mark */
+.clusterWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  margin-bottom: var(--space-4);
+}
+
+.clusterSvg {
+  width: 100%;
+  max-width: 160px;
+  height: 80px;
+}
+
+.clusterLink {
+  stroke: var(--signal);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+  opacity: 0.45;
+}
+
+.clusterNode {
+  fill: var(--surface);
+  stroke: var(--signal);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 4px var(--signal-glow));
+}
+
+.primaryNode {
+  fill: var(--signal);
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+
+/* 3. Output Rows */
+.outputRows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 90px;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.outputRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+.checkDot {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ok);
   line-height: 1;
 }
 
-/* Stable Detail Panel */
-.detailPanel {
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: var(--space-4) var(--space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  transition: border-color var(--dur-fast) ease;
-}
-
-.detailHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.detailTitleGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.detailTypeLabel {
+.rowText {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  color: var(--signal);
-}
-
-.detailName {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 11px;
   color: var(--ink);
-  margin: 0;
-}
-
-.detailBadge {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  padding: 3px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--line);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.detailDescription {
+.stageDesc {
   font-family: var(--font-body);
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--ink);
-  margin: 0;
-}
-
-/* Sequence list inside scenario view */
-.sequenceSection {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.sequenceTitle {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--ink-2);
-  text-transform: uppercase;
+  margin-top: auto;
 }
 
-.sequenceList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sequenceItem {
+/* Connectors */
+.connector {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--ink);
-}
-
-.seqIndex {
-  color: var(--signal);
-  font-weight: 700;
-  background-color: var(--surface-1);
-  padding: 1px 6px;
-  border-radius: 3px;
-  border: 1px solid var(--line);
-}
-
-.seqText {
-  color: var(--ink-2);
-}
-
-/* Detail Meta Grid */
-.detailMetaGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-  padding-top: var(--space-2);
-}
-
-@media (min-width: 640px) {
-  .detailMetaGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.detailMetaItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.metaLabel {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.06em;
-  color: var(--ink-2);
-  text-transform: uppercase;
-}
-
-.metaValue {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  color: var(--ink);
-  line-height: 1.4;
-}
-
-.resetDetailBtn {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--signal);
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 4px 10px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition:
-    background-color var(--dur-fast) ease,
-    border-color var(--dur-fast) ease;
-}
-
-.resetDetailBtn:hover {
-  background-color: var(--signal-subtle);
-  border-color: var(--signal);
-}
-
-/* Evidence Tiers Badge Themes */
-.tier_ok {
-  border-color: var(--ok) !important;
-  color: var(--ok) !important;
-  background-color: color-mix(in oklab, var(--ok) 10%, transparent);
-}
-
-.tier_signal {
-  border-color: var(--signal) !important;
-  color: var(--signal) !important;
-  background-color: var(--signal-subtle);
-}
-
-.tier_default {
-  border-color: var(--line) !important;
-  color: var(--ink-2) !important;
-  background-color: var(--surface-1);
-}
-
-/* Diagram Footer: Legend & Mandatory Caption */
-.diagramFooter {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--line);
-}
-
-@media (min-width: 768px) {
-  .diagramFooter {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.legend {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.legendHeading {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  color: var(--ink-2);
-  text-transform: uppercase;
-}
-
-.legendItems {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-}
-
-.legendItem {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--ink-2);
-}
-
-.legendDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.captionNotice {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--ink-2);
-  margin: 0;
-}
-
-.captionIcon {
-  font-size: 0.85rem;
-  color: var(--signal);
+  justify-content: center;
+  width: 48px;
   flex-shrink: 0;
+  height: 24px;
+}
+
+@media (max-width: 767px) {
+  .connector {
+    transform: rotate(90deg);
+    margin: var(--space-1) 0;
+  }
+}
+
+.arrowSvg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.arrowLine {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.arrowHead {
+  fill: var(--signal);
+}
+
+.pulseDot {
+  position: absolute;
+  top: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
+}
+
+/* Caption */
+.caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  text-align: center;
+  margin-top: var(--space-2);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scenarioButton,
-  .nodeButton {
-    transition: none;
-  }
-  .edgeLine {
-    stroke-dasharray: none;
-  }
-  .signalPacket {
+  .pulseDot {
     display: none;
   }
 }
