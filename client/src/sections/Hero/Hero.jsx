@@ -87,7 +87,7 @@ export default function Hero() {
 
         {/* 6. CTAs */}
         <motion.div className={styles.ctaRow} variants={itemVariants}>
-          <Button variant="primary" href="#services" size="lg" className={styles.primaryCta}>
+          <Button variant="primary" to="/projects" size="lg" className={styles.primaryCta}>
             View Projects
           </Button>
           <DownloadCvButton className={styles.cvCta} variant="secondary" />

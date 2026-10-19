@@ -9,15 +9,15 @@ import styles from './Footer.module.css';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  // Internal navigation links matching SectionShell IDs
+  // Internal navigation links matching distinct page routes
   const navLinks = [
-    { href: '#client', label: 'Top' },
-    { href: '#identity', label: 'About' },
-    { href: '#stack', label: 'Skills' },
-    { href: '#services', label: 'Projects' },
-    { href: '#history', label: 'Timeline' },
-    { href: '#proof', label: 'Credentials' },
-    { href: '#response', label: 'Contact' },
+    { to: '/', label: 'Client' },
+    { to: '/about', label: 'Identity' },
+    { to: '/skills', label: 'Stack' },
+    { to: '/projects', label: 'Services' },
+    { to: '/timeline', label: 'History' },
+    { to: '/certifications', label: 'Proof' },
+    { to: '/contact', label: 'Response' },
   ];
 
   const socialLinks = [
@@ -57,10 +57,10 @@ export default function Footer() {
           {/* Internal Section Navigation */}
           <nav className={styles.nav} aria-label="Footer navigation">
             {navLinks.map((item, index) => (
-              <React.Fragment key={item.href}>
-                <a href={item.href} className={styles.navLink}>
+              <React.Fragment key={item.to}>
+                <Link to={item.to} className={styles.navLink}>
                   {item.label}
-                </a>
+                </Link>
                 {index < navLinks.length - 1 && (
                   <span className={styles.divider} aria-hidden="true">·</span>
                 )}

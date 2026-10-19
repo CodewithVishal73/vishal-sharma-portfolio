@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FiMenu, FiX, FiDownload } from 'react-icons/fi';
 import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx';
@@ -8,47 +8,26 @@ import { buildApiUrl } from '../../lib/api.js';
 import { SECTIONS } from '../../data/sections.js';
 import styles from './Header.module.css';
 
-const NAV_ITEMS = SECTIONS.map((s) => ({ id: s.id, label: s.navLabel }));
-
+const NAV_ITEMS = SECTIONS.map((s) => ({
+  id: s.id,
+  label: s.navLabel,
+  path: s.path,
+  alias: s.alias,
+}));
 
 export default function Header() {
-  const [activeSection, setActiveSection] = useState('client');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Scrollspy to highlight active nav item on scroll
-  useEffect(() => {
-    if (location.pathname !== '/') return;
-
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 160;
-
-      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
-        const item = NAV_ITEMS[i];
-        const el = document.getElementById(item.id);
-        if (el) {
-          const top = el.offsetTop;
-          if (scrollPos >= top) {
-            setActiveSection(item.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]);
-
-  const handleNavClick = (id) => {
-    setMobileMenuOpen(false);
-    if (location.pathname === '/') {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+  const isNavActive = (item) => {
+    if (item.path === '/') {
+      return location.pathname === '/' || location.pathname === '/client';
     }
+    return (
+      location.pathname === item.path ||
+      location.pathname === item.alias ||
+      location.pathname.startsWith(item.path + '/')
+    );
   };
 
   return (
@@ -64,21 +43,15 @@ export default function Header() {
         <nav className={styles.desktopNav} aria-label="Main Navigation">
           <ul className={styles.navList}>
             {NAV_ITEMS.map((item) => {
-              const isActive = activeSection === item.id && location.pathname === '/';
+              const isActive = isNavActive(item);
               return (
                 <li key={item.id}>
-                  <a
-                    href={`/#${item.id}`}
-                    onClick={(e) => {
-                      if (location.pathname === '/') {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }
-                    }}
+                  <Link
+                    to={item.path}
                     className={`${styles.navLink} ${isActive ? styles.navActive : ''}`}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               );
             })}
@@ -119,25 +92,21 @@ export default function Header() {
         <div className={styles.mobileSheet}>
           <nav aria-label="Mobile Navigation">
             <ul className={styles.mobileList}>
-              {NAV_ITEMS.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={`/#${item.id}`}
-                    onClick={(e) => {
-                      if (location.pathname === '/') {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      } else {
-                        setMobileMenuOpen(false);
-                      }
-                    }}
-                    className={`${styles.mobileLink} ${activeSection === item.id ? styles.mobileActive : ''}`}
-                  >
-                    <Port active={activeSection === item.id} />
-                    <span>{item.label}</span>
-                  </a>
-                </li>
-              ))}
+              {NAV_ITEMS.map((item) => {
+                const isActive = isNavActive(item);
+                return (
+                  <li key={item.id}>
+                    <Link
+                      to={item.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`${styles.mobileLink} ${isActive ? styles.mobileActive : ''}`}
+                    >
+                      <Port active={isActive} />
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         </div>

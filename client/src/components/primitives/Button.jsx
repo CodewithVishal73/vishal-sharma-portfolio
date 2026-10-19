@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Button.module.css';
 
 export default function Button({
@@ -6,6 +7,7 @@ export default function Button({
   variant = 'primary',
   size = 'md',
   href,
+  to,
   onClick,
   disabled = false,
   className = '',
@@ -14,9 +16,17 @@ export default function Button({
 }) {
   const buttonClass = `${styles.btn} ${styles[variant]} ${styles[size]} ${className}`;
 
+  if (to) {
+    return (
+      <Link to={to} className={buttonClass} onClick={onClick} {...rest}>
+        {children}
+      </Link>
+    );
+  }
+
   if (href) {
     return (
-      <a href={href} className={buttonClass} {...rest}>
+      <a href={href} className={buttonClass} onClick={onClick} {...rest}>
         {children}
       </a>
     );

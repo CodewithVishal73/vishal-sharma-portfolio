@@ -1,68 +1,120 @@
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FiArrowRight, FiCode, FiLayers, FiAward, FiClock, FiMail, FiUser } from 'react-icons/fi';
 import Hero from '../sections/Hero/Hero.jsx';
-import About from '../sections/About/About.jsx';
-import Skills from '../sections/Skills/Skills.jsx';
-import Projects from '../sections/Projects/Projects.jsx';
-import Timeline from '../sections/Timeline/Timeline.jsx';
-import Certifications from '../sections/Certifications/Certifications.jsx';
-import Contact from '../sections/Contact/Contact.jsx';
+import Port from '../components/primitives/Port.jsx';
+import Button from '../components/primitives/Button.jsx';
+import ProjectCard from '../components/ProjectCard/ProjectCard.jsx';
+import { projects } from '../data/projects.js';
+import { SECTIONS } from '../data/sections.js';
 import styles from './Home.module.css';
 
-export default function Home() {
-  const [searchParams, setSearchParams] = useSearchParams();
+const NODE_ICONS = {
+  identity: FiUser,
+  stack: FiCode,
+  services: FiLayers,
+  history: FiClock,
+  proof: FiAward,
+  response: FiMail,
+};
 
-  React.useEffect(() => {
-    if (window.location.hash) {
-      const id = window.location.hash.replace('#', '');
-      const el = document.getElementById(id);
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }, 80);
-      }
-    }
+export default function Home() {
+  useEffect(() => {
+    document.title = 'Vishal Sharma | Full-Stack Developer & System Builder';
+    window.scrollTo(0, 0);
   }, []);
 
-  const handleSelectSkill = (skillOrTag) => {
-    const nextParams = new URLSearchParams(searchParams);
-    if (!skillOrTag || skillOrTag === 'All') {
-      nextParams.delete('tag');
-      nextParams.delete('filter');
-    } else {
-      nextParams.set('tag', skillOrTag);
-      nextParams.delete('filter');
-    }
-    setSearchParams(nextParams, { replace: true, preventScrollReset: true });
-
-    const el = document.getElementById('services');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // Filter out node 01 (client/hero) to display pipeline directory
+  const pipelineNodes = SECTIONS.filter((s) => s.id !== 'client');
+  // Featured projects preview (first 2 projects)
+  const featuredProjects = projects.slice(0, 2);
 
   return (
     <div className={styles.homeContainer}>
-      {/* 01 / CLIENT — HERO */}
+      {/* 01 / CLIENT — HERO NODE */}
       <Hero />
 
-      {/* 02 / IDENTITY — ABOUT */}
-      <About />
+      {/* PIPELINE ARCHITECTURE DIRECTORY */}
+      <section className={styles.directorySection} aria-label="System Architecture Pipeline">
+        <div className={styles.sectionHeader}>
+          <div className={styles.headerMeta}>
+            <Port active />
+            <span className="mono-label">PIPELINE ROUTING TABLE · 6 ACTIVE NODES</span>
+          </div>
+          <h2 className={styles.sectionTitle}>System Architecture Directory</h2>
+          <p className={styles.sectionSubtitle}>
+            Select any pipeline node below or use the navigation bar to access dedicated system modules.
+          </p>
+        </div>
 
-      {/* 03 / STACK — SKILLS */}
-      <Skills onSelectSkill={handleSelectSkill} />
+        <div className={styles.nodesGrid}>
+          {pipelineNodes.map((node, index) => {
+            const Icon = NODE_ICONS[node.id] || FiLayers;
+            return (
+              <motion.div
+                key={node.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-5%' }}
+                transition={{ duration: 0.35, delay: index * 0.05 }}
+              >
+                <Link to={node.path} className={styles.nodeCard}>
+                  <div className={styles.cardTop}>
+                    <span className={styles.nodeTag}>NODE {node.num} / {node.nodeLabel}</span>
+                    <Icon className={styles.nodeIcon} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.cardHeading}>{node.navLabel}</h3>
+                  <p className={styles.cardDescription}>{node.desc}</p>
+                  <div className={styles.cardAction}>
+                    <span className={styles.actionText}>Access Page</span>
+                    <FiArrowRight className={styles.arrowIcon} aria-hidden="true" />
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
 
-      {/* 04 / SERVICES — PROJECTS */}
-      <Projects />
+      {/* FEATURED PROJECTS HIGHLIGHT */}
+      <section className={styles.featuredSection} aria-label="Featured Systems Preview">
+        <div className={styles.sectionHeader}>
+          <div className={styles.headerMeta}>
+            <Port active />
+            <span className="mono-label">SERVICES · HIGHLIGHTED SYSTEMS</span>
+          </div>
+          <div className={styles.headerFlex}>
+            <div>
+              <h2 className={styles.sectionTitle}>Featured Architectures</h2>
+              <p className={styles.sectionSubtitle}>
+                Production systems and full-stack software built with verifiable architectures.
+              </p>
+            </div>
+            <Link to="/projects" className={styles.exploreAllBtn}>
+              <Button variant="secondary" size="md">
+                <span>View All Projects ({projects.length})</span>
+                <FiArrowRight aria-hidden="true" />
+              </Button>
+            </Link>
+          </div>
+        </div>
 
-      {/* 05 / HISTORY — EDUCATION & EXPERIENCE */}
-      <Timeline />
+        <div className={styles.previewGrid}>
+          {featuredProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+        </div>
 
-      {/* 06 / PROOF — CERTIFICATIONS & ACHIEVEMENTS */}
-      <Certifications />
-
-      {/* 07 / RESPONSE — CONTACT */}
-      <Contact />
+        <div className={styles.ctaBottom}>
+          <Link to="/projects">
+            <Button variant="primary" size="lg">
+              <span>Explore All Projects & Verified Systems</span>
+              <FiArrowRight aria-hidden="true" />
+            </Button>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

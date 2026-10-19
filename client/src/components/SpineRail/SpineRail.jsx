@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { SECTIONS } from '../../data/sections.js';
 import styles from './SpineRail.module.css';
 
-const NODES = SECTIONS.map((s) => ({ id: s.id, num: s.num, label: s.nodeLabel }));
-
+const NODES = SECTIONS.map((s) => ({
+  id: s.id,
+  num: s.num,
+  label: s.nodeLabel,
+  path: s.path,
+  alias: s.alias,
+}));
 
 export default function SpineRail() {
+  const location = useLocation();
   const { scrollYProgress } = useScroll();
   const scaleY = useSpring(scrollYProgress, {
     stiffness: 120,
@@ -14,24 +21,17 @@ export default function SpineRail() {
     restDelta: 0.001,
   });
 
-  const [activeNodeIndex, setActiveNodeIndex] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 200;
-      for (let i = NODES.length - 1; i >= 0; i--) {
-        const el = document.getElementById(NODES[i].id);
-        if (el && scrollPos >= el.offsetTop) {
-          setActiveNodeIndex(i);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const activeIndex = NODES.findIndex((node) => {
+    if (node.path === '/') {
+      return location.pathname === '/' || location.pathname === '/client';
+    }
+    return (
+      location.pathname === node.path ||
+      location.pathname === node.alias ||
+      location.pathname.startsWith(node.path + '/')
+    );
+  });
+  const currentActiveIndex = activeIndex >= 0 ? activeIndex : 0;
 
   return (
     <>
@@ -48,28 +48,33 @@ export default function SpineRail() {
           {/* Inactive background track line */}
           <div className={styles.guideLine} />
 
-          {/* Active drawn signal line */}
+          {/* Active drawn signal line based on pipeline position */}
           <motion.div
             className={styles.activeLine}
-            style={{ scaleY, transformOrigin: 'top' }}
+            style={{
+              scaleY: (currentActiveIndex + 1) / NODES.length,
+              transformOrigin: 'top',
+              transition: 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)',
+            }}
           />
 
           {/* Node markers along the rail */}
           {NODES.map((node, i) => {
-            const isPassed = activeNodeIndex >= i;
+            const isPassed = currentActiveIndex >= i;
+            const isCurrent = currentActiveIndex === i;
             const topPct = (i / (NODES.length - 1)) * 88 + 6;
 
             return (
-              <a
+              <Link
                 key={node.id}
-                href={`#${node.id}`}
-                className={`${styles.nodeItem} ${isPassed ? styles.nodePassed : ''}`}
+                to={node.path}
+                className={`${styles.nodeItem} ${isPassed ? styles.nodePassed : ''} ${isCurrent ? styles.nodeCurrent : ''}`}
                 style={{ top: `${topPct}%` }}
-                aria-label={`Jump to node ${node.num} ${node.label}`}
+                aria-label={`Navigate to node ${node.num} ${node.label}`}
               >
                 <span className={styles.nodeDot} />
                 <span className={styles.nodeLabel}>{node.num}</span>
-              </a>
+              </Link>
             );
           })}
         </div>

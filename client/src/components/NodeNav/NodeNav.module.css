@@ -1,0 +1,139 @@
+.navContainer {
+  margin-top: clamp(48px, 8vw, 80px);
+  padding-bottom: clamp(32px, 6vw, 64px);
+  width: 100%;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: var(--line);
+}
+
+.nodeStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.port {
+  margin-right: 2px;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.navCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--ink);
+  transition: all var(--dur-fast) var(--ease-out);
+  min-width: 170px;
+}
+
+.navCard:hover {
+  border-color: var(--signal);
+  background-color: var(--signal-subtle);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--signal-subtle);
+}
+
+.navCardRight {
+  justify-content: flex-end;
+}
+
+.icon {
+  font-size: 18px;
+  color: var(--signal);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.navCard:hover .icon {
+  transform: translateX(-4px);
+}
+
+.navCardRight:hover .icon {
+  transform: translateX(4px);
+}
+
+.textGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.textGroupRight {
+  text-align: right;
+}
+
+.subLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+
+.mainLabel {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.centerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.centerLink:hover {
+  color: var(--signal);
+  background-color: var(--signal-subtle);
+}
+
+@media (max-width: 640px) {
+  .controlsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .navCard, .navCardRight {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .centerLink {
+    justify-content: center;
+    order: 3;
+  }
+}

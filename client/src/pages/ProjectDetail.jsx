@@ -25,7 +25,7 @@ export default function ProjectDetail() {
   const project = getProjectBySlug(slug);
 
   const handleTechClick = (tech) => {
-    navigate(`/?tag=${encodeURIComponent(tech)}#services`);
+    navigate(`/projects?tag=${encodeURIComponent(tech)}`);
   };
 
   // If slug is unconfirmed or unknown, render NotFound
@@ -54,7 +54,7 @@ export default function ProjectDetail() {
     >
       {/* Back navigation */}
       <div>
-        <Link to="/#services" className={styles.backLink}>
+        <Link to="/projects" className={styles.backLink}>
           <Button variant="ghost" size="sm">
             <FiArrowLeft aria-hidden="true" />
             <span>Back to All Projects</span>

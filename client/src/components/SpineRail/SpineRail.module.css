@@ -97,8 +97,21 @@
   transform: scale(1.3);
 }
 
+.nodeCurrent .nodeDot {
+  background-color: var(--signal);
+  border-color: var(--signal);
+  box-shadow: 0 0 12px var(--signal);
+  transform: scale(1.5);
+}
+
 .nodeItem:hover .nodeLabel,
 .nodePassed .nodeLabel {
   color: var(--signal);
+  opacity: 1;
+}
+
+.nodeCurrent .nodeLabel {
+  color: var(--signal);
+  font-weight: 700;
   opacity: 1;
 }
