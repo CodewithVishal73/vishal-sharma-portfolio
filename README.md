@@ -2,7 +2,7 @@
 
 A production-grade, fully responsive personal portfolio website engineered with the **MERN Stack** (React.js frontend, Node.js + Express.js backend REST API, and MongoDB Atlas database with Mongoose ODM). Designed as a living CV with real end-to-end database connectivity and server-side document delivery, the system models a full request path: **Browser → React SPA → Express API → MongoDB Atlas**, adhering to faculty requirements, responsive standards, and strict defensive security practices.
 
-![Portfolio Desktop Preview (Dark Theme)](docs/screenshots/home_1440x900_dark.png)
+![Portfolio Preview](client/public/og-image.png)
 
 ---
 
@@ -80,9 +80,6 @@ portfolio/
 ├── .gitignore                     # Production ignore rules (excludes .env, node_modules, dist, etc.)
 ├── render.yaml                    # Render cloud infrastructure blueprint (Node web service)
 ├── README.md                      # Comprehensive project documentation and faculty verification guide
-├── scripts/
-│   ├── check-casing.mjs           # Linux case-sensitivity import verification script
-│   └── scan-secrets.mjs           # Full git history and working tree credential scanner
 ├── client/
 │   ├── netlify.toml               # Netlify configuration: SPA redirect & Stage C defensive headers
 │   ├── package.json               # Client dependencies, engines (node >=20), and audit scripts
@@ -103,26 +100,23 @@ portfolio/
 │       ├── hooks/                 # Custom React hooks (useTheme, useInView, useTypewriter)
 │       ├── lib/                   # API client, animation helpers, and theme utilities
 │       └── styles/                # Design tokens (tokens.css), base styles, and motion utilities
-├── server/
-│   ├── package.json               # Server dependencies, engines (node >=20), scripts
-│   ├── .env.example               # Server environment variable placeholders
-│   ├── assets/
-│   │   └── cv/                    # Pre-generated binary CV files (PDF and DOCX)
-│   ├── scripts/
-│   │   ├── cv.data.js             # Authoritative single-source CV content
-│   │   ├── generate-cv.js         # Build script compiling CV data into PDF and Word formats
-│   │   └── test-security.mjs      # Stage C defensive security & route verification test suite
-│   └── src/
-│       ├── index.js               # Server entrypoint binding to 0.0.0.0 with graceful shutdown
-│       ├── app.js                 # Express application setup, Helmet, CORS, and JSON error handlers
-│       ├── config/                # Environment variable loader (env.js) and MongoDB connection (db.js)
-│       ├── middleware/            # Error handler, JSON 404, rate limiter, and Zod validator
-│       ├── models/                # Mongoose models (Message.js with strict schema and indexes)
-│       ├── routes/                # REST API endpoints (/api/health, /api/contact, /api/cv)
-│       └── utils/                 # Optional email notification utility (mailer.js)
-└── docs/
-    ├── responsive-audit.json      # Complete responsive audit test results
-    └── screenshots/               # Full-page screenshots across all routes, themes, and viewports
+└── server/
+    ├── package.json               # Server dependencies, engines (node >=20), scripts
+    ├── .env.example               # Server environment variable placeholders
+    ├── assets/
+    │   └── cv/                    # Pre-generated binary CV files (PDF and DOCX)
+    ├── scripts/
+    │   ├── cv.data.js             # Authoritative single-source CV content
+    │   ├── generate-cv.js         # Build script compiling CV data into PDF and Word formats
+    │   └── test-security.mjs      # Stage C defensive security & route verification test suite
+    └── src/
+        ├── index.js               # Server entrypoint binding to 0.0.0.0 with graceful shutdown
+        ├── app.js                 # Express application setup, Helmet, CORS, and JSON error handlers
+        ├── config/                # Environment variable loader (env.js) and MongoDB connection (db.js)
+        ├── middleware/            # Error handler, JSON 404, rate limiter, and Zod validator
+        ├── models/                # Mongoose models (Message.js with strict schema and indexes)
+        ├── routes/                # REST API endpoints (/api/health, /api/contact, /api/cv)
+        └── utils/                 # Optional email notification utility (mailer.js)
 ```
 
 ---

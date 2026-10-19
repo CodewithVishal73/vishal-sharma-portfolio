@@ -25,6 +25,7 @@ logs/
 # Coverage and Testing Artifacts
 coverage/
 .nyc_output/
+docs/
 
 # OS and Editor Metadata
 .DS_Store
