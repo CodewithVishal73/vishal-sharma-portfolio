@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiDownload, FiChevronDown, FiFileText, FiAlertCircle, FiLoader } from 'react-icons/fi';
-import { downloadCv, API_BASE_URL } from '../../lib/api.js';
+import { downloadCv, buildApiUrl } from '../../lib/api.js';
 import styles from './DownloadCvButton.module.css';
 
 export default function DownloadCvButton({ className = '', variant = 'primary' }) {
@@ -36,7 +36,7 @@ export default function DownloadCvButton({ className = '', variant = 'primary' }
       setIsOpen(false);
     } else {
       setErrorMessage(result.error || 'Failed to download CV file from server.');
-      setFallbackUrl(result.fallbackUrl || `${API_BASE_URL}/api/cv/${format}`);
+      setFallbackUrl(result.fallbackUrl || buildApiUrl(`/api/cv/${format}`));
       setStatusMessage(`Error: ${result.error || 'Download failed'}`);
     }
   };

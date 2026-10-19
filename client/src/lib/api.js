@@ -1,17 +1,64 @@
-const rawApiUrl = import.meta.env.VITE_API_URL;
-export const API_BASE_URL = rawApiUrl || (import.meta.env.DEV ? 'http://localhost:5000' : '');
+const env = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env : {};
+const rawApiUrl = (env.VITE_API_URL || '').trim();
+const fallbackUrl = env.DEV ? 'http://localhost:5000' : '';
+export const API_BASE_URL = (rawApiUrl || fallbackUrl).replace(/\/+$/, '');
 
-if (import.meta.env.PROD && !rawApiUrl) {
+if (env.PROD && !rawApiUrl) {
   console.error(
     '\x1b[31m[CONFIG_ERROR] VITE_API_URL environment variable is missing in production build!\x1b[0m'
   );
 }
 
 /**
+ * Builds a robust API URL by:
+ * - Trimming whitespace
+ * - Stripping all trailing slashes from the base
+ * - Ensuring the path has exactly one leading slash
+ * - Joining base and path with one slash
+ *
+ * A base with or without trailing slashes always yields https://host/api/...
+ *
+ * @param {string} arg1 Path or base URL
+ * @param {string} [arg2] Base URL or path
+ * @returns {string} Normalized API URL
+ */
+export function buildApiUrl(arg1 = '', arg2) {
+  let path = '';
+  let base = API_BASE_URL;
+
+  if (arg2 !== undefined) {
+    const isArg1Path = typeof arg1 === 'string' && (arg1.startsWith('/api') || arg1.startsWith('api/'));
+    const isArg2Base = typeof arg2 === 'string' && (arg2.startsWith('http://') || arg2.startsWith('https://'));
+    const isArg1Base = typeof arg1 === 'string' && (arg1.startsWith('http://') || arg1.startsWith('https://'));
+    const isArg2Path = typeof arg2 === 'string' && (arg2.startsWith('/api') || arg2.startsWith('api/'));
+
+    if ((isArg1Base && !isArg1Path) || (isArg2Path && !isArg1Path)) {
+      base = arg1;
+      path = arg2;
+    } else {
+      path = arg1;
+      base = arg2;
+    }
+  } else {
+    path = arg1;
+  }
+
+  const trimmedBase = (base ?? '').toString().trim().replace(/\/+$/, '');
+  const trimmedPath = (path ?? '').toString().trim();
+  const normalizedPath = '/' + trimmedPath.replace(/^\/+/, '');
+
+  if (!trimmedBase) {
+    return normalizedPath;
+  }
+
+  return `${trimmedBase}${normalizedPath}`;
+}
+
+/**
  * Fetch wrapper with timeout and normalized JSON response/error shape.
  */
 export async function request(path, options = {}) {
-  if (import.meta.env.PROD && !API_BASE_URL) {
+  if (env.PROD && !API_BASE_URL) {
     return {
       ok: false,
       httpStatus: 0,
@@ -26,7 +73,7 @@ export async function request(path, options = {}) {
   const timer = setTimeout(() => controller.abort(), timeout);
 
   try {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    const response = await fetch(buildApiUrl(path), {
       ...fetchOptions,
       signal: controller.signal,
       headers: {
@@ -100,7 +147,7 @@ export async function request(path, options = {}) {
  */
 export function warmUp() {
   try {
-    fetch(`${API_BASE_URL}/api/health`, { method: 'GET' }).catch(() => {});
+    fetch(buildApiUrl('/api/health'), { method: 'GET' }).catch(() => {});
   } catch {
     // Ignore warm up exceptions
   }
@@ -133,7 +180,7 @@ export async function submitContact(payload) {
  */
 export async function downloadCv(format = 'pdf', { onWaking } = {}) {
   const normalizedFormat = format.toLowerCase() === 'docx' ? 'docx' : 'pdf';
-  const targetUrl = `${API_BASE_URL}/api/cv/${normalizedFormat}`;
+  const targetUrl = buildApiUrl(`/api/cv/${normalizedFormat}`);
   const filename = `Vishal_Sharma_CV.${normalizedFormat}`;
 
   const controller = new AbortController();

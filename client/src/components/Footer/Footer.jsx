@@ -2,7 +2,7 @@ import React from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
 import Port from '../primitives/Port.jsx';
-import { API_BASE_URL } from '../../lib/api.js';
+import { buildApiUrl } from '../../lib/api.js';
 import { profile } from '../../data/profile.js';
 import styles from './Footer.module.css';
 
@@ -106,7 +106,7 @@ export default function Footer() {
           <div className={styles.actions}>
             {/* Functional Verified CV Downloads */}
             <a
-              href={`${API_BASE_URL}/api/cv/pdf`}
+              href={buildApiUrl('/api/cv/pdf')}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.docLink}
@@ -116,7 +116,7 @@ export default function Footer() {
             </a>
             <span className={styles.divider} aria-hidden="true">·</span>
             <a
-              href={`${API_BASE_URL}/api/cv/docx`}
+              href={buildApiUrl('/api/cv/docx')}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.docLink}
