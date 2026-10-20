@@ -13,9 +13,7 @@ const isTest = process.env.NODE_ENV === 'test';
 const skipValidation = process.env.SKIP_ENV_VALIDATION === 'true';
 
 if (!process.env.MONGODB_URI && !isTest && !skipValidation) {
-  console.error('\x1b[31mFatal configuration error: MONGODB_URI environment variable is required.\x1b[0m');
-  console.error('Please configure MONGODB_URI in your server/.env file or environment.');
-  process.exit(1);
+  console.warn('[config] WARNING: MONGODB_URI is not set. Contact form DB persistence will be unavailable.');
 }
 
 const clientOriginsRaw = process.env.CLIENT_ORIGINS || '';

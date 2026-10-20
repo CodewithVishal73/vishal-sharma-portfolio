@@ -6,7 +6,17 @@ let server = null;
 
 export async function start() {
   try {
-    await connectDB();
+    // Attempt DB connection only if URI is configured
+    if (config.mongodbUri) {
+      try {
+        await connectDB();
+      } catch (dbErr) {
+        console.warn('[server] MongoDB connection failed — continuing without DB:', dbErr.message);
+      }
+    } else {
+      console.warn('[server] MONGODB_URI not set — starting without database connection.');
+    }
+
     server = app.listen(config.port, '0.0.0.0', () => {
       console.log(`[server] Server running on 0.0.0.0:${config.port} (${config.nodeEnv})`);
     });

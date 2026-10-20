@@ -19,6 +19,18 @@ router.post('/', contactRateLimiter, validateContact, async (req, res, next) => 
       });
     }
 
+    // Check DB availability before attempting write
+    const mongoose = (await import('mongoose')).default;
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        ok: false,
+        error: {
+          code: 'DB_UNAVAILABLE',
+          message: 'Database is temporarily unavailable. Please try again later.',
+        },
+      });
+    }
+
     const userAgent = (req.headers['user-agent'] || '').slice(0, 300);
 
     const doc = await Message.create({
