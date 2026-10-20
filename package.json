@@ -5,8 +5,7 @@
     "dev": "concurrently --kill-others-on-fail --prefix-colors \"cyan,green\" --names \"SERVER,CLIENT\" \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
-    "build": "npm --prefix client run build",
-    "generate:cv": "npm --prefix server run generate:cv"
+    "build": "npm --prefix client run build"
   },
   "devDependencies": {
     "concurrently": "^10.0.6"
