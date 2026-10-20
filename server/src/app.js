@@ -41,6 +41,27 @@ app.use(cors(corsOptions));
 // JSON body parser with strict 10kb limit
 app.use(express.json({ limit: '10kb' }));
 
+// Root redirect → live portfolio
+app.get('/', (req, res) => {
+  res.redirect(301, 'https://vishalsharma1.netlify.app');
+});
+
+// API info route
+app.get('/api', (req, res) => {
+  res.json({
+    ok: true,
+    name: 'Vishal Sharma – Portfolio API',
+    version: '1.0.0',
+    endpoints: [
+      'GET  /api/health',
+      'POST /api/contact',
+      'GET  /api/cv/pdf',
+      'GET  /api/cv/docx',
+    ],
+    portfolio: 'https://vishalsharma1.netlify.app',
+  });
+});
+
 // API routes
 app.use('/api/health', healthRoutes);
 app.use('/api/contact', contactRoutes);
