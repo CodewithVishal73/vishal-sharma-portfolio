@@ -127,20 +127,6 @@ export default function Footer() {
             >
               CV (DOCX)
             </a>
-
-            {/* Public mail link if non-empty */}
-            {profile.email && (
-              <>
-                <span className={styles.divider} aria-hidden="true">·</span>
-                <a
-                  href={`mailto:${profile.email}`}
-                  className={styles.docLink}
-                  title="Send email via mail client"
-                >
-                  Direct Email
-                </a>
-              </>
-            )}
           </div>
         </div>
       </div>

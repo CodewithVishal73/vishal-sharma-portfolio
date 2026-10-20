@@ -6,8 +6,6 @@ export const projects = [
   {
     slug: 'seller-lens-iq',
     name: 'SellerLensIQ',
-    status: 'in-progress',
-    stage: 'In Progress',
     internshipChip: 'Developed during JGS internship',
     category: 'Full-Stack Engineering',
     summary:
@@ -32,7 +30,6 @@ export const projects = [
     tags: ['Full-Stack', 'Backend', 'React', 'Java', 'Spring Boot', 'PostgreSQL', 'REST APIs'],
     github: null, // Repository is private / not publicly hosted
     live: null, // No public live deployment hosted yet
-    year: 2024,
     architecture: {
       type: 'implemented',
       title: 'Full-Stack Service Architecture',
@@ -72,8 +69,6 @@ export const projects = [
   {
     slug: 'clinic-saas',
     name: 'ClinicSaaS',
-    status: 'in-progress',
-    stage: 'In Progress',
     category: 'Full-Stack Healthcare System',
     summary:
       'A structured clinic management application designed to organize core healthcare administration and appointment workflows.',
@@ -93,7 +88,6 @@ export const projects = [
     tags: ['Full-Stack', 'Backend', 'React', 'Java', 'Spring Boot', 'REST APIs'],
     github: null, // Repository is private / not publicly hosted
     live: null, // No public live deployment hosted yet
-    year: 2024,
     architecture: {
       type: 'implemented',
       title: 'Modular Healthcare Backend',
@@ -156,7 +150,6 @@ export const projects = [
     tags: ['Full-Stack', 'Backend', 'Voice AI Concept', 'React', 'Node.js', 'REST APIs'],
     github: null, // Repository is private / concept stage
     live: null, // No public live deployment (concept stage)
-    year: 2025,
     architecture: {
       type: 'planned',
       title: 'Planned Voice POS Architecture (Concept)',

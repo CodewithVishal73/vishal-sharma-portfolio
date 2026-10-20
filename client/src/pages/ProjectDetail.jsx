@@ -36,13 +36,13 @@ export default function ProjectDetail() {
   const { prev, next } = getAdjacentProjects(slug);
 
   const statusLabel =
-    project.status === 'in-progress'
-      ? 'In Progress'
+    project.status === 'concept' || project.stage === 'Concept'
+      ? 'Concept'
       : project.status === 'working'
       ? 'Working'
-      : project.status === 'concept'
-      ? 'Concept'
-      : project.stage || 'In Progress';
+      : project.stage && project.stage.toLowerCase() !== 'in progress'
+      ? project.stage
+      : null;
 
   return (
     <motion.div
@@ -74,8 +74,8 @@ export default function ProjectDetail() {
                 {project.internshipChip}
               </span>
             )}
-            <span className={styles.yearBadge}>{project.year}</span>
-            <span className={styles.stageBadge}>{statusLabel}</span>
+            {project.year && <span className={styles.yearBadge}>{project.year}</span>}
+            {statusLabel && <span className={styles.stageBadge}>{statusLabel}</span>}
           </div>
         </div>
 

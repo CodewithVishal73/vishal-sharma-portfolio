@@ -1,5 +1,6 @@
 {
   "name": "portfolio",
+  "description": "Vishal Sharma Portfolio",
   "private": true,
   "scripts": {
     "dev": "concurrently --kill-others-on-fail --prefix-colors \"cyan,green\" --names \"SERVER,CLIENT\" \"npm run dev:server\" \"npm run dev:client\"",

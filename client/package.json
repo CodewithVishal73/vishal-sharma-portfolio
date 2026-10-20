@@ -1,5 +1,6 @@
 {
   "name": "portfolio-client",
+  "description": "Vishal Sharma Portfolio Web Client",
   "private": true,
   "version": "0.1.0",
   "type": "module",

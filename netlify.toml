@@ -1,3 +1,4 @@
+# Netlify deployment configuration
 [build]
   base = "client"
   command = "npm run build"
