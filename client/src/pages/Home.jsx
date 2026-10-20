@@ -4,9 +4,6 @@ import { motion } from 'framer-motion';
 import { FiArrowRight, FiCode, FiLayers, FiAward, FiClock, FiMail, FiUser } from 'react-icons/fi';
 import Hero from '../sections/Hero/Hero.jsx';
 import Port from '../components/primitives/Port.jsx';
-import Button from '../components/primitives/Button.jsx';
-import ProjectCard from '../components/ProjectCard/ProjectCard.jsx';
-import { projects } from '../data/projects.js';
 import { SECTIONS } from '../data/sections.js';
 import styles from './Home.module.css';
 
@@ -27,8 +24,6 @@ export default function Home() {
 
   // Filter out node 01 (client/hero) to display pipeline directory
   const pipelineNodes = SECTIONS.filter((s) => s.id !== 'client');
-  // Featured projects preview (first 2 projects)
-  const featuredProjects = projects.slice(0, 2);
 
   return (
     <div className={styles.homeContainer}>
@@ -74,45 +69,6 @@ export default function Home() {
               </motion.div>
             );
           })}
-        </div>
-      </section>
-
-      {/* FEATURED PROJECTS HIGHLIGHT */}
-      <section className={styles.featuredSection} aria-label="Featured Systems Preview">
-        <div className={styles.sectionHeader}>
-          <div className={styles.headerMeta}>
-            <Port active />
-            <span className="mono-label">SERVICES · HIGHLIGHTED SYSTEMS</span>
-          </div>
-          <div className={styles.headerFlex}>
-            <div>
-              <h2 className={styles.sectionTitle}>Featured Architectures</h2>
-              <p className={styles.sectionSubtitle}>
-                Production systems and full-stack software built with verifiable architectures.
-              </p>
-            </div>
-            <Link to="/projects" className={styles.exploreAllBtn}>
-              <Button variant="secondary" size="md">
-                <span>View All Projects ({projects.length})</span>
-                <FiArrowRight aria-hidden="true" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        <div className={styles.previewGrid}>
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
-
-        <div className={styles.ctaBottom}>
-          <Link to="/projects">
-            <Button variant="primary" size="lg">
-              <span>Explore All Projects & Verified Systems</span>
-              <FiArrowRight aria-hidden="true" />
-            </Button>
-          </Link>
         </div>
       </section>
     </div>
