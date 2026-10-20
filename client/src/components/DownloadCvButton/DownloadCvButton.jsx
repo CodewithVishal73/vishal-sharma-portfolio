@@ -1,47 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiDownload, FiChevronDown, FiFileText, FiAlertCircle, FiLoader } from 'react-icons/fi';
-import { downloadCv, buildApiUrl } from '../../lib/api.js';
+import { FiDownload, FiChevronDown, FiFileText } from 'react-icons/fi';
+import { buildApiUrl } from '../../lib/api.js';
 import styles from './DownloadCvButton.module.css';
 
 export default function DownloadCvButton({ className = '', variant = 'primary' }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [downloadingFormat, setDownloadingFormat] = useState(null); // 'pdf' | 'docx' | null
-  const [isWaking, setIsWaking] = useState(false);
-  const [statusMessage, setStatusMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [fallbackUrl, setFallbackUrl] = useState(null);
-
-  const menuRef = useRef(null);
+  const menuRef    = useRef(null);
   const triggerRef = useRef(null);
-  const mainBtnRef = useRef(null);
 
-  const handleDownload = async (format) => {
-    setDownloadingFormat(format);
-    setIsWaking(false);
-    setErrorMessage(null);
-    setFallbackUrl(null);
-    const formatLabel = format.toUpperCase();
-    setStatusMessage(`Preparing ${formatLabel} CV...`);
-
-    const result = await downloadCv(format, {
-      onWaking: (waking) => setIsWaking(waking),
-    });
-
-    setDownloadingFormat(null);
-    setIsWaking(false);
-
-    if (result.ok) {
-      setStatusMessage(`${formatLabel} CV downloaded successfully.`);
-      setTimeout(() => setStatusMessage(''), 4000);
-      setIsOpen(false);
-    } else {
-      setErrorMessage(result.error || 'Failed to download CV file from server.');
-      setFallbackUrl(result.fallbackUrl || buildApiUrl(`/api/cv/${format}`));
-      setStatusMessage(`Error: ${result.error || 'Download failed'}`);
-    }
-  };
-
-  // Close on Outside Click or Escape
+  // Close on outside click or Escape
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -49,63 +16,45 @@ export default function DownloadCvButton({ className = '', variant = 'primary' }
         triggerRef.current?.focus();
       }
     };
-
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
-
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
-  const isPreparing = Boolean(downloadingFormat);
-
   return (
     <div
       className={`${styles.splitWrapper} ${styles[variant] || styles.primary} ${className}`}
       ref={menuRef}
     >
-      {/* Aria-live screen reader announcement */}
-      <span className={styles.srOnly} role="status" aria-live="polite">
-        {statusMessage}
-      </span>
-
-      {/* Primary Download Button (PDF default) */}
-      <button
-        ref={mainBtnRef}
-        type="button"
-        disabled={isPreparing}
-        onClick={() => handleDownload('pdf')}
+      {/* Primary Download Button — PDF via Express backend */}
+      <a
+        href={buildApiUrl('/api/cv/pdf')}
+        download="Vishal_Sharma_CV.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
         className={styles.mainBtn}
-        aria-label={
-          isPreparing
-            ? 'Preparing CV download from server'
-            : 'Download CV in PDF format - Vishal Sharma'
-        }
+        aria-label="Download CV in PDF format - Vishal Sharma"
+        onClick={() => setIsOpen(false)}
       >
-        {isPreparing ? (
-          <FiLoader aria-hidden="true" className={styles.downloadIcon} style={{ animation: 'spin 1s linear infinite' }} />
-        ) : (
-          <FiDownload aria-hidden="true" className={styles.downloadIcon} />
-        )}
-        <span>{isPreparing ? 'Preparing…' : 'Download CV'}</span>
+        <FiDownload aria-hidden="true" className={styles.downloadIcon} />
+        <span>Download CV</span>
         <span className={styles.badgeFormat}>PDF</span>
-      </button>
+      </a>
 
-      {/* Split Menu Toggle */}
+      {/* Split Chevron Toggle */}
       <button
         ref={triggerRef}
         type="button"
-        disabled={isPreparing}
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${styles.toggleBtn} ${isOpen ? styles.toggleOpen : ''}`}
         aria-haspopup="menu"
@@ -122,43 +71,16 @@ export default function DownloadCvButton({ className = '', variant = 'primary' }
             <span className="mono-label">VERIFIED CV FORMATS</span>
           </div>
 
-          {/* Calm line when server is cold starting */}
-          {isWaking && (
-            <div className={styles.wakingNotice} role="status">
-              <FiLoader aria-hidden="true" />
-              <span>The server is waking up (free hosting)...</span>
-            </div>
-          )}
-
-          {/* Error Banner with Direct Fallback Anchor */}
-          {errorMessage && (
-            <div className={styles.errorNotice} role="alert">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <FiAlertCircle color="var(--err)" />
-                <strong>Download issue:</strong>
-              </div>
-              <span>{errorMessage}</span>
-              {fallbackUrl && (
-                <a
-                  href={fallbackUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.fallbackAnchor}
-                >
-                  Open directly in browser ↗
-                </a>
-              )}
-            </div>
-          )}
-
-          {/* Option 1: PDF */}
-          <button
-            type="button"
+          {/* PDF Option */}
+          <a
+            href={buildApiUrl('/api/cv/pdf')}
+            download="Vishal_Sharma_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             role="menuitem"
-            disabled={isPreparing}
-            onClick={() => handleDownload('pdf')}
             className={`${styles.menuItem} ${styles.menuItemBtn}`}
             aria-label="Download CV in PDF format"
+            onClick={() => setIsOpen(false)}
           >
             <div className={styles.itemInfo}>
               <FiFileText className={styles.itemIcon} aria-hidden="true" />
@@ -168,16 +90,18 @@ export default function DownloadCvButton({ className = '', variant = 'primary' }
               </div>
             </div>
             <span className={styles.badgePdf}>PDF</span>
-          </button>
+          </a>
 
-          {/* Option 2: DOCX */}
-          <button
-            type="button"
+          {/* DOCX Option */}
+          <a
+            href={buildApiUrl('/api/cv/docx')}
+            download="Vishal_Sharma_CV.docx"
+            target="_blank"
+            rel="noopener noreferrer"
             role="menuitem"
-            disabled={isPreparing}
-            onClick={() => handleDownload('docx')}
             className={`${styles.menuItem} ${styles.menuItemBtn}`}
             aria-label="Download CV in Microsoft Word DOCX format"
+            onClick={() => setIsOpen(false)}
           >
             <div className={styles.itemInfo}>
               <FiFileText className={styles.itemIcon} aria-hidden="true" />
@@ -187,7 +111,7 @@ export default function DownloadCvButton({ className = '', variant = 'primary' }
               </div>
             </div>
             <span className={styles.badgeDocx}>DOCX</span>
-          </button>
+          </a>
         </div>
       )}
     </div>

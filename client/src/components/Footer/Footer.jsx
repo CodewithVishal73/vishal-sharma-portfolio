@@ -105,9 +105,10 @@ export default function Footer() {
           </div>
 
           <div className={styles.actions}>
-            {/* Functional Verified CV Downloads */}
+            {/* CV Downloads via Express backend */}
             <a
               href={buildApiUrl('/api/cv/pdf')}
+              download="Vishal_Sharma_CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.docLink}
@@ -118,6 +119,7 @@ export default function Footer() {
             <span className={styles.divider} aria-hidden="true">·</span>
             <a
               href={buildApiUrl('/api/cv/docx')}
+              download="Vishal_Sharma_CV.docx"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.docLink}

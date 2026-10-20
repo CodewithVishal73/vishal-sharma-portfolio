@@ -65,10 +65,11 @@ export default function Header() {
             variant="secondary"
             size="sm"
             href={buildApiUrl('/api/cv/pdf')}
+            download="Vishal_Sharma_CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.cvBtn}
-            aria-label="Download CV (PDF) from server"
+            aria-label="Download CV (PDF)"
           >
             <FiDownload aria-hidden="true" />
             <span>CV</span>
