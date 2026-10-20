@@ -113,5 +113,4 @@ npm run dev
 - **LeetCode:** [https://leetcode.com/u/Vishal_cd/](https://leetcode.com/u/Vishal_cd/)
 - **Email:** vishal.sharma.tech1@gmail.com
 
----
-*Production portfolio codebase.*
+
