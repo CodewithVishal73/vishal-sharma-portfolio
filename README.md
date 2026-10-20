@@ -2,9 +2,6 @@
 
 A production-grade, fully responsive personal portfolio website engineered with the **MERN Stack** (React.js frontend, Node.js + Express.js backend REST API, and MongoDB Atlas database with Mongoose ODM). Designed as a living CV with real end-to-end database connectivity and server-side document delivery, the system models a full request path: **Browser → React → Express API → MongoDB Atlas**
 
-![Portfolio Preview](client/public/og-image.png)
-
----
 
 ## 1. Live Deployments
 
