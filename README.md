@@ -7,7 +7,7 @@ A production-grade, fully responsive personal portfolio website engineered with 
 
 | Component | Platform | Live URL | Status & Purpose |
 |---|---|---|---|
-| **Frontend Application** | Netlify | [https://vishalsharma1.netlify.app/](https://vishalsharma1.netlify.app/) | Production React SPA with dark/light theme, interactive pipeline UI, responsive layouts |
+| **Frontend Application** | Netlify | [https://vishalsharma1.netlify.app/](https://vishalsharma1.netlify.app/) | Production React with dark/light theme, interactive pipeline UI, responsive layouts |
 | **Backend REST API** | Render | [https://vishal-sharma-portfolio.onrender.com](https://vishal-sharma-portfolio.onrender.com) | Express.js + Node.js API with security middleware and MongoDB Atlas connection |
 | **API Health Check** | Render | [https://vishal-sharma-portfolio.onrender.com/api/health](https://vishal-sharma-portfolio.onrender.com/api/health) | Live health check returning `{ ok: true, status: "up", db: "connected" }` |
 
@@ -19,7 +19,7 @@ A production-grade, fully responsive personal portfolio website engineered with 
 | **Node.js** | `>=20.0.0` (LTS) | Server runtime supporting native ES Modules, modern Fetch API, and secure crypto primitives. |
 | **React** | `^18.3.1` | Client UI library utilizing component-driven architecture, hooks, and Concurrent Mode. |
 | **Vite** | `^5.4.9` | Ultra-fast client build tool providing optimized ES module development and production bundling. |
-| **React Router DOM** | `^6.27.0` | Client-side routing for Single Page Application navigation (`/`, `/projects/:slug`, `/404`). |
+| **React Router DOM** | `^6.27.0` | Client-side routing for Application navigation (`/`, `/projects/:slug`, `/404`). |
 | **Framer Motion** | `^11.11.9` | Declarative animation engine configured with `prefers-reduced-motion` compliance. |
 | **Express.js** | `^4.21.1` | Minimalist HTTP web framework for REST API endpoints, routing, and defensive middleware. |
 | **Mongoose** | `^8.7.1` | Object Data Modeling (ODM) for MongoDB schema validation, typed models, and sanitizeFilter queries. |
