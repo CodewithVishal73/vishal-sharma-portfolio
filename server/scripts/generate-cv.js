@@ -25,6 +25,11 @@ const docxPath = path.join(outputDir, 'Vishal_Sharma_CV.docx');
 
 // --- 1. GENERATE PDF ---
 async function generatePDF() {
+  // If authentic real resume PDF exists (>10KB), preserve it
+  if (fs.existsSync(pdfPath) && fs.statSync(pdfPath).size > 10000) {
+    console.log('[cv] Authentic resume PDF preserved (' + fs.statSync(pdfPath).size + ' bytes).');
+    return;
+  }
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({
       size: 'A4',
